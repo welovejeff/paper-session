@@ -1,7 +1,15 @@
 # Third-Party Notices
 
-This project distributes third-party material. Each item below keeps its own
-license, which is not superseded by the repository's MIT license.
+The repository's MIT license (`LICENSE`) covers the skill definitions, reference
+documents, scripts, and design documentation. It does **not** cover the bundled
+IBM Plex typefaces or the Code of Conduct text.
+
+This project distributes the third-party material below. Each item keeps its own
+license, which is not superseded by the MIT license.
+
+> Kept out of `LICENSE` itself deliberately: GitHub only detects a license when
+> that file closely matches the canonical template, and appending scope notes to
+> it silently breaks detection.
 
 ## IBM Plex
 
