@@ -1,0 +1,48 @@
+name: Sheet defect
+description: A generated sheet came out wrong — bad layout, unprintable, unscannable, or off-spec.
+title: "[defect] "
+labels: ["defect"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What went wrong?
+      options:
+        - "Text overlapped or ran off the page"
+        - "Printed too light / didn't survive the printer"
+        - "Didn't survive the phone scan"
+        - "Violated the design system (wrong voice, gray, spacing)"
+        - "Violated a skill rule (example answers, time limit, rubric…)"
+        - "scan-back misread the pages"
+        - "Something else"
+    validations:
+      required: true
+  - type: dropdown
+    id: verifier
+    attributes:
+      label: Did verify_layout.py pass on it?
+      description: >
+        `python3 paper-session/scripts/verify_layout.py sheet.pdf`. A sheet that passes the verifier
+        and is still broken tells us the verifier has a gap, which is its own bug.
+      options: ["Passed", "Failed", "Didn't run it", "Couldn't run it"]
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it have done?
+      description: Cite the rule if you know which one — `references/design.md` §N, or the SKILL.md anti-pattern.
+    validations:
+      required: true
+  - type: textarea
+    id: attach
+    attributes:
+      label: Attach the PDF, and a photo if it's a print or scan problem
+      description: For print and scan defects the photo is the evidence — the PDF alone often looks fine.
+    validations:
+      required: true
+  - type: input
+    id: printer
+    attributes:
+      label: Printer and paper, if relevant
+      placeholder: "Brother HL-L2350DW, grayscale, cheap 20lb copy paper"

@@ -1,0 +1,127 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  bundles-match-source:
+    # The committed .skill files are build artifacts. If someone hand-edits a
+    # bundle, or edits the source and forgets ./build.sh, the two drift apart and
+    # installed users get something nobody reviewed. That drift is what this repo
+    # was restructured to prevent, so it's enforced rather than documented.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Committed bundles unpack to exactly the source tree
+        run: |
+          mkdir -p /tmp/unpacked
+          for skill in paper-session scan-back; do
+            unzip -q "$skill.skill" -d /tmp/unpacked
+            if ! diff -r "$skill" "/tmp/unpacked/$skill"; then
+              echo "::error::$skill.skill does not match $skill/ — run ./build.sh and commit the result"
+              exit 1
+            fi
+            echo "$skill.skill matches source"
+          done
+
+      - name: build.sh reproduces the bundles cleanly
+        run: ./build.sh
+
+  skill-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Each SKILL.md declares a name matching its directory
+        run: |
+          for skill in paper-session scan-back; do
+            declared=$(awk -F': *' '/^name:/ {gsub(/"/, "", $2); print $2; exit}' "$skill/SKILL.md")
+            [[ "$declared" == "$skill" ]] || {
+              echo "::error::$skill/SKILL.md declares '$declared'"; exit 1; }
+          done
+
+      - name: Fonts ship with their license
+        run: |
+          test -f paper-session/assets/fonts/LICENSE-IBMPlex.txt
+          unzip -Z1 paper-session.skill > /tmp/listing
+          grep -q 'assets/fonts/LICENSE-IBMPlex.txt' /tmp/listing
+
+      - name: The pen protocol still exists on both sides
+        # Specified twice with no shared file: design.md §9 prints the ink key,
+        # scan-back Step 1 reads it back. This is a presence canary only — it
+        # catches an outright deletion from one side, NOT a semantic desync. Two
+        # protocols that disagree both pass this step, so review the pair by hand.
+        run: |
+          grep -qi 'ink key' paper-session/references/design.md
+          grep -qi 'pen protocol' scan-back/SKILL.md
+
+      # Deliberately not checked here: whether a sheet spec printed a time limit,
+      # pre-filled a creative zone, or added a scoring rubric. Those are semantic
+      # rules, and a prose grep cannot distinguish stating a rule from breaking it
+      # — the first attempt at this tripped on the very line forbidding time
+      # limits. The anti-pattern lists in each SKILL.md and human review own these.
+
+  verifier-runs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r requirements.txt
+
+      - name: verify_layout.py rejects colliding text
+        run: |
+          python3 - <<'PY'
+          from reportlab.pdfgen import canvas
+          # Two 12pt words on baselines 4pt apart: the boxes overlap ~67% while the
+          # baselines stay distinct. This is the shape of a real collision — a zone
+          # that grew into the one below it.
+          #
+          # NOTE: do not "simplify" this to two identical strings at identical
+          # coordinates. pdfplumber interleaves perfectly-coincident characters
+          # into a single word ("OOVVEERRLLAAPP"), so there is no second box to
+          # compare and the verifier reports PASS. That is a known blind spot in
+          # the gate, not a property to encode in its test.
+          c = canvas.Canvas("/tmp/collide.pdf")
+          c.setFont("Helvetica", 12)
+          c.drawString(200, 400, "TOPWORD")
+          c.drawString(200, 396, "BOTWORD")
+          c.save()
+          PY
+          if python3 paper-session/scripts/verify_layout.py /tmp/collide.pdf; then
+            echo "::error::verifier passed a sheet with colliding text"; exit 1
+          fi
+          echo "verifier correctly failed the colliding sheet"
+
+      - name: verify_layout.py rejects text escaping the page
+        run: |
+          python3 - <<'PY'
+          from reportlab.pdfgen import canvas
+          c = canvas.Canvas("/tmp/offpage.pdf")
+          c.setFont("Helvetica", 12)
+          c.drawString(-60, 400, "ESCAPES")
+          c.save()
+          PY
+          if python3 paper-session/scripts/verify_layout.py /tmp/offpage.pdf; then
+            echo "::error::verifier passed a sheet with text off the page"; exit 1
+          fi
+          echo "verifier correctly failed the off-page sheet"
+
+      - name: The shipped specimen still passes
+        run: python3 paper-session/scripts/verify_layout.py docs/design-history/hybrid-specimen.pdf
+
+      - name: verify_layout.py accepts a clean sheet
+        run: |
+          python3 - <<'PY'
+          from reportlab.pdfgen import canvas
+          c = canvas.Canvas("/tmp/clean.pdf")
+          c.drawString(72, 700, "One line of text, comfortably inside the page.")
+          c.drawString(72, 660, "A second line, well clear of the first.")
+          c.save()
+          PY
+          python3 paper-session/scripts/verify_layout.py /tmp/clean.pdf

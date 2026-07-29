@@ -1,0 +1,74 @@
+name: Session report
+description: You ran a real paper session. Tell us what happened — this is the data the project is missing.
+title: "[session] "
+labels: ["session-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This is the most useful issue you can file.** Completion rate is the metric that matters
+        and nobody has data yet. Abandoned sessions are as valuable as successful ones — more so,
+        probably. Please don't polish the story.
+  - type: dropdown
+    id: capacity
+    attributes:
+      label: Capacity
+      options: ["Deep", "Light", "Both, in one sitting"]
+    validations:
+      required: true
+  - type: input
+    id: task
+    attributes:
+      label: What was the underlying task?
+      placeholder: "Re-sequencing an 8-week course; picking a Q3 focus; naming a product"
+    validations:
+      required: true
+  - type: dropdown
+    id: completion
+    attributes:
+      label: How much got filled in?
+      options:
+        - "All of it"
+        - "Most of it, a couple of zones blank"
+        - "About half"
+        - "Started and abandoned"
+        - "Printed and never touched"
+    validations:
+      required: true
+  - type: textarea
+    id: abandoned
+    attributes:
+      label: If you stopped, where exactly on the page did you stop?
+      description: The zone where attention broke is more diagnostic than the reason you'd give for stopping.
+  - type: textarea
+    id: patterns
+    attributes:
+      label: Which patterns were on the sheet, and did each earn its place?
+      placeholder: "Two-column react — yes, argued with half of it. Sketch field — skipped, felt like homework."
+  - type: textarea
+    id: surprise
+    attributes:
+      label: Did anything come out of the open territory or the margins?
+      description: The unstructured zone is a design bet. We want to know when it pays and when it's dead space.
+  - type: textarea
+    id: scanback
+    attributes:
+      label: How did scan-back do?
+      placeholder: "Misread two crossed-out items as still live. Got the arrows right, which surprised me."
+  - type: dropdown
+    id: felt
+    attributes:
+      label: Did it feel productive?
+      description: >
+        Asked deliberately. Effort is systematically misread as ineffectiveness, so "felt like a waste
+        but the output was good" is an expected and important answer, not a contradiction.
+      options:
+        - "Felt productive, output was good"
+        - "Felt productive, output was thin"
+        - "Felt like a waste, output was good"
+        - "Felt like a waste, output was thin"
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo of the completed sheet (optional, redact freely)
+      description: Only if the content isn't private. Black marker over anything sensitive is fine — the layout is what we're reading.

@@ -1,0 +1,44 @@
+name: Counter-evidence
+description: A citation in the evidence brief is weaker, contested, or wrong.
+title: "[evidence] "
+labels: ["evidence", "counter-evidence"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The research grounding is this project's moat, so undermining it correctly is a
+        contribution, not an attack. The brief already carries a "what the research does NOT
+        support" section; expanding it honestly is welcome.
+  - type: input
+    id: claim
+    attributes:
+      label: Which claim?
+      description: Quote the line from `paper-session/references/evidence.md` or whichever reference states it.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What's wrong with it?
+      options:
+        - "Overstated — the finding is weaker than the brief implies"
+        - "Contested — there's a failed replication or a live debate"
+        - "Misapplied — the finding is real but doesn't support this design rule"
+        - "Superseded — newer or better-powered work changes the picture"
+        - "Wrong — the citation doesn't say this"
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Link or full citation. A failed replication with an N beats an argument.
+    validations:
+      required: true
+  - type: textarea
+    id: consequence
+    attributes:
+      label: What should change on the page?
+      description: >
+        Does a printed rule get dropped, softened, or just annotated with its limitation?
+        "Nothing changes, but the brief should stop overclaiming" is a valid and useful answer.

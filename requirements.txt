@@ -1,0 +1,5 @@
+# Generating sheets
+reportlab>=4.0
+
+# paper-session/scripts/verify_layout.py — the mandatory pre-flight check
+pdfplumber>=0.11

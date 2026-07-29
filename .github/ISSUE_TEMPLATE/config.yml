@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the contribution bar first
+    url: https://github.com/welovejeff/paper-session/blob/main/CONTRIBUTING.md
+    about: A change to what gets printed needs a source in the evidence brief. Several well-intentioned improvements are deliberately rejected — worth knowing before you write them.
+  - name: Anti-patterns
+    url: https://github.com/welovejeff/paper-session/blob/main/paper-session/SKILL.md
+    about: Before proposing example answers, a time estimate, or a scoring rubric — each is already banned, with the reason. See the list at the end of SKILL.md.

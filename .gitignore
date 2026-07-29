@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Generated sheets. Specimens that belong in the repo live in docs/.
+out/
+outputs/
+*-draft.pdf
+*-scratch.pdf
+
+# Editor
+.idea/
+.vscode/
+*.swp

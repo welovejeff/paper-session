@@ -1,0 +1,47 @@
+name: New pattern
+description: Propose a new activity zone or sheet pattern for the library.
+title: "[pattern] "
+labels: ["pattern"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Pattern name
+      placeholder: "Spent Ground, The kill sheet, Second reading — short and concrete"
+    validations:
+      required: true
+  - type: textarea
+    id: shape
+    attributes:
+      label: What's physically on the page?
+      description: Zones, what's printed, what's empty, roughly how much room each part takes.
+    validations:
+      required: true
+  - type: dropdown
+    id: capacity
+    attributes:
+      label: Capacity
+      options: ["Deep", "Light", "Either"]
+    validations:
+      required: true
+  - type: textarea
+    id: whose
+    attributes:
+      label: Whose thought fills each part?
+      description: >
+        The project's central test. Say explicitly what the AI contributes and what it withholds.
+        A pattern where the AI fills a generative zone will be rejected.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Why does this shape work?
+      description: >
+        A source if you have one — a new *printed* rule needs one to ship. If you don't have a
+        citation, file the issue anyway and say so; the finding may exist and be unfound.
+  - type: textarea
+    id: tried
+    attributes:
+      label: Have you run it on paper?
+      description: A photo of a hand-drawn version you actually filled in is worth more than a spec.
