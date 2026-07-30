@@ -14,11 +14,11 @@ deliberately rejected here, and it's better to know that first.
 ```bash
 git clone https://github.com/welovejeff/paper-session.git
 cd paper-session
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # work on the skills locally
-ln -s "$PWD/paper-session" ~/.claude/skills/paper-session
-ln -s "$PWD/scan-back"     ~/.claude/skills/scan-back
+ln -sfn "$PWD/paper-session" ~/.claude/skills/paper-session
+ln -sfn "$PWD/scan-back"     ~/.claude/skills/scan-back
 ```
 
 Symlinking means your edits take effect on the next session with no rebuild

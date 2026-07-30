@@ -51,7 +51,7 @@ git clone https://github.com/welovejeff/paper-session.git
 cd paper-session
 unzip -o paper-session.skill -d ~/.claude/skills/
 unzip -o scan-back.skill -d ~/.claude/skills/
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 **claude.ai or the desktop app** — upload `paper-session.skill` and `scan-back.skill` directly wherever your client accepts skill bundles. The `.skill` files are the packaged form and need no unzipping.
@@ -269,11 +269,11 @@ One coupling has no shared file and is easy to break: the **pen protocol** is sp
 ## Development
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # work on the skills live — edits apply on the next session, no rebuild
-ln -s "$PWD/paper-session" ~/.claude/skills/paper-session
-ln -s "$PWD/scan-back"     ~/.claude/skills/scan-back
+ln -sfn "$PWD/paper-session" ~/.claude/skills/paper-session
+ln -sfn "$PWD/scan-back"     ~/.claude/skills/scan-back
 
 # edit paper-session/... then repackage
 ./build.sh
