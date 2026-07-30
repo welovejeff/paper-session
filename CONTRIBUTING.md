@@ -14,11 +14,11 @@ deliberately rejected here, and it's better to know that first.
 ```bash
 git clone https://github.com/welovejeff/paper-session.git
 cd paper-session
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # work on the skills locally
-ln -s "$PWD/paper-session" ~/.claude/skills/paper-session
-ln -s "$PWD/scan-back"     ~/.claude/skills/scan-back
+ln -sfn "$PWD/paper-session" ~/.claude/skills/paper-session
+ln -sfn "$PWD/scan-back"     ~/.claude/skills/scan-back
 ```
 
 Symlinking means your edits take effect on the next session with no rebuild
@@ -106,9 +106,11 @@ python3 paper-session/scripts/verify_layout.py yoursheet.pdf
 ```
 
 This is **mandatory** and it gates the skill itself, not just CI. It fails on
-overlapping words and text escaping the page bounds — the two defects that
-survive casual inspection and ruin a sheet at the printer. It checks geometry
-and never taste.
+text escaping the page bounds and on colliding text — both across baselines and
+on a shared baseline, which needs its own glyph-level check because pdfplumber
+merges same-line overlapping characters into one word. Those are the defects
+that survive casual inspection and ruin a sheet at the printer. It checks
+geometry and never taste.
 
 For anything that changes a sheet's appearance, also do the thing the project is
 about:

@@ -14,7 +14,12 @@ cd "$(dirname "$0")"
 SKILLS=("${@:-}")
 [[ -z "${SKILLS[0]:-}" ]] && SKILLS=(paper-session scan-back)
 
-command -v zip >/dev/null || { echo "error: zip not found" >&2; exit 1; }
+# unzip is needed too, for the file count and the font-license check below.
+# Check both up front: discovering it after the first bundle is rewritten leaves
+# the tree half-built.
+for tool in zip unzip; do
+  command -v "$tool" >/dev/null || { echo "error: $tool not found" >&2; exit 1; }
+done
 
 for skill in "${SKILLS[@]}"; do
   if [[ ! -f "$skill/SKILL.md" ]]; then

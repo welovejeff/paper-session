@@ -34,20 +34,20 @@ This layout was adopted after the loose root copies of the reference docs drifte
 ## Commands
 
 ```bash
-pip install -r requirements.txt          # reportlab + pdfplumber
+python3 -m pip install -r requirements.txt          # reportlab + pdfplumber
 
 ./build.sh                               # repackage both bundles after editing source
 ./build.sh scan-back                     # or just one
 
-ln -s "$PWD/paper-session" ~/.claude/skills/paper-session   # live-edit without rebuilding
-ln -s "$PWD/scan-back"     ~/.claude/skills/scan-back
+ln -sfn "$PWD/paper-session" ~/.claude/skills/paper-session   # live-edit without rebuilding
+ln -sfn "$PWD/scan-back"     ~/.claude/skills/scan-back
 
 python3 paper-session/scripts/verify_layout.py sheet.pdf    # mandatory before showing a sheet
 ```
 
-`reportlab` 5.0.0 is present on this machine; `pdfplumber` (required by `verify_layout.py`) is not — install it before generating anything, or the mandatory verification step cannot run. If pip is externally managed here, add `--break-system-packages`.
+Generating sheets needs `reportlab`; `verify_layout.py` needs `pdfplumber`. Check with `python3 -c 'import reportlab, pdfplumber'` rather than assuming either way — if the import fails, install from `requirements.txt` before generating anything, adding `--break-system-packages` where pip is externally managed. Never skip the verification step on the grounds that a dependency is missing; install it.
 
-`verify_layout.py` catches exactly two defects — overlapping words and text escaping the page bounds — because those survive casual inspection and ruin a sheet at the printer. It is deliberately narrow; it does not check the design system.
+`verify_layout.py` catches text escaping the page bounds, collisions across different baselines (word level), and collisions on a shared baseline (character level — pdfplumber merges same-line overlapping glyphs into one word, so that case is invisible to the word pass and has its own check). It is deliberately narrow; it does not check the design system.
 
 Regenerating the README specimen images (only if a specimen changes):
 

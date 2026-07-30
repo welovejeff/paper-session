@@ -8,26 +8,11 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Changed
-- Repository restructured for public release: the unpacked `paper-session/` and
-  `scan-back/` directories are now the authoritative source, with `.skill`
-  bundles built by `./build.sh`. Previously four reference documents existed
-  both loose at the repo root and inside the zip, and they had drifted.
-- Reconciled `references/design.md`: the loose root copy was missing the
-  mandatory dot-grid sketch zone for Deep kits and the no-printed-time-limit
-  rule. The bundled version was correct and is now the only version.
-
-### Added
-- MIT license, third-party notices, and the SIL OFL text shipped alongside the
-  IBM Plex fonts so it travels inside every built bundle.
-- `build.sh`, which fails the build if a `SKILL.md` name doesn't match its
-  directory or if the fonts would ship without their license.
-- Contributor guide, code of conduct, and issue templates — including a session
-  report template, since sheet completion rate is the project's missing metric.
+Nothing yet.
 
 ## [0.1.0] — 2026-07-29
 
-First working version of the loop.
+First public version of the loop. Everything below is in the initial commit.
 
 ### Added
 - **`paper-session`** — recognizes when a task has reached human judgment work,
@@ -60,3 +45,9 @@ First working version of the loop.
   variable. The shipped system is a hybrid — Bureau chassis, Basement voice at
   60%, Field Kit's dot grid as an optional zone type, Method Card's cut lines
   only where cutting is real.
+- Repository laid out so the unpacked `paper-session/` and `scan-back/`
+  directories are the source and the `.skill` bundles are artifacts built by
+  `./build.sh`, with CI enforcing that the two stay in step. MIT license, SIL
+  OFL text shipped alongside the fonts, contributor guide, code of conduct, and
+  issue templates — including a session report, since sheet completion rate is
+  the project's missing metric.

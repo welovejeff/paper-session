@@ -51,7 +51,7 @@ git clone https://github.com/welovejeff/paper-session.git
 cd paper-session
 unzip -o paper-session.skill -d ~/.claude/skills/
 unzip -o scan-back.skill -d ~/.claude/skills/
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 **claude.ai or the desktop app** — upload `paper-session.skill` and `scan-back.skill` directly wherever your client accepts skill bundles. The `.skill` files are the packaged form and need no unzipping.
@@ -269,11 +269,11 @@ One coupling has no shared file and is easy to break: the **pen protocol** is sp
 ## Development
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # work on the skills live — edits apply on the next session, no rebuild
-ln -s "$PWD/paper-session" ~/.claude/skills/paper-session
-ln -s "$PWD/scan-back"     ~/.claude/skills/scan-back
+ln -sfn "$PWD/paper-session" ~/.claude/skills/paper-session
+ln -sfn "$PWD/scan-back"     ~/.claude/skills/scan-back
 
 # edit paper-session/... then repackage
 ./build.sh
@@ -284,7 +284,7 @@ python3 paper-session/scripts/verify_layout.py sheet.pdf
 
 `build.sh` refuses to ship two specific mistakes: a `SKILL.md` whose declared `name:` doesn't match its directory (the bundle would install under one name and describe itself as another), and a bundle carrying the IBM Plex fonts without their license.
 
-`verify_layout.py` fails on exactly two things: words whose boxes overlap, and text escaping the page bounds. Those are the defects that survive casual inspection and ruin a sheet at the printer. It is deliberately narrow — it checks geometry, never taste. On failure, shorten or rewrap the text and regenerate. **Never present an unverified sheet.**
+`verify_layout.py` fails on text escaping the page bounds and on text that collides — across different baselines, and on a shared baseline, which needs its own glyph-level check because pdfplumber merges same-line overlapping characters into a single word. Those are the defects that survive casual inspection and ruin a sheet at the printer. It is deliberately narrow — it checks geometry, never taste. On failure, shorten or rewrap the text and regenerate. **Never present an unverified sheet.**
 
 For anything that changes how a sheet looks, screen review isn't enough: print it in grayscale on cheap paper, fill it in with a pen, photograph it in bad light, and hand it to `scan-back`. That round trip is the actual test.
 
