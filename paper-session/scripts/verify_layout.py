@@ -13,6 +13,8 @@ except ImportError:
 
 OVERLAP_FRAC = 0.25   # flag if intersection exceeds this fraction of the smaller word's area
 EDGE_PAD = 4          # pt of forgiveness at page bounds
+CHAR_H_FRAC = 0.4     # horizontal bite out of the narrower glyph before it counts
+CHAR_V_FRAC = 0.5     # ... and how much of the shorter glyph must share its band
 
 
 def boxes_overlap(a, b):
@@ -27,12 +29,60 @@ def boxes_overlap(a, b):
     return inter / smaller
 
 
+def char_collisions(page):
+    """Glyphs that physically collide, found at character level.
+
+    The word-level pass below cannot see a same-baseline collision at all:
+    pdfplumber merges characters that overlap on a shared baseline into ONE
+    word (two strings stamped over each other come back as a single
+    'LONGLVAABLEULEHERE'), so there is never a second box to compare. That is
+    the likeliest real defect on a react pair or a rank row, where an
+    overlong Mono item runs into the column beside it, so it gets its own
+    check.
+
+    Rotated glyphs are excluded: each one occupies the same x-range as its
+    neighbour, so a rotated run reads as a column of mutual overlaps. The
+    vertical-share test would mostly reject them anyway, but the gutter hint
+    ("cross out freely") is rotated by design, so this is explicit.
+    """
+    chars = sorted((c for c in page.chars
+                    if c.get("upright", True) and not c["text"].isspace()),
+                   key=lambda c: c["x0"])
+    problems = []
+    active = []
+    for cur in chars:
+        # sweep line: only glyphs still horizontally in range can collide
+        active = [p for p in active if p["x1"] > cur["x0"]]
+        for prev in active:
+            h = min(prev["x1"], cur["x1"]) - cur["x0"]
+            v = min(prev["bottom"], cur["bottom"]) - max(prev["top"], cur["top"])
+            if h <= 0 or v <= 0:
+                continue
+            narrow = min(prev["x1"] - prev["x0"], cur["x1"] - cur["x0"])
+            short = min(prev["bottom"] - prev["top"], cur["bottom"] - cur["top"])
+            # kerning and italic sidebearings overlap slightly and legitimately,
+            # so require a real bite out of the smaller glyph
+            if (narrow > 0 and short > 0
+                    and h / narrow > CHAR_H_FRAC and v / short > CHAR_V_FRAC):
+                problems.append(
+                    f"collides: '{prev['text']}' x '{cur['text']}' "
+                    f"at ({cur['x0']:.0f},{cur['top']:.0f})")
+        active.append(cur)
+    return problems
+
+
 def check(path):
     problems = []
     with pdfplumber.open(path) as pdf:
         for pno, page in enumerate(pdf.pages, 1):
-            # upright and rotated text checked separately; rotated words get
-            # merged bboxes from pdfplumber that false-positive against columns
+            for p in char_collisions(page):
+                problems.append(f"p{pno}: {p}")
+            # Word-level pass, for collisions across different baselines.
+            # Caveat, not a safeguard: extract_words returns rotated runs as one
+            # merged bbox that can span a whole column, and the same-line
+            # tolerance below does NOT exclude them — the rotated gutter hint
+            # false-positives against left-column words on two of the four
+            # Phase 3 specimens. Filter by `upright` here if that starts biting.
             words = page.extract_words(use_text_flow=False, keep_blank_chars=False)
             # page-bounds check
             for w in words:
