@@ -9,7 +9,8 @@ import sys
 try:
     import pdfplumber
 except ImportError:
-    sys.exit("pdfplumber required: pip install pdfplumber --break-system-packages")
+    sys.exit("pdfplumber required: python3 -m pip install pdfplumber"
+             " --break-system-packages")
 
 OVERLAP_FRAC = 0.25   # flag if intersection exceeds this fraction of the smaller word's area
 EDGE_PAD = 4          # pt of forgiveness at page bounds

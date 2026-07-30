@@ -106,9 +106,11 @@ python3 paper-session/scripts/verify_layout.py yoursheet.pdf
 ```
 
 This is **mandatory** and it gates the skill itself, not just CI. It fails on
-overlapping words and text escaping the page bounds — the two defects that
-survive casual inspection and ruin a sheet at the printer. It checks geometry
-and never taste.
+text escaping the page bounds and on colliding text — both across baselines and
+on a shared baseline, which needs its own glyph-level check because pdfplumber
+merges same-line overlapping characters into one word. Those are the defects
+that survive casual inspection and ruin a sheet at the printer. It checks
+geometry and never taste.
 
 For anything that changes a sheet's appearance, also do the thing the project is
 about:

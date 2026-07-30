@@ -84,7 +84,7 @@ Every sheet is set in the Paper Session design system. Read `references/design.m
 
 ## Step 5: Verify before presenting (mandatory)
 
-Run `scripts/verify_layout.py <pdf>` on the generated file. It fails on overlapping text and text escaping the page, the two defects that survive casual inspection and ruin a sheet at the printer. If it fails, fix the layout (shorten or rewrap text, resize, respace) and regenerate until it passes. Never present an unverified sheet. Then save the PDF to the outputs directory and present it.
+Run `scripts/verify_layout.py <pdf>` on the generated file. It fails on colliding text — across baselines and on a shared baseline — and on text escaping the page, the defects that survive casual inspection and ruin a sheet at the printer. If it fails, fix the layout (shorten or rewrap text, resize, respace) and regenerate until it passes. Never present an unverified sheet. Then save the PDF to the outputs directory and present it.
 
 ## Step 6: End the on-screen session cleanly
 

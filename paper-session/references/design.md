@@ -104,7 +104,7 @@ Body begins at y 738 - 74.
 
 ## 8. Mandatory verification
 
-After generating any PDF, run `scripts/verify_layout.py <pdf>` (bundled with the skill). It fails on: (a) any two words whose boxes overlap beyond tolerance, (b) any text outside the page bounds. On failure, fix the layout (shorten text, rewrap, resize, or re-space) and regenerate until the verifier passes. Never present a sheet that has not passed.
+After generating any PDF, run `scripts/verify_layout.py <pdf>` (bundled with the skill). It fails on: (a) glyphs that collide on a shared baseline, (b) any two words whose boxes overlap beyond tolerance across baselines, (c) any text outside the page bounds. On failure, fix the layout (shorten text, rewrap, resize, or re-space) and regenerate until the verifier passes. Never present a sheet that has not passed.
 
 ## 9. The pen protocol (color and marks as semantic channels)
 
