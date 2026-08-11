@@ -1,3 +1,7 @@
+Status: Implemented
+Date: 2026-08-11
+Outcome: same PR as this status change — README §Install now documents `npx skills add welovejeff/paper-session`
+
 # skills.sh / `skills` CLI research results
 
 ## Scope
@@ -88,3 +92,59 @@ Useful for contributors editing skills locally before publishing.
 
 If we decide to proceed, the smallest follow-up change is a README update with a `skills` install section using `npx skills add welovejeff/paper-session` plus a `--list` example.
 
+---
+
+## Validation — 2026-08-11, implementation PR
+
+Everything above this line is the brief as accepted. The implementation PR
+tested its three flagged unknowns against the live CLI and the upstream source
+before documenting anything. All three resolved; two details in the brief
+needed correcting.
+
+### Confirmed by live test
+
+- **Discovery works on this exact layout (unknown #2, resolved).**
+  `npx skills add welovejeff/paper-session --list` — run against the real
+  GitHub repo — found both skills with their full descriptions. The mechanism,
+  confirmed in upstream source (`src/skills.ts`): with no root `SKILL.md`, the
+  CLI walks every *immediate* root-level subdirectory looking for one. The
+  root-level position of `paper-session/` and `scan-back/` is therefore
+  load-bearing for CLI discovery — moving them deeper would require a
+  `skills/` container directory or the `--full-depth` flag.
+- **End-to-end install is faithful.**
+  `npx skills add welovejeff/paper-session -a claude-code -g -y` into an
+  isolated `$HOME` installed both skills to `~/.claude/skills/`,
+  **byte-identical to the source directories** (`diff -r` clean), including
+  `references/`, `scripts/`, and the fonts with their OFL license. The CLI
+  keeps a canonical copy under `~/.agents/skills/`. Without `-g`, installs are
+  project-level (`.claude/skills/` in the working directory).
+- **The committed `.skill` archives install directly (finding 4, confirmed
+  with a caveat).**
+  `npx skills add https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session.skill`
+  works — the CLI detects the zip by magic bytes, so the nonstandard `.skill`
+  extension is fine, and the archive's single top-level directory is unwrapped
+  correctly. **Caveat:** a plain `github.com` blob URL will *not* install;
+  only `/archive/`, `/raw/`, and `/releases/download/` paths on `github.com` —
+  plus `raw.githubusercontent.com` — are treated as downloads.
+- **Command surface (unknown #1, resolved as of this date).** `--list`, `-a`,
+  `-s/--skill`, `-g`, `-y`, `--copy`, `--all`, and `--full-depth` all exist as
+  the brief described. Upstream can still change; the README documents only
+  the stable core (`add`, `--list`, `-a`, `-g`).
+
+### Corrections to the brief
+
+- **There is no `skills.json`** (Option C). The registry's optional
+  customization file is `skills.sh.json`, and it is not required for listing.
+- **skills.sh listing needs no submission at all**: repos appear automatically
+  through the CLI's anonymous install telemetry once someone installs from
+  them, ranked by install counts. At validation time this repo was not yet
+  listed (its skills.sh pages 404) — expected, since listing follows installs,
+  not the other way around.
+
+### What was implemented
+
+README §Install now leads with `npx skills add welovejeff/paper-session`, keeps
+the clone-and-unzip and claude.ai upload paths, and notes that a CLI install
+does not bring `requirements.txt`, so the Python dependencies get one explicit
+line. No repository restructuring, no metadata files, no build changes were
+needed — the source-first layout already satisfied the CLI's format.

@@ -23,13 +23,18 @@ paper-session.skill     # BUILD ARTIFACT, committed for install-without-clone
 scan-back.skill         # BUILD ARTIFACT
 docs/sheet-*.png        # specimen renders used by README
 docs/design-history/    # frozen record of how the design system was chosen
+research/               # numbered research briefs behind capability changes
 ```
+
+The root-level position of `paper-session/` and `scan-back/` is load-bearing beyond tidiness: `npx skills add welovejeff/paper-session` (documented in README §Install) discovers skills by checking each immediate root-level directory for a `SKILL.md`. Moving either directory deeper silently breaks the one-command install path.
 
 **The unpacked directories are authoritative; the `.skill` files are generated.** Never hand-edit a bundle and never leave a source edit unbuilt — run `./build.sh`, which also fails if a `SKILL.md` `name:` doesn't match its directory or if the fonts would ship without their license.
 
 This layout was adopted after the loose root copies of the reference docs drifted from the bundled ones. Do not reintroduce duplicate copies of a reference doc anywhere in the tree.
 
 `docs/design-history/` (the commissioning prompt, Phase 2 brief, `0-Direction-Notes.md`, four direction PDFs, `hybrid-specimen.pdf`) is a record of how the system was chosen, not live spec. `paper-session/references/design.md` won and is the single source of truth for visual language; the four direction PDFs are deliberate dead ends kept for the argument.
+
+`research/` holds the repo's process for capability changes (distribution, build, verification, layout — the project around the skills, never rules about what gets printed, which belong in `evidence.md`): a numbered brief (`NNNN-slug.md`, statuses Draft → Accepted → Implemented / Rejected / Superseded) is researched and merged first, then the implementation PR tests the brief's flagged unknowns, appends a dated Validation section, and flips the header in the same PR. Accepted brief bodies are append-only — corrections go in the appendix, never edited in. The process itself is specified in `research/README.md`; follow it when adding any new capability to this repo.
 
 ## Commands
 
