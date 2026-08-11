@@ -44,21 +44,39 @@ This isn't just a stance. Design fixation is the most replicated finding in desi
 
 ## Install
 
-**Claude Code** — clone and unzip both bundles into your skills directory:
+**One command** — the [`skills` CLI](https://github.com/vercel-labs/skills) finds both skills in this repo and routes them to your agent:
+
+```bash
+npx skills add welovejeff/paper-session
+```
+
+That installs into the current project by default; add `-g` to install user-level instead (for Claude Code, `~/.claude/skills/`). To see what you're getting before installing, or to name the agent explicitly:
+
+```bash
+npx skills add welovejeff/paper-session --list
+npx skills add welovejeff/paper-session -g -a claude-code
+```
+
+The CLI can route these skills to many agents. The loop has only been tested with Claude — the sheets assume an agent that can generate PDFs and read photographs back.
+
+**Claude Code, no Node required** — clone and unzip both bundles into your skills directory:
 
 ```bash
 git clone https://github.com/welovejeff/paper-session.git
 cd paper-session
 unzip -o paper-session.skill -d ~/.claude/skills/
 unzip -o scan-back.skill -d ~/.claude/skills/
-python3 -m pip install -r requirements.txt
 ```
 
 **claude.ai or the desktop app** — upload `paper-session.skill` and `scan-back.skill` directly wherever your client accepts skill bundles. The `.skill` files are the packaged form and need no unzipping.
 
 Install **both**. They're a loop: `paper-session` prints "SCAN IT BACK TO CONTINUE." on every footer, and `scan-back` is what honors that promise.
 
-Generating sheets needs `reportlab`; the mandatory layout verifier needs `pdfplumber`. Both are in `requirements.txt`.
+Generating sheets needs `reportlab`; the mandatory layout verifier needs `pdfplumber`. A CLI install doesn't bring `requirements.txt` along, so install them directly:
+
+```bash
+python3 -m pip install reportlab pdfplumber    # or: -r requirements.txt, if you cloned
+```
 
 ---
 
@@ -244,7 +262,12 @@ docs/
   design-history/       how the design system was chosen — the commissioning prompt,
                         the Phase 2 brief, four candidate directions rendered with
                         identical content, and the hybrid that won
+
+research/               how capability changes get decided: a numbered research
+                        brief first, then an implementation PR that answers to it
 ```
+
+One consequence of this layout is easy to miss: `paper-session/` and `scan-back/` sitting at the repo root is what lets `npx skills add` discover them — the CLI checks each immediate root-level directory for a `SKILL.md`. Moving them deeper would silently break the one-command install.
 
 **The unpacked directories are the source; the `.skill` files are generated.** Never hand-edit a bundle — a zip diff is unreviewable, which is exactly why the source is unpacked. Run `./build.sh` and commit the regenerated bundles alongside your source edit.
 
@@ -307,6 +330,10 @@ Full guide in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
 **The bar for a new rule**
 
 A rule that changes what gets printed needs a source in `references/evidence.md`, stated with its limitations. Design intuition is welcome in the discussion and not sufficient in the spec — the research grounding is this project's whole moat, so it has to stay auditable.
+
+**The bar for a new capability**
+
+Changes to how the project itself works — distribution, build, verification, layout — start as a numbered research brief in [`research/`](research/), implemented by a PR that first tests what the brief couldn't confirm. The whole process is one page: [`research/README.md`](research/README.md).
 
 **Read the anti-patterns first.** Both `SKILL.md` files end with an explicit list, and most tempting additions are already banned there with the reason:
 

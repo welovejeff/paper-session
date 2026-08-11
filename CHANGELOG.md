@@ -8,7 +8,10 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+- Both skills can now be installed with one command, `npx skills add
+  welovejeff/paper-session`, via the [skills CLI](https://github.com/vercel-labs/skills).
+  Nothing about the sheets themselves changed.
 
 ## [0.1.0] — 2026-07-29
 
