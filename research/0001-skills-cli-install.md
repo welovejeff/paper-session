@@ -1,6 +1,6 @@
 Status: Implemented
 Date: 2026-08-11
-Outcome: same PR as this status change — README §Install now documents `npx skills add welovejeff/paper-session`
+Outcome: PR #4 — https://github.com/welovejeff/paper-session/pull/4 (README §Install now documents `npx skills add welovejeff/paper-session`)
 
 # skills.sh / `skills` CLI research results
 

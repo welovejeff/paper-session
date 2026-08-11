@@ -5,9 +5,10 @@ implementation PR that answers to the research.**
 
 This folder holds one numbered brief per proposed capability — a distribution
 channel, a build change, a verification tool, a restructuring. The brief is
-written before any implementation lands and updated exactly once more, when the
-implementation ships. The result is an auditable trail from question to shipped
-change, at the cost of one file and one later header edit.
+written before any implementation lands; after that, its body is append-only
+and its header changes only when its status does — in the common case exactly
+once, when the implementation ships. The result is an auditable trail from
+question to shipped change, at the cost of one file and a header edit.
 
 ## What belongs here, and what doesn't
 
