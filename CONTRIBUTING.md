@@ -66,6 +66,23 @@ Two honest asymmetries in this rule:
   human need no citation at all.** Fixing a typo, tightening prose, making the
   verifier faster, adding A4 support: just open the PR.
 
+## The bar for a capability change
+
+Changes to how the project itself works — a new distribution channel, a build
+or CI change, a restructuring — follow a parallel rule: **research first, then
+an implementation PR that answers to the research.** A numbered brief lands in
+[`research/`](research/) stating findings, a recommendation, and — most
+importantly — what it could *not* confirm; the implementation PR tests those
+unknowns before building on them, appends what it found, and flips the brief's
+status. The whole process is one page: [`research/README.md`](research/README.md).
+
+Small tooling tweaks don't need a brief, the same way typo fixes don't need a
+citation. Write one when being wrong is expensive.
+
+Note the boundary: `research/` is for the project around the skills. Research
+about what gets printed on a sheet still lands in
+`paper-session/references/evidence.md`, and only there.
+
 ## Where things go
 
 The three-layer structure is load-bearing, and the dependency runs one way:
