@@ -9,9 +9,9 @@ Research whether this repository can support installation through the `skills` C
 - https://github.com/vercel-labs/skills (primary CLI documentation)
 - https://skills.sh (registry/marketplace referenced by the CLI project)
 - Local repository files:
-  - `/home/runner/work/paper-session/paper-session/paper-session/SKILL.md`
-  - `/home/runner/work/paper-session/paper-session/scan-back/SKILL.md`
-  - `/home/runner/work/paper-session/paper-session/build.sh`
+  - `paper-session/SKILL.md`
+  - `scan-back/SKILL.md`
+  - `build.sh`
 
 ## Key findings
 
