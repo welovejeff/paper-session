@@ -1,4 +1,4 @@
-# skill.sh / skills.sh research results
+# skills.sh / `skills` CLI research results
 
 ## Scope
 
