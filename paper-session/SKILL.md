@@ -90,6 +90,10 @@ Run `scripts/verify_layout.py <pdf>` on the generated file. It fails on collidin
 
 After presenting the file, close with one or two sentences: what the sheet asks of them and that the workflow resumes when they scan it back. Do not summarize the sheet's contents at length, do not keep working the task, do not generate the answers the sheet is asking the human to produce. The whole point is to stop. "Printed. Go think." is the spirit.
 
+## If the sheet never comes back
+
+Sometimes the user returns to the chat and picks the task up with no scan — the sheet is half-done on a desk somewhere, or never met a printer. Follow their lead and keep working; an abandoned sheet is not a failure to prosecute, and progress on the task is never held hostage to the paper. Once, and only where a natural opening exists, offer two things in one short line: to work the sheet's questions here in the chat instead, and — if they're willing — one question about what didn't earn the pen: wrong questions, wrong moment, too much, too little. Whatever comes back is a field report (`references/evidence.md`, Part Three); note it and move on. Never ask twice.
+
 ## Anti-patterns
 
 - Pre-filling creative zones with AI examples "to get them started" (this is design fixation, and it measurably reduces both fluency and variety)
@@ -106,4 +110,5 @@ After presenting the file, close with one or two sentences: what the sheet asks 
 - Deep provocations on a Light sheet, or busywork checkboxes on a Deep sheet
 - More than one confirmation question before generating
 - Continuing to work the problem on-screen after handing it to paper
+- Guilt-tripping over an unreturned sheet, or asking about it twice
 - Printing machine-readable context blocks the human has to look at (the human-readable header already carries what a cold reader needs)

@@ -13,7 +13,7 @@ The session context normally lives in the current chat (or project context): the
 
 ## Step 1: Read the pages
 
-Read every page visually and carefully. Phone scans arrive imperfect: uneven lighting, slight rotation, pages out of order within a multi-page PDF, occasionally a page photographed twice. Handle all of this silently; reorder pages by matching them to the sheet structure from earlier in the chat — or, on an orphaned scan, to the printed footer numbering — and never ask the user to rescan unless a page is genuinely unreadable.
+Read every page visually and carefully. Pages sometimes arrive as a PDF annotated directly on a tablet rather than a photographed printout: treat the stylus layer exactly like pen ink, hue and all — the loop works, and paper simply remains the recommendation, since off-screen is the point. Phone scans arrive imperfect: uneven lighting, slight rotation, pages out of order within a multi-page PDF, occasionally a page photographed twice. Handle all of this silently; reorder pages by matching them to the sheet structure from earlier in the chat — or, on an orphaned scan, to the printed footer numbering — and never ask the user to rescan unless a page is genuinely unreadable.
 
 Transcribe the handwriting faithfully:
 - Capture everything: answers in the designated zones, margin notes, arrows, crossings-out, items circled or struck through, drawings, and anything written in the open territory. Margin scribbles and the free-association zone frequently contain the most valuable material; treat them as first-class input, not noise.
