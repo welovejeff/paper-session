@@ -152,7 +152,7 @@ The printed layer is grayscale by law, which reserves the entire color channel f
 | `@name` | route it to a person, tool, or system |
 | `TLDR:` | treat this line as the zone's headline answer |
 
-**You can redefine any of it.** Write "green = new concept" anywhere on the page and that legend governs the whole session — a handwritten legend outranks the printed ink key, which outranks these defaults. And the protocol is entirely optional: a sheet completed in black ballpoint with no marks is fully valid. The channels add intent; their absence subtracts nothing.
+**You can redefine any of it.** Write "green = new concept" anywhere on the page and that legend governs the whole session — a handwritten legend outranks the printed ink key, which outranks these defaults. And the marks are the primary carriers — hue only amplifies what a mark already says — so a sheet completed in one black ballpoint is not the fallback but the primary case. The channels add intent; their absence subtracts nothing.
 
 ---
 
@@ -175,8 +175,8 @@ Every page in the system decompresses downward — tightest structure at the top
 │ 02  Tools as instruments │ 02 ______________   │
 │     …                    │    ______________   │ ← your slots, empty, always
 │                        ⌐ cross out freely ⌐    │
-│ ═══════════════════════════════════════════════│ ← 1.6pt rule
 │ OPEN TERRITORY                                 │ ← never omitted, ≥108pt
+│ ═══════════════════════════════════════════════│ ← 1.6pt rule
 │                                                │
 │                                                │
 │ SCAN IT BACK TO CONTINUE.       Deep · 1 of 2  │
@@ -215,6 +215,8 @@ The skill picks 1–3 patterns per session, never all of them. A selection of wh
 
 **Introspection** (own sheet, never mixed with planning)
 - **Distanced pair** — what happened and what you make of it, then what it felt like. Thoughts *and* feelings beats either alone, and prompts are written in the distanced voice because self-distancing is the actual mechanism.
+
+**Named session formats** — whole-session kits with real lineages, chosen by name when the task matches: after-action review, premortem, outside view, teach-back, weekly review, and the Grinnell field kit (the library's first multi-day series). Each is grounded in its own evidence cluster, contraindications included.
 
 **Universal closer**
 - **Open territory** — unstructured space, minimum a third of the final page, never omitted. The margins and the wandering are frequently where the best material comes back from.

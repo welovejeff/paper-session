@@ -64,7 +64,7 @@ Evening context or a casual framing suggests Light. A cleared block, a hard prob
 
 ## Step 3: Design the artifact
 
-Read `references/page-patterns.md` for the activity pattern library and `references/prompt-craft.md` for how to word what goes on the page. Choose 1-3 patterns that fit the task; do not use every pattern on every sheet. Any sheet with a generative zone also gets one defixation pattern (Spent Ground, First Three Are Free, or the Single Remote Example).
+Read `references/page-patterns.md` for the activity pattern library and `references/prompt-craft.md` for how to word what goes on the page. Choose 1-3 patterns that fit the task; do not use every pattern on every sheet. Any sheet with a generative zone also gets one defixation pattern (Spent Ground, First Three Are Free, or the Single Remote Example). The library closes with named session formats — whole-session kits chosen by name when the task matches (after-action review, premortem, outside view, teach-back, weekly review, Grinnell field kit). Two carry hard gates: an after-action review needs a recorded plan or log to print (no record, no AAR), and a weekly review's inventory is only what you can actually see — skip it rather than invent loops.
 
 Layout rules (non-negotiable):
 - **8.5 x 11 inch (US Letter), portrait** unless the activity demands landscape (e.g., timeline sequencing)
