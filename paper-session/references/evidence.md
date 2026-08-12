@@ -195,3 +195,18 @@ Previously all I had was "selection performs at chance." The fixes are counterin
 **The finding that matters most for adoption.** Kirk-Johnson et al., [Perceiving effort as poor learning](https://consensus.app/papers/details/935d3d7c141f5bd4ad109cf882d2b62f/?utm_source=claude_desktop) (Cognitive Psychology, 2019, 125 citations): across three studies, participants who perceived a strategy as more effortful rated it as **less effective** and were **less likely to choose it**, while choosing the more effortful strategy was associated with **better long-term retention**. De Bruin et al. (2023) build a whole framework around this resistance.
 
 This is the third appearance of the same pattern in this brief. On screen, comprehension drops and confidence holds. With AI assistance, idea quality and diversity drop and self-assessed creativity holds. And now: effortful methods work better and *feel* worse. The paper session will feel less productive than the screen even on the days it is most productive. That is a design problem for the artifact and a rhetorical problem for the thesis, and it is the same problem twice.
+
+# Part Three: Field reports
+
+**The tier below everything above.** Real sessions, reported by the people who ran them. This section exists so field data has a defined place to land — and a defined ceiling.
+
+Rules for this tier:
+
+- Every entry states its N and how it was collected. Most entries will be N = 1 and self-selected; say so.
+- Field reports sit below the lab evidence, always. A report can flag a rule for review; it can never be the sole support for adding one. The bar in `CONTRIBUTING.md` still holds: a rule that changes what gets printed needs a source in the clusters above.
+- Limitations up front, in the same register as "What the research does NOT support."
+- What an entry records: date, capacity (Deep or Light), patterns used, what came back — completed, partial, or abandoned, and where it stopped — plus anything the scan-back pass misread.
+
+**Threshold for action:** three independent reports agreeing on the same failure — the same pattern abandoned, the same zone misread, the same sheet type not coming back — justify opening a pattern-review issue. Until then, entries accumulate here.
+
+No entries yet. Completion rate is the project's missing metric; this is where it stops being missing.

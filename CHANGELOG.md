@@ -13,6 +13,29 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `npx skills add welovejeff/paper-session` — via the
   [skills CLI](https://github.com/vercel-labs/skills). Nothing about the
   sheets themselves changed.
+- **The orphan path.** A scan that returns to a chat that no longer holds the
+  session gets reconstructed instead of improvised: `scan-back` reads the
+  printed header, says plainly what the pages can't tell it, and asks exactly
+  one re-anchoring question before resuming. To make that work, the header's
+  intent line is now written so a cold reader could resume the session from it
+  alone — it is the loop's only stateless carrier. Sheets still print no QR
+  codes, session IDs, or machine-readable context blocks.
+- **The sheet that never comes back.** When the user resumes the task with no
+  scan, the skill follows their lead without comment, and — once, never twice —
+  may offer to work the sheet's questions in the chat instead, plus one
+  optional question about what didn't earn the pen. Answers land as field
+  reports. Guilt-tripping over an unreturned sheet is now an explicit
+  anti-pattern.
+- **Tablet round trip, honestly second-best.** A PDF annotated with a stylus
+  comes back like any scan: the stylus layer reads exactly like pen ink, hue
+  and all. Paper stays the recommendation — off-screen is the point.
+
+### Changed
+- **The machine stopped talking about itself in the third person.** Zone
+  captions are now first person and name what was actually done — **I PROPOSE**
+  over the machine's column (or I GATHERED, I MAPPED, I LOGGED), **YOU DECIDE**
+  over yours. "THE MACHINE SAYS" is retired. Provenance is unchanged: the "I"
+  caption plus Mono type still make the machine's contribution unmistakable.
 
 ## [0.1.0] — 2026-07-29
 

@@ -44,22 +44,21 @@ This isn't just a stance. Design fixation is the most replicated finding in desi
 
 ## Install
 
-**One command** — the [`skills` CLI](https://github.com/vercel-labs/skills) finds both skills in this repo and routes them to your agent:
+Install **both** skills, whatever your setup — they're a loop: `paper-session` prints "SCAN IT BACK TO CONTINUE." on every footer, and `scan-back` is what honors that promise.
+
+**If your AI lives in a chat app** — claude.ai, the Claude desktop or mobile apps, or any client that accepts skill bundles — download the two packaged bundles and upload them where your client takes skills. No terminal, no unzipping:
+
+[`paper-session.skill`](https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session.skill) · [`scan-back.skill`](https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back.skill)
+
+**If your AI runs in a terminal or IDE** — the [`skills` CLI](https://github.com/vercel-labs/skills) finds both skills in this repo and routes them to Claude Code, Cursor, Codex, Copilot, and 70+ other agents:
 
 ```bash
 npx skills add welovejeff/paper-session
 ```
 
-That installs into the current project by default; add `-g` to install user-level instead (for Claude Code, `~/.claude/skills/`). To see what you're getting before installing, or to name the agent explicitly:
+Project-level by default; `-g` installs user-level (for Claude Code, `~/.claude/skills/`). `--list` shows what you're getting first; `-a <agent>` names the target.
 
-```bash
-npx skills add welovejeff/paper-session --list
-npx skills add welovejeff/paper-session -g -a claude-code
-```
-
-The CLI can route these skills to many agents. The loop has only been tested with Claude — the sheets assume an agent that can generate PDFs and read photographs back.
-
-**Claude Code, no Node required** — clone and unzip both bundles into your skills directory:
+**No Node?** The bundles are ordinary zips — clone and unzip into your skills directory:
 
 ```bash
 git clone https://github.com/welovejeff/paper-session.git
@@ -68,15 +67,22 @@ unzip -o paper-session.skill -d ~/.claude/skills/
 unzip -o scan-back.skill -d ~/.claude/skills/
 ```
 
-**claude.ai or the desktop app** — upload `paper-session.skill` and `scan-back.skill` directly wherever your client accepts skill bundles. The `.skill` files are the packaged form and need no unzipping.
-
-Install **both**. They're a loop: `paper-session` prints "SCAN IT BACK TO CONTINUE." on every footer, and `scan-back` is what honors that promise.
-
-Generating sheets needs `reportlab`; the mandatory layout verifier needs `pdfplumber`. A CLI install doesn't bring `requirements.txt` along, so install them directly:
+Generating sheets needs `reportlab`; the mandatory layout verifier needs `pdfplumber`. A CLI or upload install doesn't bring `requirements.txt` along, so install them directly:
 
 ```bash
 python3 -m pip install reportlab pdfplumber    # or: -r requirements.txt, if you cloned
 ```
+
+### Where the loop stands, agent by agent
+
+| Your agent | Install | The loop today |
+|---|---|---|
+| **Claude Code** (CLI, IDE, web) | `npx skills add`, or clone-and-unzip | **Verified end to end** — discovery, install, sheet generation, and scan-back all tested |
+| **claude.ai · Claude desktop · mobile** | upload the two `.skill` files | **Supported** — the chat-native path; a phone photographing the pages is what the return trip was built around |
+| **Cursor · Codex · Copilot · other CLI-routable agents** | `npx skills add … -a <agent>` | **Installs cleanly, loop untested** — the sheets need an agent that can run reportlab and read photographs back. A session report from one of these is the contribution we want most |
+| **Anything else that reads `SKILL.md` folders** | download a `.skill` (it's a zip), unzip into the agent's skills directory | Same as above |
+
+Install directions live in this section and nowhere else in the repo — other documents link here rather than restating commands, so there is exactly one place to keep true.
 
 ---
 
@@ -161,7 +167,7 @@ Every page in the system decompresses downward — tightest structure at the top
 │ SESSION PRINTED MON 28 JUL 2026                │ ← metadata, tracked caps
 │ Re-sequence the eight studio sessions…         │ ← intent line, Serif Italic
 │                                                │
-│ THE MACHINE SAYS         │ YOU SAY             │ ← named voices, 1.6pt underline
+│ I PROPOSE                │ YOU DECIDE          │ ← named voices, 1.6pt underline
 │ ─────────────────────    │ ──────────          │
 │ 01  The map and the      │ 01 ______________   │
 │     ground rules         │    ______________   │

@@ -74,13 +74,13 @@ Layout rules (non-negotiable):
 - **Every sheet ends with open territory**: an unstructured "anything else / free association" zone, even on Light sheets. Human thought on paper wanders productively; give it somewhere to go.
 - Maximum 4 pages for Deep, 1 page for Light. More pages means less completion.
 
-Header on page 1 (small, top of page): session title, date, and a one-line intent ("Re-sequence the spring course arc"). This is for the human's orientation, not for machine parsing. Do not print QR codes, session IDs, or context blocks for the AI; the return happens in the same chat, which already holds the context.
+Header on every page (small, top of page — the anatomy in `references/design.md` §4): session title, date, and a one-line intent ("Re-sequence the spring course arc"). Write the intent line so a cold reader could resume the session from it alone — scans can return to a chat that no longer holds the context, and that line is the loop's only stateless carrier (`references/prompt-craft.md` §6). Printing it on every page means an orphan scan missing page 1 still reconstructs. It stays for human orientation, never machine parsing: do not print QR codes, session IDs, or context blocks for the AI.
 
 Footer on the last page (small): "Done? Scan or photograph these pages and drop them back into the chat."
 
 ## Step 4: Generate the PDF in the design system
 
-Every sheet is set in the Paper Session design system. Read `references/design.md` and implement it exactly: it specifies the fonts (bundled in `assets/fonts/`), the three-voice rule (Serif asks, Mono is the machine's voice, infrastructure is tracked Sans caps), the type scale, rule weights, header anatomy, voice captions (THE MACHINE SAYS / YOU SAY), zone molecules, and the Deep/Light templates. Do not freelance the visual language; the system is the product's identity. Follow the pdf skill (`/mnt/skills/public/pdf/SKILL.md`) for reportlab mechanics.
+Every sheet is set in the Paper Session design system. Read `references/design.md` and implement it exactly: it specifies the fonts (bundled in `assets/fonts/`), the three-voice rule (Serif asks, Mono is the machine's voice, infrastructure is tracked Sans caps), the type scale, rule weights, header anatomy, voice captions (I PROPOSE / YOU DECIDE — always first person, never a third-person label), zone molecules, and the Deep/Light templates. Do not freelance the visual language; the system is the product's identity. Follow the pdf skill (`/mnt/skills/public/pdf/SKILL.md`) for reportlab mechanics.
 
 ## Step 5: Verify before presenting (mandatory)
 
@@ -89,6 +89,10 @@ Run `scripts/verify_layout.py <pdf>` on the generated file. It fails on collidin
 ## Step 6: End the on-screen session cleanly
 
 After presenting the file, close with one or two sentences: what the sheet asks of them and that the workflow resumes when they scan it back. Do not summarize the sheet's contents at length, do not keep working the task, do not generate the answers the sheet is asking the human to produce. The whole point is to stop. "Printed. Go think." is the spirit.
+
+## If the sheet never comes back
+
+Sometimes the user returns to the chat and picks the task up with no scan — the sheet is half-done on a desk somewhere, or never met a printer. Follow their lead and keep working; an abandoned sheet is not a failure to prosecute, and progress on the task is never held hostage to the paper. Once, and only where a natural opening exists, offer two things in one short line: to work the sheet's questions here in the chat instead, and — if they're willing — one question about what didn't earn the pen: wrong questions, wrong moment, too much, too little. Whatever comes back is a field report (`references/evidence.md`, Part Three); note it and move on. Never ask twice.
 
 ## Anti-patterns
 
@@ -106,4 +110,5 @@ After presenting the file, close with one or two sentences: what the sheet asks 
 - Deep provocations on a Light sheet, or busywork checkboxes on a Deep sheet
 - More than one confirmation question before generating
 - Continuing to work the problem on-screen after handing it to paper
-- Printing machine-readable context blocks the human has to look at (the chat holds the context)
+- Guilt-tripping over an unreturned sheet, or asking about it twice
+- Printing machine-readable context blocks the human has to look at (the human-readable header already carries what a cold reader needs)

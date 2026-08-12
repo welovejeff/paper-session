@@ -28,6 +28,8 @@ research/               # numbered research briefs behind capability changes
 
 The root-level position of `paper-session/` and `scan-back/` is load-bearing beyond tidiness: `npx skills add welovejeff/paper-session` (documented in README §Install) discovers skills by checking each immediate root-level directory for a `SKILL.md`. Moving either directory deeper silently breaks the one-command install path.
 
+Install directions live in README §Install **only**, alongside a per-agent compatibility ledger that states honest loop status (verified end-to-end on Claude surfaces; installs-but-untested elsewhere). Both install tracks matter equally — the chat-app upload path (`.skill` bundles) and the CLI path — so never let an edit favor one and orphan the other. Other documents link to that section rather than restating commands; that single-source rule is what keeps the directions in sync.
+
 **The unpacked directories are authoritative; the `.skill` files are generated.** Never hand-edit a bundle and never leave a source edit unbuilt — run `./build.sh`, which also fails if a `SKILL.md` `name:` doesn't match its directory or if the fonts would ship without their license.
 
 This layout was adopted after the loose root copies of the reference docs drifted from the bundled ones. Do not reintroduce duplicate copies of a reference doc anywhere in the tree.
@@ -75,7 +77,7 @@ The dependency runs one way: `SKILL.md` → references → `evidence.md`. **A ne
 
 The **pen protocol** (ink = intent: black notes / red review / green go / blue do; marks: strike, circle, `?`, `!`, star, arrow, `@name`, `TLDR:`) is specified twice — `paper-session/references/design.md` §9 (which prints the ink key) and `scan-back/SKILL.md` Step 1 (which reads it back). Both state the same authority cascade: handwritten legend > printed ink key > defaults. There is no shared file. **Any change to the protocol must be made in both skills**, or the sheet will print a key that scan-back does not honor.
 
-`paper-session` also promises `scan-back` by name in its footer ("SCAN IT BACK TO CONTINUE.") and its closing message. `scan-back` in turn assumes the session lives in the same chat, which is why sheets deliberately print **no** QR codes, session IDs, or machine-readable context blocks.
+`paper-session` also promises `scan-back` by name in its footer ("SCAN IT BACK TO CONTINUE.") and its closing message. `scan-back` prefers the same chat and, when a scan arrives orphaned (fresh chat, compacted context), reconstructs from the printed header and asks exactly one re-anchoring question — which is why the header's intent line is written for a cold reader (`paper-session/references/prompt-craft.md` §6, restated in `paper-session/SKILL.md` Step 3 and `scan-back/SKILL.md`), and why sheets still deliberately print **no** QR codes, session IDs, or machine-readable context blocks.
 
 ## Invariants any change must respect
 

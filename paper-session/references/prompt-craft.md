@@ -63,6 +63,7 @@ For reflective and introspective sheets specifically:
 - **Second person, present tense.** "You're eight weeks in and it isn't working. What did you skip?"
 - **Ban encouragement.** No "Great work so far!", no exclamation marks, no "Have fun with this one." It reads as a system talking down to a person and it costs credibility on a page that is otherwise honest.
 - **Name the stakes when they exist.** "This decision sets the next six months" is useful pressure. "This is important!" is not.
+- **The intent line is the loop's only stateless carrier.** The one-sentence intent in the page-1 header must be written so a cold reader could resume the session from it alone — name the task and what the sheet decides, not the mood. "Re-sequence the eight studio sessions around a taste-building arc," never "Thinking about the course." Scans come back days later, sometimes to a chat that no longer holds the session; when that happens, the intent line is most of what survives, and `scan-back` reconstructs from it.
 
 ## 7. Selection: fast, named, and distant
 

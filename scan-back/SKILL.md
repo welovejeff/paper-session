@@ -7,11 +7,13 @@ description: "Ingest completed paper-session worksheets and resume the interrupt
 
 The return half of the paper loop. The user went off-screen with a printed artifact, did the thinking that was theirs to do, and is now handing the results back. Everything downstream of this moment should be built on what they wrote, not on what the AI previously proposed.
 
-The session context lives in the current chat (or project context). The pages were designed by the `paper-session` skill earlier in this same conversation, so the original intent, the sheet structure, and the task being resumed are all already known. Do not ask the user to re-explain the session.
+The session context normally lives in the current chat (or project context): the pages were designed by the `paper-session` skill earlier in this same conversation, so the original intent, the sheet structure, and the task being resumed are already known. Do not ask the user to re-explain a session the chat already holds.
+
+**The orphan path.** Deep sessions come back days later, and scans realistically arrive in a fresh chat, a compacted context, or the phone app — anywhere the originating session is gone. Never bluff continuity. When the chat does not contain the session, reconstruct what the sheet itself carries: the header prints the title, date, and intent line; the footer prints capacity and page count; the zones name their own activities. Read all of it, state plainly what the pages cannot tell you, and ask exactly one re-anchoring question — the single thing synthesis genuinely needs, usually which task this unblocks or where the results should land. One question, then proceed. The intent line exists for this moment: `paper-session` writes it so a cold reader can resume from it.
 
 ## Step 1: Read the pages
 
-Read every page visually and carefully. Phone scans arrive imperfect: uneven lighting, slight rotation, pages out of order within a multi-page PDF, occasionally a page photographed twice. Handle all of this silently; reorder pages by matching them to the sheet structure from earlier in the chat, and never ask the user to rescan unless a page is genuinely unreadable.
+Read every page visually and carefully. Pages sometimes arrive as a PDF annotated directly on a tablet rather than a photographed printout: treat the stylus layer exactly like pen ink, hue and all — the loop works, and paper simply remains the recommendation, since off-screen is the point. Phone scans arrive imperfect: uneven lighting, slight rotation, pages out of order within a multi-page PDF, occasionally a page photographed twice. Handle all of this silently; reorder pages by matching them to the sheet structure from earlier in the chat — or, on an orphaned scan, to the printed footer numbering — and never ask the user to rescan unless a page is genuinely unreadable.
 
 Transcribe the handwriting faithfully:
 - Capture everything: answers in the designated zones, margin notes, arrows, crossings-out, items circled or struck through, drawings, and anything written in the open territory. Margin scribbles and the free-association zone frequently contain the most valuable material; treat them as first-class input, not noise.
@@ -61,3 +63,4 @@ If the pages contain material worth preserving beyond this task (a durable princ
 - Interrogation without consequence ("interesting that you ranked X low")
 - A long transcription dump as the response; the transcription serves the synthesis, not the other way around
 - Stalling at "here's what I read, what would you like to do?" when the original workflow makes the next step obvious
+- Improvising the missing context on an orphaned scan instead of reconstructing from the printed header and asking the one re-anchoring question
