@@ -74,7 +74,7 @@ Layout rules (non-negotiable):
 - **Every sheet ends with open territory**: an unstructured "anything else / free association" zone, even on Light sheets. Human thought on paper wanders productively; give it somewhere to go.
 - Maximum 4 pages for Deep, 1 page for Light. More pages means less completion.
 
-Header on page 1 (small, top of page): session title, date, and a one-line intent ("Re-sequence the spring course arc"). Write the intent line so a cold reader could resume the session from it alone — scans can return to a chat that no longer holds the context, and that line is the loop's only stateless carrier (`references/prompt-craft.md` §6). It stays for human orientation, never machine parsing: do not print QR codes, session IDs, or context blocks for the AI.
+Header on every page (small, top of page — the anatomy in `references/design.md` §4): session title, date, and a one-line intent ("Re-sequence the spring course arc"). Write the intent line so a cold reader could resume the session from it alone — scans can return to a chat that no longer holds the context, and that line is the loop's only stateless carrier (`references/prompt-craft.md` §6). Printing it on every page means an orphan scan missing page 1 still reconstructs. It stays for human orientation, never machine parsing: do not print QR codes, session IDs, or context blocks for the AI.
 
 Footer on the last page (small): "Done? Scan or photograph these pages and drop them back into the chat."
 
