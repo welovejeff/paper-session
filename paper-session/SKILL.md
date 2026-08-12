@@ -1,6 +1,6 @@
 ---
 name: paper-session
-description: "Pause on-screen AI work and hand the thinking to the human on paper. Generates a printable PDF worksheet (provocations, ranking activities, sequencing exercises, field-collection sheets, open exploration space) so the user can work with pen and paper away from screens, then return the scanned pages via the scan-back skill to continue the workflow. Use whenever the current task hits work that requires deep human judgment: sequencing decisions, weighing options and their impacts, novel concept development, creative generation, prioritization, or introspection. Trigger on explicit requests ('paper session', 'give me something to print', 'I need to think on this offline') AND proactively propose it mid-task whenever the next step is judgment or creative work that the human would do better with a pen than watching AI guess. Also relevant for recurring rituals like a weekly self-meeting or priority-setting session."
+description: "Pause on-screen AI work and hand the thinking to the human on paper. Generates a printable PDF worksheet (provocations, ranking activities, sequencing exercises, field-collection sheets, open exploration space) so the user can work with pen and paper away from screens, then return the scanned pages via the scan-back skill to continue the workflow. Use whenever the current task hits work that requires deep human judgment: sequencing decisions, weighing options and their impacts, novel concept development, creative generation, prioritization, or introspection. Trigger on explicit requests ('paper session', 'give me something to print', 'I need to think on this offline') AND proactively propose it mid-task whenever the next step is judgment or creative work that the human would do better with a pen than watching AI guess. Also relevant for recurring rituals like a weekly self-meeting or priority-setting session. Works without a printer — say so: when the user states they cannot print, the same session is dictated as a short card to copy into any notebook."
 ---
 
 # Paper Session
@@ -82,13 +82,22 @@ Footer on the last page (small): "Done? Scan or photograph these pages and drop 
 
 Every sheet is set in the Paper Session design system. Read `references/design.md` and implement it exactly: it specifies the fonts (bundled in `assets/fonts/`), the three-voice rule (Serif asks, Mono is the machine's voice, infrastructure is tracked Sans caps), the type scale, rule weights, header anatomy, voice captions (I PROPOSE / YOU DECIDE — always first person, never a third-person label), zone molecules, and the Deep/Light templates. Do not freelance the visual language; the system is the product's identity. Follow the pdf skill (`/mnt/skills/public/pdf/SKILL.md`) for reportlab mechanics.
 
+**If the user cannot print.** Only when they say so, in any phrasing, before or after a PDF exists. Never ask, never propose it, never suggest finding a printer; regenerate as a setup card without comment. Full spec in `references/prompt-craft.md` §10.
+
+- Tablet and stylus: point at annotating the PDF directly, one line, then stop.
+- Light capacity: ask the gut calls here in the chat instead. Dictate a card only if they ask for one.
+- The card is one fenced message in two strictly separated parts. **COPY THIS** is hand-transcribed: the intent line verbatim (now the loop's only anchor), one prompt per page, a corner page number, machine items as numbered handles of four words or fewer under a hand-copied `I PROPOSE` caption, at most one machine line quoted whole. **DO THIS** is read and never copied: structure as pen gestures ("number 1-12 down the margin before writing anything in line 1"), house rules, pen legend.
+- Handles never appear on a page that also carries a generative zone. The full items stay in the chat for `scan-back` to expand against.
+- Budget: **50-75 handwritten words for Deep, one phone screen for Light**, stated in words and never in minutes. Over budget means the design is too print-shaped — simplify it, never dictate more.
+- Step 5 does not apply to a card; the budget count is the gate.
+
 ## Step 5: Verify before presenting (mandatory)
 
 Run `scripts/verify_layout.py <pdf>` on the generated file. It fails on colliding text — across baselines and on a shared baseline — and on text escaping the page, the defects that survive casual inspection and ruin a sheet at the printer. If it fails, fix the layout (shorten or rewrap text, resize, respace) and regenerate until it passes. Never present an unverified sheet. Then save the PDF to the outputs directory and present it.
 
 ## Step 6: End the on-screen session cleanly
 
-After presenting the file, close with one or two sentences: what the sheet asks of them and that the workflow resumes when they scan it back. Do not summarize the sheet's contents at length, do not keep working the task, do not generate the answers the sheet is asking the human to produce. The whole point is to stop. "Printed. Go think." is the spirit.
+After presenting the file, close with one or two sentences: what the sheet asks of them and that the workflow resumes when they scan it back. Do not summarize the sheet's contents at length, do not keep working the task, do not generate the answers the sheet is asking the human to produce. The whole point is to stop. "Printed. Go think." is the spirit; for a dictated card, "Copied? Put the screen away."
 
 ## If the sheet never comes back
 
@@ -112,3 +121,7 @@ Sometimes the user returns to the chat and picks the task up with no scan — th
 - Continuing to work the problem on-screen after handing it to paper
 - Guilt-tripping over an unreturned sheet, or asking about it twice
 - Printing machine-readable context blocks the human has to look at (the human-readable header already carries what a cold reader needs)
+- Asking whether the user has a printer (the card is reactive only; it is never proposed to anyone who has not said they cannot print)
+- Dictating machine lists, proposals, or drafts for hand-copying (numbered handles only, and never on a page carrying a generative zone)
+- Rendering the PDF anyway as a reference for someone who cannot print
+- Expressing copy load in minutes rather than words

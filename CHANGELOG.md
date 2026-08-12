@@ -8,7 +8,17 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+- **The loop works without a printer.** Say you can't print and the same
+  session arrives as a short card to copy into any notebook: the prompts and
+  the structure, never the machine's lists — those stay in the chat, and a
+  hand-copied handle never lands on a page where you're supposed to be
+  generating. Light sessions get offered in conversation instead. `scan-back`
+  reads a page with no printed layer: your copied scaffold is structure, not
+  answers, and with every stroke in one hand the marks carry the intent that
+  ink used to. The skill never asks whether you have a printer, and never
+  mentions what you're not getting. Design and rationale in
+  [`research/0002`](research/0002-no-printer-notebook-brief.md).
 
 ## [0.2.0] — 2026-08-12
 

@@ -300,6 +300,18 @@ Codified in Herman, The Naturalist's Field Journal (Buteo Books, 1986): guidelin
 
 **Contraindications:** Light sessions; generative ideation; merging with reflective formats (excluded by the lineage's own register); projects with no recurring entities.
 
+## The unprinted page (what none of this tests)
+
+Added with the notebook fallback, which serves a user who cannot print by dictating a setup card they copy into a notebook they already own. **No study tests a dictated scaffold or a hand-copied AI worksheet.** The clusters above measure printed pages, and the standing caveat gains a layer here: the artifact is now one the human transcribed before working on it. This entry adds no source. It records what the existing ones do and do not cover once the print step disappears.
+
+**"Hand-copying deepens engagement" is a hypothesis, and nothing this skill prints or says may state it as a finding.** Cluster 3's encoding half makes it plausible — handwriting produced widespread connectivity in the bands tied to encoding, and handwriting practice generalized to untrained tasks where non-motor practice did not — but none of that evidence measured a person copying a structure someone else authored, and Cluster 3's own counterweight applies unchanged: simple recall superiority is not established. The defensible version is that copying is preparation in the sense Deep mode already claims, loading the problem deliberately. The version that gets sold to a user is neither.
+
+**For machine content the fixation side cuts the other way, and that asymmetry is load-bearing.** Copying is deeper exposure than glancing. Cluster 9's far-and-uncommon result and Cluster 7's vagueness-fights-fixation mechanism both describe machine-supplied specifics as something to meet briefly and leave; a hand-copied line is the opposite of briefly. Exposure that is harmless where reacting is the task is corrosive where generating is, which is why machine handles cross onto reaction and selection pages only and never onto a page carrying a generative zone. That is two literatures read against each other, not one experiment comparing them.
+
+**The grayscale rationale does not transfer to an unprinted page.** Cluster 11's dropout-ink inversion — zero-chroma print means any saturated stroke is provably the human's, which is what lets scan-back attribute authorship without registration marks — needs print in order to invert. In a notebook every stroke is the human's, the copied scaffold included, so authorship stops being recoverable from chroma and a printed ink key has nothing to anchor against. That is the whole reason for the dominant-ink rule: hue carries meaning only where two or more inks appear, and a page written in one ink is read by imperative form — also the safer reading, given the same cluster's finding that blue and black are the least separable pair in a phone photo.
+
+**Expect the copy to feel like wasted effort.** Cluster 10's adoption finding — effortful strategies are judged less effective and chosen less often, and are the ones that work — predicts transcription as the loop's most likely abandonment point, and predicts that the people who finish it will rate it poorly. Whether anyone copies a card and returns the pages is unmeasured. That is a completion question rather than a lab question, and Part Three is where its answer lands.
+
 # Part Three: Field reports
 
 **The tier below everything above.** Real sessions, reported by the people who ran them. This section exists so field data has a defined place to land — and a defined ceiling.
