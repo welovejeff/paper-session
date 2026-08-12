@@ -176,7 +176,10 @@ The completed page is the finished design.
 - **Session reports.** Which sheets get completed and which get abandoned.
   Completion rate is the metric that matters and nobody has data yet. There's an
   issue template for this and it may be the single most useful thing you can
-  file.
+  file. Reports land in the Field reports tier at the end of
+  `paper-session/references/evidence.md`, below the lab evidence: three
+  independent reports agreeing on the same failure open a pattern-review issue,
+  and a field report alone never adds a rule.
 - **Counter-evidence.** A citation weaker than the brief represents, or a
   failed replication we've missed.
 - **Non-Letter paper sizes.** A4 is the obvious gap and touches
