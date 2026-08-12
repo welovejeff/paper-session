@@ -28,6 +28,8 @@ research/               # numbered research briefs behind capability changes
 
 The root-level position of `paper-session/` and `scan-back/` is load-bearing beyond tidiness: `npx skills add welovejeff/paper-session` (documented in README §Install) discovers skills by checking each immediate root-level directory for a `SKILL.md`. Moving either directory deeper silently breaks the one-command install path.
 
+Install directions live in README §Install **only**, alongside a per-agent compatibility ledger that states honest loop status (verified end-to-end on Claude surfaces; installs-but-untested elsewhere). Both install tracks matter equally — the chat-app upload path (`.skill` bundles) and the CLI path — so never let an edit favor one and orphan the other. Other documents link to that section rather than restating commands; that single-source rule is what keeps the directions in sync.
+
 **The unpacked directories are authoritative; the `.skill` files are generated.** Never hand-edit a bundle and never leave a source edit unbuilt — run `./build.sh`, which also fails if a `SKILL.md` `name:` doesn't match its directory or if the fonts would ship without their license.
 
 This layout was adopted after the loose root copies of the reference docs drifted from the bundled ones. Do not reintroduce duplicate copies of a reference doc anywhere in the tree.
