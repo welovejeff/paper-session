@@ -13,6 +13,13 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `npx skills add welovejeff/paper-session` — via the
   [skills CLI](https://github.com/vercel-labs/skills). Nothing about the
   sheets themselves changed.
+- **The orphan path.** A scan that returns to a chat that no longer holds the
+  session gets reconstructed instead of improvised: `scan-back` reads the
+  printed header, says plainly what the pages can't tell it, and asks exactly
+  one re-anchoring question before resuming. To make that work, the header's
+  intent line is now written so a cold reader could resume the session from it
+  alone — it is the loop's only stateless carrier. Sheets still print no QR
+  codes, session IDs, or machine-readable context blocks.
 
 ## [0.1.0] — 2026-07-29
 
