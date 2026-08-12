@@ -22,6 +22,7 @@ build.sh                # zips both into .skill bundles
 paper-session.skill     # BUILD ARTIFACT, committed for install-without-clone
 scan-back.skill         # BUILD ARTIFACT
 docs/sheet-*.png        # specimen renders used by README
+docs/specimen.py, .pdf  # the current specimen: generator + verified build the PNGs render from
 docs/design-history/    # frozen record of how the design system was chosen
 research/               # numbered research briefs behind capability changes
 ```
@@ -56,11 +57,13 @@ Generating sheets needs `reportlab`; `verify_layout.py` needs `pdfplumber`. Chec
 
 `verify_layout.py` catches text escaping the page bounds, collisions across different baselines (word level), and collisions on a shared baseline (character level — pdfplumber merges same-line overlapping glyphs into one word, so that case is invisible to the word pass and has its own check). It is deliberately narrow; it does not check the design system.
 
-Regenerating the README specimen images (only if a specimen changes):
+Regenerating the README specimen images (only if the spec changes):
 
 ```bash
-pdftoppm -png -r 110 docs/design-history/hybrid-specimen.pdf docs/tmp && sips -Z 1000 docs/tmp*.png
+python3 docs/specimen.py    # rebuilds docs/specimen.pdf, verifies it, regenerates docs/sheet-*.png
 ```
+
+The PNG rendering step needs two packages beyond `requirements.txt`: `python3 -m pip install pymupdf pillow`. The script fails with a clear message if they're missing; the PDF build and verify gate need only `requirements.txt`.
 
 ## The three-layer document architecture
 

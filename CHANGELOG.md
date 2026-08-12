@@ -8,7 +8,16 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.2.0] — 2026-08-12
+
 ### Added
+- **Six named session formats.** The pattern library gains whole-session kits
+  chosen by name — after-action review, premortem, outside view, teach-back,
+  weekly review, and the Grinnell field kit (the first multi-day series) —
+  each grounded in its own evidence cluster with limitations and
+  contraindications stated plainly.
 - Both skills can now be installed with one command —
   `npx skills add welovejeff/paper-session` — via the
   [skills CLI](https://github.com/vercel-labs/skills). Nothing about the
@@ -31,6 +40,15 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   and all. Paper stays the recommendation — off-screen is the point.
 
 ### Changed
+- **Marks first, hue second.** The pen protocol now states its hierarchy: the
+  mark is the primary carrier of intent and ink hue a redundant amplifier, so
+  everything that must survive the trip home reads in one black ballpoint. The
+  four-ink protocol is the enhancement, not the requirement.
+- **Two reading fixes on the return trip.** An ambiguous dark-ink line written
+  as an instruction gets confirmed instead of silently downgraded to a note,
+  and a degraded capture (heavy blur, shadow banding, rotation) earns one
+  retake request even when the text seems readable — on a bad capture,
+  apparent readability is not accuracy.
 - **The machine stopped talking about itself in the third person.** Zone
   captions are now first person and name what was actually done — **I PROPOSE**
   over the machine's column (or I GATHERED, I MAPPED, I LOGGED), **YOU DECIDE**

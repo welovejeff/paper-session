@@ -108,7 +108,11 @@ After generating any PDF, run `scripts/verify_layout.py <pdf>` (bundled with the
 
 ## 9. The pen protocol (color and marks as semantic channels)
 
-The printed layer is grayscale by law (section 0), which reserves the entire color channel for the human. Ink hue and a small set of pen marks carry machine-readable intent on the return trip.
+The printed layer is grayscale by law (section 0), which reserves the entire color channel for the human. A small mark vocabulary carries intent on the return trip; ink hue amplifies it.
+
+**The mark is the primary carrier of intent; hue is a redundant amplifier.** Any meaning that must survive the round trip is recoverable from mark + position + wording in a single ink: a strike is a kill in any ink, a ? is a request in any ink. Hue intensifies what a mark already says; it never carries a meaning alone.
+
+**The primary design case is a sheet completed entirely in black with no marks — fully valid.** One or two inks is the median sheet. The four-ink protocol below is the enhancement for people who have the pens: the channels add intent, their absence subtracts nothing.
 
 **The protocol is user-definable.** These are defaults, not rules. The authority cascade, highest first:
 1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session.
@@ -139,5 +143,5 @@ Default marks (work in any ink; ink modifies mark where it makes sense, e.g. a r
 
 Printing rules:
 - Print the active key once per sheet, right-aligned above the footer baseline, Sans 6 caps at 45% gray, e.g. "INK KEY  RED REVIEW · GREEN GO · BLUE DO · BLACK NOTES". Print the user's customized legend if one exists, never a stale default. Marks are not printed; they live in muscle memory and in scan-back.
-- The protocol is optional per session. A sheet completed entirely in black with no marks is fully valid; the channels add intent, their absence subtracts nothing.
+- The protocol is optional per session; the black-only sheet is the primary design case, stated at the top of this section.
 - If the user states a custom legend in conversation, adopt it for all future sheets and offer once to remember it.
