@@ -30,6 +30,13 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   comes back like any scan: the stylus layer reads exactly like pen ink, hue
   and all. Paper stays the recommendation — off-screen is the point.
 
+### Changed
+- **The machine stopped talking about itself in the third person.** Zone
+  captions are now first person and name what was actually done — **I PROPOSE**
+  over the machine's column (or I GATHERED, I MAPPED, I LOGGED), **YOU DECIDE**
+  over yours. "THE MACHINE SAYS" is retired. Provenance is unchanged: the "I"
+  caption plus Mono type still make the machine's contribution unmistakable.
+
 ## [0.1.0] — 2026-07-29
 
 First public version of the loop. Everything below is in the initial commit.

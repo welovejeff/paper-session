@@ -167,7 +167,7 @@ Every page in the system decompresses downward — tightest structure at the top
 │ SESSION PRINTED MON 28 JUL 2026                │ ← metadata, tracked caps
 │ Re-sequence the eight studio sessions…         │ ← intent line, Serif Italic
 │                                                │
-│ THE MACHINE SAYS         │ YOU SAY             │ ← named voices, 1.6pt underline
+│ I PROPOSE                │ YOU DECIDE          │ ← named voices, 1.6pt underline
 │ ─────────────────────    │ ──────────          │
 │ 01  The map and the      │ 01 ______________   │
 │     ground rules         │    ______________   │

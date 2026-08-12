@@ -80,7 +80,7 @@ Footer on the last page (small): "Done? Scan or photograph these pages and drop 
 
 ## Step 4: Generate the PDF in the design system
 
-Every sheet is set in the Paper Session design system. Read `references/design.md` and implement it exactly: it specifies the fonts (bundled in `assets/fonts/`), the three-voice rule (Serif asks, Mono is the machine's voice, infrastructure is tracked Sans caps), the type scale, rule weights, header anatomy, voice captions (THE MACHINE SAYS / YOU SAY), zone molecules, and the Deep/Light templates. Do not freelance the visual language; the system is the product's identity. Follow the pdf skill (`/mnt/skills/public/pdf/SKILL.md`) for reportlab mechanics.
+Every sheet is set in the Paper Session design system. Read `references/design.md` and implement it exactly: it specifies the fonts (bundled in `assets/fonts/`), the three-voice rule (Serif asks, Mono is the machine's voice, infrastructure is tracked Sans caps), the type scale, rule weights, header anatomy, voice captions (I PROPOSE / YOU DECIDE — always first person, never a third-person label), zone molecules, and the Deep/Light templates. Do not freelance the visual language; the system is the product's identity. Follow the pdf skill (`/mnt/skills/public/pdf/SKILL.md`) for reportlab mechanics.
 
 ## Step 5: Verify before presenting (mandatory)
 

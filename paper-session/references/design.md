@@ -37,7 +37,7 @@ The three voices, never blended:
 | Element | Font | Size/leading | Gray | Tracking |
 |---|---|---|---|---|
 | Sheet title | SansB | 16 | 0 | 0 |
-| Voice captions (THE MACHINE SAYS / YOU SAY) | SansB | 8 | 0.2 | +1.2 |
+| Voice captions (I PROPOSE / YOU DECIDE) | SansB | 8 | 0.2 | +1.2 |
 | Section labels, open-territory label | SansSB | 6.8 | 0.4 | +1.4 |
 | Metadata (date line) | Sans | 6.8 caps | 0.4 | +0.8 |
 | Intent line | SerifI | 9.5 | 0.3 | 0 |
@@ -81,7 +81,7 @@ Body begins at y 738 - 74.
 
 ## 5. Voice and microcopy (the Basement layer, dialed to 60%)
 
-- AI-contribution zones are always captioned **THE MACHINE SAYS**. Human zones opposite are captioned **YOU SAY**. These captions are SansB 8, tracked, with the 1.6pt underline.
+- AI-contribution zones carry a first-person caption naming what the machine actually did: **I PROPOSE** (the default), **I GATHERED**, **I MAPPED**, **I LOGGED** — always "I" plus one verb, two words, never a third-person label. Human zones opposite name the power being handed over: **YOU DECIDE** (the default), **YOU RE-RANK**, **YOU CUT**. The first person is where the warmth lives — a colleague saying what they brought, not a system narrating its output — and the "I" is load-bearing provenance: every zone the AI wrote is marked twice, the I-caption above it and the Mono inside it, so its origin is never in doubt. These captions are SansB 8, tracked, with the 1.6pt underline.
 - Open territory is labeled **SCRIBBLE ZONE** on Light sheets and **OPEN TERRITORY** on Deep sheets, above a 1.6pt rule spanning the text width. No box.
 - One house rule per Light sheet is permitted, SerifI 8.5, placed directly above the open territory (e.g. "Rule: something dies tonight. Pick it."). House rules are direct, short, and slightly funny. Zero house rules on sheets carrying emotionally heavy content.
 - Footer, every page: left side SansSB 6.8 caps tracked at y 30, text "SCAN IT BACK TO CONTINUE."; right side page note (e.g. "Deep · 1 of 2") Sans 6.8 gray 0.45.
@@ -90,7 +90,7 @@ Body begins at y 738 - 74.
 ## 6. Molecules
 
 - **React pair:** two equal columns, 24pt gutter. Left: AI items in Mono (MonoM item line, Mono promise line indented 14pt). Right: numbered empty slots, each = Sans 8 gray 0.5 number + two writing guides indented 18pt. A rotated SerifI 7.5 gray 0.45 hint reading "cross out freely" may sit centered in the gutter.
-- **Rank row (Light):** 1pt rank box 22x20pt at left margin; item in Mono 9.6 at x+34; K and X circles (0.9pt, r8, letter centered Sans 6.4) near right; a 0.5pt note guide ~60pt wide ending at the right margin. Column captions RANK / THE MACHINE SAYS / KEEP · KILL / NOTE in SansSB 6.5 tracked gray 0.4 above the first row.
+- **Rank row (Light):** 1pt rank box 22x20pt at left margin; item in Mono 9.6 at x+34; K and X circles (0.9pt, r8, letter centered Sans 6.4) near right; a 0.5pt note guide ~60pt wide ending at the right margin. Column captions RANK / I PROPOSE / KEEP · KILL / NOTE in SansSB 6.5 tracked gray 0.4 above the first row.
 - **Provocation block:** Serif 21/28 flush left, max width text-width minus 60pt, subline SerifI 10 beneath. Everything below is empty until open territory.
 - **Constraint box:** 1pt frame sized to physically fit the word budget (about 34pt per line of 12 words at Serif 13). Label above in section-label style.
 - **Open territory:** 1.6pt rule full text width, label above the rule, minimum height 96pt (Light) / 108pt (Deep), always the last element before the footer.
