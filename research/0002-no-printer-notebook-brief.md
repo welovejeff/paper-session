@@ -139,8 +139,9 @@ Step 5, the Step 6 close, the frontmatter phrase, three anti-pattern lines),
 section SKILL.md condenses from), `paper-session/references/page-patterns.md`
 (the notebook-translation gate), `paper-session/references/evidence.md` (a
 closing Part Two entry, "The unprinted page"), `scan-back/SKILL.md` (the
-"Unprinted pages" subsection and one anti-pattern line), `CLAUDE.md` (the third
-coupling named), `README.md`, `CHANGELOG.md`, and both `.skill` bundles via
+"Unprinted pages" subsection and one anti-pattern line), `CLAUDE.md` (the
+setup-card coupling named), `README.md`, `CHANGELOG.md`, and both `.skill`
+bundles via
 `./build.sh`. Nothing on the not-built list was built.
 
 ### Nothing on the risk list was validated
@@ -185,7 +186,7 @@ sheets have too: Part Three is still empty.
 The Findings above say the handles sit under a hand-copied `THE MACHINE SAYS`
 caption. That is wrong, and it was wrong when written: the panel that produced
 this brief ran before the caption change, and the brief inherited a name the
-design system had already retired. The card dictates **I PROPOSE**, the same
+design system had already retired. The card dictates `I PROPOSE`, the same
 first-person caption the printed sheets carry, and `scan-back` reads that
 caption as the provenance mark. The body above is left as written per the
 append-only rule; the implementation ships the corrected caption.

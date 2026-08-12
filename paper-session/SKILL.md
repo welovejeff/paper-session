@@ -86,7 +86,7 @@ Every sheet is set in the Paper Session design system. Read `references/design.m
 
 - Tablet and stylus: point at annotating the PDF directly, one line, then stop.
 - Light capacity: ask the gut calls here in the chat instead. Dictate a card only if they ask for one.
-- The card is one fenced message in two strictly separated parts. **COPY THIS** is hand-transcribed: the intent line verbatim (now the loop's only anchor), one prompt per page, a corner page number, machine items as numbered handles of four words or fewer under a hand-copied I PROPOSE caption, at most one machine line quoted whole. **DO THIS** is read and never copied: structure as pen gestures ("number 1-12 down the margin before writing anything in line 1"), house rules, pen legend.
+- The card is one fenced message in two strictly separated parts. **COPY THIS** is hand-transcribed: the intent line verbatim (now the loop's only anchor), one prompt per page, a corner page number, machine items as numbered handles of four words or fewer under a hand-copied `I PROPOSE` caption, at most one machine line quoted whole. **DO THIS** is read and never copied: structure as pen gestures ("number 1-12 down the margin before writing anything in line 1"), house rules, pen legend.
 - Handles never appear on a page that also carries a generative zone. The full items stay in the chat for `scan-back` to expand against.
 - Budget: **50-75 handwritten words for Deep, one phone screen for Light**, stated in words and never in minutes. Over budget means the design is too print-shaped — simplify it, never dictate more.
 - Step 5 does not apply to a card; the budget count is the gate.
