@@ -104,6 +104,8 @@ I need to think about this offline.
 Print me something for the patio.
 ```
 
+**No printer?** Say so. Instead of a PDF you get a short card to copy into whatever notebook you already own — the prompts and the structure, never the machine's lists. A notebook is already what these sheets work to become: a mostly empty page where your pen is the loudest thing on it. Print is still better where you have it, and the loop closes the same way.
+
 **Then it stops.** After handing you the PDF, the skill will not keep working the problem or quietly produce the answers the sheet is asking you for. The closing message is short by design. *"Printed. Go think."*
 
 **Coming back**, drop the photos in the chat with no message at all:

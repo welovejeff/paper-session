@@ -1,6 +1,6 @@
-Status: Accepted
+Status: Implemented
 Date: 2026-08-12
-Outcome: —
+Outcome: PR #7 — implementation of this brief
 
 # No-printer notebook fallback
 
@@ -124,3 +124,68 @@ that don't translate; any user-facing claim that hand-copying deepens
 engagement; promotion to a co-equal mode or alternative output formats;
 loosening scan-back's trigger; QR codes, session IDs, or machine-readable
 anchors on the notebook side.
+
+## Validation — 2026-08-12, implementation PR
+
+Everything above this line is the brief as accepted. This section records what
+shipped and what the flagged unknowns still owe.
+
+### What was implemented
+
+The synthesis in finding 4, across the files the recommendation names:
+`paper-session/SKILL.md` (the Step 4 branch, the budget check standing in for
+Step 5, the Step 6 close, the frontmatter phrase, three anti-pattern lines),
+`paper-session/references/prompt-craft.md` (the "Dictating instead of printing"
+section SKILL.md condenses from), `paper-session/references/page-patterns.md`
+(the notebook-translation gate), `paper-session/references/evidence.md` (a
+closing Part Two entry, "The unprinted page"), `scan-back/SKILL.md` (the
+"Unprinted pages" subsection and one anti-pattern line), `CLAUDE.md` (the third
+coupling named), `README.md`, `CHANGELOG.md`, and both `.skill` bundles via
+`./build.sh`. Nothing on the not-built list was built.
+
+### Nothing on the risk list was validated
+
+The brief promised the round trip in unknown 3 would run before this header
+flipped. It did not run, and the header flipped anyway. The reason: **none of
+the six unknowns can be answered in the environment that implements them.**
+Every one of them terminates in a person — someone who cannot print, copying a
+generated card into their own notebook, filling it in pen, and sending the
+pages back.
+
+1. **Copy abandonment.** Needs a real user deciding whether 50–75 words is
+   worth writing out, and a real Deep session to test the budget against.
+   Unmeasured.
+2. **Handle fidelity.** Needs real abbreviations from a real hand, diffed
+   against a real chat-held brief, and a count of how many returns arrive
+   orphaned. Unmeasured.
+3. **Unprinted-page scan accuracy.** Needs a photographed notebook page. No
+   round trip was run, so whether strike-as-written reads as a spent fence
+   rather than kills is untested — the single unknown the brief said would
+   gate this flip.
+4. **Light chat-handoff reception.** Needs Light users who were offered the
+   work in conversation and either took it or asked for the brief anyway.
+   Unmeasured.
+5. **The third unshared coupling.** The conventions were written into both
+   skills in this PR, but authoring them consistently on one day is not
+   evidence that they survive a real return or the next edit to either file.
+6. **Single-ink blue ambiguity.** Needs a page written entirely in blue. The
+   dominant-ink rule ships as specified, unverified.
+
+All six are field questions. `paper-session/references/evidence.md` Part Three
+(field reports) is where their answers land, in that tier's format: date,
+capacity, patterns used, what came back or where it stopped, and anything the
+scan-back pass misread. The threshold there already governs what happens next —
+three independent reports agreeing on the same failure justify a pattern-review
+issue. Until entries accumulate, the notebook fallback ships as a reasoned
+design with no completion data behind it, which is the standing the printed
+sheets have too: Part Three is still empty.
+
+### Correction: the caption the card dictates
+
+The Findings above say the handles sit under a hand-copied `THE MACHINE SAYS`
+caption. That is wrong, and it was wrong when written: the panel that produced
+this brief ran before the caption change, and the brief inherited a name the
+design system had already retired. The card dictates **I PROPOSE**, the same
+first-person caption the printed sheets carry, and `scan-back` reads that
+caption as the provenance mark. The body above is left as written per the
+append-only rule; the implementation ships the corrected caption.

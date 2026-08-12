@@ -95,3 +95,25 @@ Two consequences:
 
 - **Never manufacture difficulty in the typography.** Hard-to-read fonts are a debunked application of an otherwise sound idea, and where any effect exists it follows an inverted-U and reverses on complex material. Difficulty belongs in the task. The page stays maximally legible.
 - **Do not promise ease, and do not apologize for effort.** "This will take a while and it should" is honest and sets the expectation correctly. Cheerful minimizing ("quick exercise!") sets up the exact misread that makes people abandon the method.
+
+## 10. Dictating instead of printing
+
+When the user says they cannot print — and only then; the question is never asked — the sheet becomes a setup card they copy into whatever notebook they already own. A notebook is natively what this design system labors to produce: a mostly-empty page where the pen is the highest-contrast element and nothing on it competes. So the mode never apologizes, never names what they are not getting, and never suggests finding a printer.
+
+Two forks come first. A tablet and stylus is not a printing problem — point at annotating the PDF directly, one line, then stop; `scan-back` already reads a stylus layer. Light capacity is served in the chat instead: the gut calls get asked in conversation, without guilt, and a one-screen card only if they ask for one.
+
+The card is a single fenced message (the machine keeps its Mono on screen even when the page will have none), in two strictly separated parts. The separation is the format:
+
+- **COPY THIS** is transcribed by hand and is the only thing that is. Hard budget: **50-75 handwritten words for Deep, one phone screen for Light.** Copy load is stated in words. Never in minutes — the clock rule in §4 holds off the page exactly as it holds on it.
+- **DO THIS** is read once and never copied. Structure, house rules, and the pen legend live here, where they cost no transcription.
+
+What COPY THIS carries, in falling order of what survives a tight budget:
+
+- **The intent line, verbatim.** The only mandatory header element. On a printed kit it rides every page as a backstop; in a notebook it is the sole anchor, and everything §6 says about writing it for a cold reader is now load-bearing rather than insurance. Drop the title before dropping this.
+- **One prompt per page**, worded exactly as it would have printed, plus a page number in the corner.
+- **Machine items compressed to numbered handles**, four words or fewer each, under a hand-copied **I PROPOSE** caption, the same first-person caption the printed sheets carry — and only on a page where the human reacts, selects, or ranks. Never on a page that also carries a generative zone: hand-copying is deeper exposure than glancing at a printed column, which is safe where reacting is the task and corrosive where generating is. The full items stay in the chat, where `scan-back` expands a handle against them on return.
+- **At most one machine line dictated whole**, inside quotation marks. Quotation marks are the notebook's Mono, the only provenance mark a handwritten page has. A second one stops reading as the machine and starts reading as the sheet's own voice.
+
+DO THIS dictates structure as pen gestures, never as a description of a layout: "draw a line down the middle," "number 1-12 down the margin before writing anything in line 1," "bottom third of the last page: write OPEN and leave it alone until the end." Numbering before writing is what replaces the gravity of a printed slot count — a person filling a page top-down stops at four.
+
+If a design cannot be dictated inside the budget, the design is too print-shaped for a notebook. Simplify it: fewer zones, fewer handles, one prompt where there were three. Never dictate more.
