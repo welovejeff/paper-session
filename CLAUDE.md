@@ -63,6 +63,8 @@ Regenerating the README specimen images (only if the spec changes):
 python3 docs/specimen.py    # rebuilds docs/specimen.pdf, verifies it, regenerates docs/sheet-*.png
 ```
 
+The PNG rendering step needs two packages beyond `requirements.txt`: `python3 -m pip install pymupdf pillow`. The script fails with a clear message if they're missing; the PDF build and verify gate need only `requirements.txt`.
+
 ## The three-layer document architecture
 
 `SKILL.md` is procedure only: recognize the moment → pick capacity → design → generate → verify → stop. It delegates every judgment call to a reference and stays short enough to be read at load time.

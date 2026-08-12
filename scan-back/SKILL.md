@@ -21,7 +21,7 @@ Transcribe the handwriting faithfully:
 - Crossed-out text matters: it shows a considered-and-rejected path. Note it as rejected, not absent.
 - If a word is truly illegible, mark it as [illegible] and infer nothing. Ask about it only if it sits somewhere consequential.
 - Spatial arrangements are data. If cards were arranged and photographed, the order and grouping in the photo IS the answer. If items were placed on a 2x2, their positions are the rankings.
-- Field-kit series pages accumulate. On a Grinnell field kit, reorder by the human-written dates — they are data, not decoration — and append each entity's account page to its running account from earlier sessions rather than reading the scan as standalone.
+- Field-kit series pages accumulate. On a Grinnell field kit, reorder by the human-written dates — they are data, not decoration — and append each entity's account page to its running account from earlier sessions rather than reading the scan as standalone. On an orphaned scan with no earlier accounts in the chat, this scan starts the running account; say so plainly rather than pretending continuity.
 
 **The pen protocol.** The printed layer is always grayscale, so any chromatic ink is the human. The mark is the primary carrier of intent; ink hue is a redundant amplifier. Any meaning that must survive the round trip is recoverable from mark + position + wording in a single ink: a strike is a kill in any ink, a ? is a request in any ink; hue intensifies what a mark already says and never carries a meaning alone. The primary design case is a sheet completed entirely in black with no marks — fully valid. One or two inks is the median sheet; the four-ink protocol is the enhancement for people who have the pens: the channels add intent, their absence subtracts nothing. Resolve the active legend by this cascade, highest authority first: (1) a legend handwritten anywhere on the pages redefines its channels for the session; (2) the ink key printed on the sheet; (3) the defaults: black = general notes; red = needs review, stop, or delete (an explicit invitation to interrogate); green = approved, yes, move forward (execute, never relitigate); blue = an instruction to the AI, do this on return.
 
@@ -35,7 +35,7 @@ Where the human's handwriting conflicts with what the AI proposed earlier in the
 
 Blank zones are also information: the human chose not to answer, ran out of time, or the prompt missed. Note blanks factually, without guilt-tripping.
 
-**One scoped exception: the teach-back sheet.** Its handwritten explanation is authoritative as a record of what the human believes, not as fact. Check it against the source material, correct factual errors in the continuation, and re-explain anything marked in the gap column differently than before. That correction is the sheet's contract, not a violation of this rule.
+**One scoped exception: the teach-back sheet.** Its handwritten explanation is authoritative as a record of what the human believes, not as fact. Check it against the source material, correct factual errors in the continuation, and re-explain anything marked in the gap column differently than before. That correction is the sheet's contract, not a violation of this rule. If the source material is not in the chat — an orphaned teach-back — do not fact-check from memory of nothing: asking for the source is that scan's one re-anchoring question.
 
 ## Step 3: The interrogation pass (before synthesis, held to a high bar)
 

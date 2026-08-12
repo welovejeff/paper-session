@@ -13,6 +13,7 @@ paper-session/references/design.md. Change that file first, this file
 second. Run from anywhere: python3 docs/specimen.py
 """
 
+import datetime
 import subprocess
 import sys
 from pathlib import Path
@@ -34,7 +35,11 @@ LEFT, RIGHT = M, PAGE_W - M      # text block x 54..558
 TEXT_W = RIGHT - LEFT            # 504
 HEADER_Y = PAGE_H - M            # datum rule at 738
 FOOTER_Y = 30                    # footer baseline, below the margin box
-DATE_LINE = "SESSION PRINTED TUE 12 AUG 2026"
+# Fixed date so the committed specimen is reproducible; the weekday is derived
+# so it can never print wrong.
+SPECIMEN_DATE = datetime.date(2026, 8, 12)
+DATE_LINE = "SESSION PRINTED " + SPECIMEN_DATE.strftime("%a %d %b %Y").upper()
+WEEKDAY = SPECIMEN_DATE.strftime("%A")
 
 REGISTER = {
     "Sans": "IBMPlexSans-Regular.ttf",
@@ -202,7 +207,7 @@ TASKS = [
 
 
 def page_light_rank(c):
-    header(c, "Tuesday 9:30 · Win the Week",
+    header(c, f"{WEEKDAY} 9:30 · Win the Week",
            "React to the proposed priorities. Rank what stays, kill what doesn't.")
 
     item_x = LEFT + 34                     # 88
@@ -262,8 +267,17 @@ def verify():
 
 def render_pngs():
     """~110 dpi via PyMuPDF, longest side resized to 1000px via Pillow."""
-    import pymupdf
-    from PIL import Image
+    try:
+        try:
+            import pymupdf
+        except ImportError:
+            import fitz as pymupdf
+        from PIL import Image
+    except ImportError as e:
+        sys.exit(
+            f"PNG rendering needs PyMuPDF and Pillow (beyond requirements.txt): "
+            f"python3 -m pip install pymupdf pillow  ({e})"
+        )
 
     doc = pymupdf.open(str(PDF))
     zoom = 110 / 72
