@@ -9,6 +9,16 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **Brainwriting rounds**, the eighth named format and the first built for a
+  table rather than one person. Three to six people, a sheet each, three ideas
+  per round, then pass left — no timer, because the passing is triggered by
+  finishing rather than by a clock, and the famous five-minute round was never
+  isolated as the part that works. Every cell is lightly dot-gridded, so a
+  sketch counts as an idea. Selection is exiled to a separate sheet after the
+  rounds. Each sheet carries an optional `HAND:` box: fill it if you want a
+  follow-up routed back to you, leave it blank if you'd rather the ideas stand
+  on their own — nothing asks for a name, and ideas are never attributed to
+  their authors either way.
 - **The serial disclosure kit**, a seventh named format and the first with
   pages that never come back. Three sittings on consecutive days, then a
   closing distillation page — the only one that returns. The disclosure pages

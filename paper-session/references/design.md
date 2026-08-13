@@ -40,6 +40,7 @@ The three voices, never blended:
 | Voice captions (I PROPOSE / YOU DECIDE) | SansB | 8 | 0.2 | +1.2 |
 | Section labels, open-territory label | SansSB | 6.8 | 0.4 | +1.4 |
 | Metadata (date line) | Sans | 6.8 caps | 0.4 | +0.8 |
+| `HAND:` label (group round sheets) | SansSB | 6.5 caps | 0.45 | +1.4 |
 | Intent line | SerifI | 9.5 | 0.3 | 0 |
 | Provocation, standard | Serif | 21/28 | 0 | 0 |
 | Provocation, Light sheets | Serif | 15/20 | 0 | 0 |
@@ -79,6 +80,8 @@ Top edge at y = 792 - 54 = 738.
 4. Intent line, SerifI 9.5, x 54, baseline 738 - 52. One sentence, written in the sheet's voice.
 Body begins at y 738 - 74.
 
+On group round sheets only, one `HAND:` box shares the date-line baseline at the right margin (section 6). It adds nothing to the four items above and changes none of their positions.
+
 ## 5. Voice and microcopy (the Basement layer, dialed to 60%)
 
 - AI-contribution zones carry a first-person caption naming what the machine actually did: **I PROPOSE** (the default), **I GATHERED**, **I MAPPED**, **I LOGGED** — always "I" plus one verb, two words, never a third-person label. Human zones opposite name the power being handed over: **YOU DECIDE** (the default), **YOU RE-RANK**, **YOU CUT**. The first person is where the warmth lives — a colleague saying what they brought, not a system narrating its output — and the "I" is load-bearing provenance: every zone the AI wrote is marked twice, the I-caption above it and the Mono inside it, so its origin is never in doubt. These captions are SansB 8, tracked, with the 1.6pt underline.
@@ -95,10 +98,12 @@ Body begins at y 738 - 74.
 - **Constraint box:** 1pt frame sized to physically fit the word budget (about 34pt per line of 12 words at Serif 13). Label above in section-label style.
 - **Open territory:** 1.6pt rule full text width, label above the rule, minimum height 96pt (Light) / 108pt (Deep), always the last element before the footer.
 - **Card kit sheet (only for cut-apart activities):** 2x4 grid of cards with 0.6pt dashed borders r4, each card = MonoM title line + Serif one-line promise + empty lower half; corner ticks optional; this is the only context where dashes appear.
+- **Round grid (group round sheets only):** three columns across the text width with 12pt gutters, so each cell is 160pt wide; rows 90pt tall with a 12pt gutter between them. A cell is a bare dot field — dots r0.55 gray 0.6 at 12pt pitch, inset 8pt from every cell edge — with no frame, no rule, and no number, so a sketch is as welcome as a sentence. The gutters do all the separating: the 28pt break in the dot rhythm marks where one turn ends, while the columns stay visually continuous because the next hand reads down them. The protocol line sits directly above the grid in the aside register (SerifI 8.5, gray 0.35). The grid takes the space left between that line and the open-territory label; a sheet that cannot fit another whole row drops the row rather than shrinking one, and no cell goes below 72pt tall. The grid and the open-territory band together are what carry this sheet past the half-page pen floor of section 0, so keep everything above the grid tight enough that they do. Rows are never numbered or captioned, and no count of rows, rounds, or ideas prints anywhere on the sheet. These dot fields satisfy the section 3 sketch-zone requirement for this format.
+- **Hand box (group round sheets only):** one per sheet, in the header, right-aligned on the date-line baseline. The printed text is the word `HAND:` and nothing else — SansSB 6.5 caps, gray 0.45, tracking +1.4, ending at x 480 — followed by a 0.5pt gray 0.55 writing guide from x 486 to the right margin at x 558, set 2pt below the label baseline. Leave at least 24pt of clear space between it and the date line. It is furniture at footer weight: never boxed, ruled off, enlarged, repeated, or promoted to a heading, and it never sits near the provocation or inside the grid. **The box may be left blank, and nothing printed asks for a name.** No "name", no "author", no instruction above or beside it; a blank box is a finished sheet, and the evidence for unattributed generation may favor leaving it blank. It does one job: letting the human route a follow-up to whoever wrote a line. It is not an authorship system — ideas are never attributed to their authors in synthesis, on this sheet or on the return trip.
 
 ## 7. Templates
 
-**Deep sheet:** header → (optional) AI contribution organism → primary activity → open territory (≥108pt) → footer. Max 4 pages per session. Provocation pages carry exactly one question.
+**Deep sheet:** header → (optional) AI contribution organism → primary activity → open territory (≥108pt) → footer. Max 4 pages per session. The cap counts per participant, not per table: it exists to protect one human's completion load, and in a group format each participant completes one sheet, so a six-person session is one page pattern printed six times, not a six-page kit. Provocation pages carry exactly one question.
 
 **Light sheet:** header → single low-effort organism (rank rows, gut-check ladder, reaction margins) → optional house rule → SCRIBBLE ZONE (≥96pt) → footer. Always exactly 1 page. Every mark the sheet requests must be achievable in one pen gesture.
 
@@ -114,8 +119,10 @@ The printed layer is grayscale by law (section 0), which reserves the entire col
 
 **The primary design case is a sheet completed entirely in black with no marks — fully valid.** One or two inks is the median sheet. The four-ink protocol below is the enhancement for people who have the pens: the channels add intent, their absence subtracts nothing.
 
+**Ink codes intent, never identity.** No channel is ever assigned to a person. On a group format, where several hands write on several copies of one sheet, a red strike from the fourth participant means what a red strike means, and no sheet asks a hand to pick an ink of its own. Where attribution is wanted at all it is the `HAND:` box (section 6), which is optional and which nothing asks to be filled.
+
 **The protocol is user-definable.** These are defaults, not rules. The authority cascade, highest first:
-1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session.
+1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session. On a group format returning several sheets in several hands, it governs the sheet it appears on rather than the table, since the hand that wrote it can only speak for its own page; `scan-back` Step 1 reads it back the same way.
 2. The printed ink key on the sheet (which reflects any customization the user has told the skill about).
 3. The defaults below.
 
