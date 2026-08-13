@@ -48,11 +48,12 @@ Constraints help creativity. A meta-analysis of 111 studies found a significant 
 
 ## 5. Introspection prompts: distance and both channels
 
-For reflective and introspective sheets specifically:
+For reflective and introspective sheets specifically. The section traces to the expressive writing cluster in `evidence.md`, added with the serial disclosure kit; before that these rules cited no cluster at all.
 
 - **Ask for thoughts and feelings together.** Writing about emotions *and* thoughts produced better outcomes than either alone: higher wellbeing, more resolution, less residual anger.
 - **Write prompts in the distanced voice.** The mechanism behind expressive writing's benefits is self-distancing, and linguistically it shows up as more causal language and fewer first-person-singular pronouns. So prefer "What would you tell someone standing where you're standing?" over "How do you feel about this?" Prefer "What made this happen?" over "Why are you upset?"
-- **Keep introspective sessions short.** The paradigm that works is roughly 15 to 20 minutes of writing, repeated, not one marathon.
+- **One exception, scoped to the sitting and not to introspection.** Inside a serial disclosure sitting the provocation is written in the paradigm's own voice: first person, immersive, deepest thoughts *and* feelings about the friction, together and in that wording. That is the wording every trial in the cluster tested, and instructed distancing measured worse against it — depressive symptoms rose versus traditional expressive writing, driven by the most vulnerable writers. The exception covers the disclosure pages of that kit and nothing else. The distanced voice remains the default for every other introspection zone in the library, the same kit's distillation page included. Distancing is an outcome of the writing when it happens, never an instruction printed on it.
+- **Keep introspective sessions short, and repeat them.** The paradigm that works is a small sitting repeated across consecutive days, not one marathon, and it establishes that in minutes — roughly 15 to 20 per sitting. Nothing prints the minutes; the clock ban in §4 converts the dose to space, one genuinely full page per sitting. That conversion is this project's own hypothesis, untested by any study, and it gets labeled as such wherever it is claimed. Never shrink it to fit: an undersized dose left writers with more negative appraisal, not less.
 - Never combine an introspection zone with a ranking or productivity zone on the same sheet. Different postures, and the productivity frame will win.
 
 ## 6. Wording mechanics

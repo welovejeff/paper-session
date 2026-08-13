@@ -218,7 +218,9 @@ The skill picks 1–3 patterns per session, never all of them. A selection of wh
 **Introspection** (own sheet, never mixed with planning)
 - **Distanced pair** — what happened and what you make of it, then what it felt like. Thoughts *and* feelings beats either alone, and prompts are written in the distanced voice because self-distancing is the actual mechanism.
 
-**Named session formats** — whole-session kits with real lineages, chosen by name when the task matches: after-action review, premortem, outside view, teach-back, weekly review, and the Grinnell field kit (the library's first multi-day series). Each is grounded in its own evidence cluster, contraindications included.
+**Named session formats** — whole-session kits with real lineages, chosen by name when the task matches: after-action review, premortem, outside view, teach-back, weekly review, the Grinnell field kit (the library's first multi-day series), and the serial disclosure kit. Each is grounded in its own evidence cluster, contraindications included.
+
+That last one is the only kit with pages that never come back. Its disclosure pages print **PRIVATE — THIS PAGE STAYS WITH YOU. IT IS NOT SCANNED.**, and `scan-back` never asks after them: their absence isn't a blank, it's the design. Writing seen by nobody is the condition the research actually tested, so the loop gives it up on purpose. Only your distillation page returns.
 
 **Universal closer**
 - **Open territory** — unstructured space, minimum a third of the final page, never omitted. The margins and the wandering are frequently where the best material comes back from.

@@ -64,7 +64,9 @@ Evening context or a casual framing suggests Light. A cleared block, a hard prob
 
 ## Step 3: Design the artifact
 
-Read `references/page-patterns.md` for the activity pattern library and `references/prompt-craft.md` for how to word what goes on the page. Choose 1-3 patterns that fit the task; do not use every pattern on every sheet. Any sheet with a generative zone also gets one defixation pattern (Spent Ground, First Three Are Free, or the Single Remote Example). The library closes with named session formats — whole-session kits chosen by name when the task matches (after-action review, premortem, outside view, teach-back, weekly review, Grinnell field kit). Two carry hard gates: an after-action review needs a recorded plan or log to print (no record, no AAR), and a weekly review's inventory is only what you can actually see — skip it rather than invent loops.
+Read `references/page-patterns.md` for the activity pattern library and `references/prompt-craft.md` for how to word what goes on the page. Choose 1-3 patterns that fit the task; do not use every pattern on every sheet. Any sheet with a generative zone also gets one defixation pattern (Spent Ground, First Three Are Free, or the Single Remote Example). The library closes with named session formats — whole-session kits chosen by name when the task matches (after-action review, premortem, outside view, teach-back, weekly review, Grinnell field kit, serial disclosure kit). Three carry hard gates: an after-action review needs a recorded plan or log to print (no record, no AAR); a weekly review's inventory is only what you can actually see — skip it rather than invent loops; and the serial disclosure kit is gated below.
+
+**The serial disclosure kit's gate.** Offer it for work friction and professional setbacks only, and never as therapy, treatment, or clinical support — it is structured reflective writing, and nothing printed or said may frame it as anything else. Never to someone in acute distress, after recent or severe trauma, seeking trauma processing, or who says they do not usually put feelings into words. It is three sittings on consecutive days plus a closing distillation page, so proposing it means proposing the whole series; a single sitting falls outside every estimate behind the format. Say in the offer that the first sittings reliably feel worse and that the dip is unrelated to whether it works. Promise no relief.
 
 Layout rules (non-negotiable):
 - **8.5 x 11 inch (US Letter), portrait** unless the activity demands landscape (e.g., timeline sequencing)
@@ -115,6 +117,7 @@ Sometimes the user returns to the chat and picks the task up with no scan — th
 - Mentioning implementation, shipping, or building anywhere on a selection sheet
 - Hard-to-read fonts, deliberate visual noise, or any manufactured difficulty in the typography
 - Promising that a sheet will be quick or easy; effort is systematically misread as ineffectiveness, and minimizing it sets up the misread
+- Presenting the serial disclosure kit as therapy, treatment, or clinical support, or asking for its private pages back (they print PRIVATE, they never return, and their absence is the design)
 - Dense forms with tiny answer boxes (this is not a tax return)
 - Deep provocations on a Light sheet, or busywork checkboxes on a Deep sheet
 - More than one confirmation question before generating

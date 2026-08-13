@@ -9,6 +9,17 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **The serial disclosure kit**, a seventh named format and the first with
+  pages that never come back. Three sittings on consecutive days, then a
+  closing distillation page — the only one that returns. The disclosure pages
+  print `PRIVATE — THIS PAGE STAYS WITH YOU. IT IS NOT SCANNED.` and
+  `scan-back` never requests them, never asks about them, and never reads
+  their absence as a blank. Adapted from expressive-writing research with its
+  mixed record stated rather than buried: the dose is converted from minutes
+  to one full page because nothing prints a clock, and that conversion is
+  labeled this project's own untested hypothesis. Offered for work friction
+  and professional setbacks only, never as therapy, with the exclusions named
+  and the expected short-term mood dip disclosed instead of hidden.
 - **The loop works without a printer.** Say you can't print and the same
   session arrives as a short card to copy into any notebook: the prompts and
   the structure, never the machine's lists — those stay in the chat, and a

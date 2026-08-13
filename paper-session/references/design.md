@@ -84,7 +84,7 @@ Body begins at y 738 - 74.
 - AI-contribution zones carry a first-person caption naming what the machine actually did: **I PROPOSE** (the default), **I GATHERED**, **I MAPPED**, **I LOGGED** — always "I" plus one verb, two words, never a third-person label. Human zones opposite name the power being handed over: **YOU DECIDE** (the default), **YOU RE-RANK**, **YOU CUT**. The first person is where the warmth lives — a colleague saying what they brought, not a system narrating its output — and the "I" is load-bearing provenance: every zone the AI wrote is marked twice, the I-caption above it and the Mono inside it, so its origin is never in doubt. These captions are SansB 8, tracked, with the 1.6pt underline.
 - Open territory is labeled **SCRIBBLE ZONE** on Light sheets and **OPEN TERRITORY** on Deep sheets, above a 1.6pt rule spanning the text width. No box.
 - One house rule per Light sheet is permitted, SerifI 8.5, placed directly above the open territory (e.g. "Rule: something dies tonight. Pick it."). House rules are direct, short, and slightly funny. Zero house rules on sheets carrying emotionally heavy content.
-- Footer, every page: left side SansSB 6.8 caps tracked at y 30, text "SCAN IT BACK TO CONTINUE."; right side page note (e.g. "Deep · 1 of 2") Sans 6.8 gray 0.45.
+- Footer, every page: left side SansSB 6.8 caps tracked at y 30, text "SCAN IT BACK TO CONTINUE."; right side page note (e.g. "Deep · 1 of 2") Sans 6.8 gray 0.45. One exception, specified in §9: a private page takes the private marker in that left slot instead, because the scan-it-back line is false on a page that never returns.
 - Language is direct and human throughout. No corporate filler, no exclamation marks, no encouragement-speak. Warmth comes from directness, not enthusiasm.
 
 ## 6. Molecules
@@ -141,7 +141,10 @@ Default marks (work in any ink; ink modifies mark where it makes sense, e.g. a r
 | @name | Route it to a person, tool, or system |
 | TLDR: | Treat this line as the headline answer of the zone |
 
+**The private page.** Some pages are the human's alone: written to be seen by no one, and they do not come back. Mark such a page once, on the footer baseline at y 30, in the left position, in place of the "SCAN IT BACK TO CONTINUE." of section 5 — which is false on this page. SansSB 6.8 caps, tracking +1.2, gray 0.45, text "PRIVATE — THIS PAGE STAYS WITH YOU. IT IS NOT SCANNED." It is furniture, not a headline: never enlarged, boxed, ruled off, or repeated elsewhere on the page. The marker is a promise the return trip keeps — `scan-back` never requests a page carrying it, never asks what is on it, and never counts its absence as a gap (`scan-back/SKILL.md` Steps 1 and 2). Print it only where that promise holds.
+
 Printing rules:
 - Print the active key once per sheet, right-aligned above the footer baseline, Sans 6 caps at 45% gray, e.g. "INK KEY  RED REVIEW · GREEN GO · BLUE DO · BLACK NOTES". Print the user's customized legend if one exists, never a stale default. Marks are not printed; they live in muscle memory and in scan-back.
+- A page carrying the private marker prints no ink key: nothing on it is read back, so there is no return trip for a key to serve.
 - The protocol is optional per session; the black-only sheet is the primary design case, stated at the top of this section.
 - If the user states a custom legend in conversation, adopt it for all future sheets and offer once to remember it.
