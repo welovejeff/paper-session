@@ -122,7 +122,7 @@ The printed layer is grayscale by law (section 0), which reserves the entire col
 **Ink codes intent, never identity.** No channel is ever assigned to a person. On a group format, where several hands write on several copies of one sheet, a red strike from the fourth participant means what a red strike means, and no sheet asks a hand to pick an ink of its own. Where attribution is wanted at all it is the `HAND:` box (section 6), which is optional and which nothing asks to be filled.
 
 **The protocol is user-definable.** These are defaults, not rules. The authority cascade, highest first:
-1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session.
+1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session. On a group format returning several sheets in several hands, it governs the sheet it appears on rather than the table, since the hand that wrote it can only speak for its own page; `scan-back` Step 1 reads it back the same way.
 2. The printed ink key on the sheet (which reflects any customization the user has told the skill about).
 3. The defaults below.
 

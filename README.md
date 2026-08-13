@@ -220,7 +220,7 @@ The skill picks 1–3 patterns per session, never all of them. A selection of wh
 
 **Named session formats** — whole-session kits with real lineages, chosen by name when the task matches: after-action review, premortem, outside view, teach-back, weekly review, the Grinnell field kit (the library's first multi-day series), the serial disclosure kit, and brainwriting rounds (the only one that needs a room full of people). Each is grounded in its own evidence cluster, contraindications included.
 
-That last one is the only kit with pages that never come back. Its disclosure pages print **PRIVATE — THIS PAGE STAYS WITH YOU. IT IS NOT SCANNED.**, and `scan-back` never asks after them: their absence isn't a blank, it's the design. Writing seen by nobody is the condition the research actually tested, so the loop gives it up on purpose. Only your distillation page returns.
+The serial disclosure kit is the only one with pages that never come back. Its disclosure pages print **PRIVATE — THIS PAGE STAYS WITH YOU. IT IS NOT SCANNED.**, and `scan-back` never asks after them: their absence isn't a blank, it's the design. Writing seen by nobody is the condition the research actually tested, so the loop gives it up on purpose. Only your distillation page returns.
 
 **Universal closer**
 - **Open territory** — unstructured space, minimum a third of the final page, never omitted. The margins and the wandering are frequently where the best material comes back from.
