@@ -95,7 +95,7 @@ These are load-bearing, not style preferences. Violating one breaks the premise 
 - **Difficulty lives in the task, never in the typography.** Legibility is never traded for effort.
 - **Grayscale only, nothing meaningful below 50% gray, no fills or images.** The color channel is reserved entirely for the human's pen, which is what makes the pen protocol readable on the return trip.
 - **The pen must be the highest-contrast thing on the finished page**, ≥50% of every page is space for it, pages decompress downward, and open territory closes every sheet.
-- **Deep ≤4 pages, Light exactly 1.** Every Deep kit contains at least one dot-grid sketch zone (drawing beats prose on recall and loose marks fight fixation). Light sheets ask only for marks achievable in one pen gesture.
+- **Deep ≤4 pages, Light exactly 1.** The cap counts per human, because what it protects is one person's completion load: the Grinnell field kit reads it per kit rather than per project, and brainwriting rounds reads it per participant, so a six-person session is one page pattern printed six times, not a six-page kit. Every Deep kit contains at least one dot-grid sketch zone (drawing beats prose on recall and loose marks fight fixation). Light sheets ask only for marks achievable in one pen gesture.
 - **Stop when the sheet is handed over.** After presenting the PDF, do not keep working the task or produce the answers the sheet asks for. "Printed. Go think."
 
 Both `SKILL.md` files end with an anti-pattern list. Read it before adding a feature — most tempting additions ("just a few examples to get them started", "a suggested 5 min", a scoring rubric) are already explicitly banned there with the reason.
