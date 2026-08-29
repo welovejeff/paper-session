@@ -44,7 +44,7 @@ This isn't just a stance. Design fixation is the most replicated finding in desi
 
 ## Install
 
-Install **both** skills, whatever your setup — they're a loop: `paper-session` prints "SCAN IT BACK TO CONTINUE." on every footer, and `scan-back` is what honors that promise.
+Get **both** halves, whatever your setup — they're a loop: `paper-session` prints "SCAN IT BACK TO CONTINUE." on every footer, and `scan-back` is what honors that promise. There are four routes below; three of them end in an agent that reads a `SKILL.md` folder, and the last asks nothing of your AI but a text box.
 
 **If your AI lives in a chat app** — claude.ai, the Claude desktop or mobile apps, or any client that accepts skill bundles — download the two packaged bundles and upload them where your client takes skills. No terminal, no unzipping:
 
@@ -67,20 +67,39 @@ unzip -o paper-session.skill -d ~/.claude/skills/
 unzip -o scan-back.skill -d ~/.claude/skills/
 ```
 
-Generating sheets needs `reportlab`; the mandatory layout verifier needs `pdfplumber`. A CLI or upload install doesn't bring `requirements.txt` along, so install them directly:
+**What the two Python packages are for.** `reportlab` draws the sheet; `pdfplumber` runs `verify_layout.py`, the layout gate no sheet is allowed to skip. The list ships inside the bundle, so point pip at the copy that arrived with the skill rather than at this repo:
 
 ```bash
-python3 -m pip install reportlab pdfplumber    # or: -r requirements.txt, if you cloned
+python3 -m pip install -r ~/.claude/skills/paper-session/requirements.txt
 ```
+
+Substitute wherever your agent installed the skill — `.claude/skills/paper-session/` inside the project when `npx skills add` runs without `-g` — and add `--break-system-packages` where pip reports the environment is externally managed. Nothing to install by hand on a chat surface, where the skill runs its own Python; nothing at all on the paste channel, which renders no file.
+
+**If your AI can't install skills at all** — ChatGPT, Gemini, Copilot chat, Perplexity, Le Chat, DeepSeek, Grok, Poe. None of them read a `SKILL.md` folder, so there is nothing to install and one file to paste: [`paper-session-paste.md`](https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session-paste.md), which is `SKILL.md`, `references/prompt-craft.md`, and `references/page-patterns.md` concatenated by `build.sh` — byte for byte, apart from one deleted block of install metadata addressed to a runtime that isn't there. Paste the whole file into the chat, say what you're working on, and add this sentence:
+
+> I can't print, and you can't make a PDF here, so dictate the setup card for me to copy by hand — there is nothing to annotate.
+
+The sentence is load-bearing, not politeness: it is what routes the host onto the setup-card path, where the AI dictates a short card you copy into a notebook by hand. What you get is that card, never a PDF — no typography, no grayscale, no printed ink key — and no verify gate, which the card path never had in the first place. What you also don't get is authority: a pasted protocol is user text with no standing against the host's own system prompt, so a model tuned to be maximally helpful can still pre-fill a zone or volunteer a duration that the rules in the paste forbid. How often, on which product, is unmeasured.
+
+**The return half travels further than the forward half.** `scan-back` is one markdown file with nothing behind it — no scripts, no Python, no fonts, no second document to fetch — so it pastes into a single chat message anywhere text goes: [`scan-back/SKILL.md`](https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back/SKILL.md). Paste it into the chat the photos are going to land in, when they land — not alongside the forward paste, which would leave the host holding transcription instructions for pages that do not exist yet, and the failure there is a host that narrates the return trip or invents its contents. Reading the pages still takes a surface that accepts photographs, and nothing else.
+
+That means the pages can come back somewhere other than where they were made — printed from Claude Code, photographed into whatever chat is on your phone — and that costs something specific rather than nothing. `scan-back` calls it the orphan path: the chat holds no memory of the session, so it reconstructs from what the sheet itself prints (title, date, intent line, footer numbering) and spends its one re-anchoring question there. Its authority rule — where your handwriting conflicts with what the AI proposed earlier, the handwriting wins — has nothing to override in that chat, because the proposal it would have beaten was made in a different one. The pages are the whole record. That is why the intent line is written for a cold reader, and why sheets still carry no QR code, session ID, or machine-readable block: nothing printed on them is addressed to a machine that was already there. A notebook page copied from a card some other AI dictated comes back colder still — no printed layer, no card in the chat to check it against — and `scan-back` reads it as its own structure instead of asking you to account for pages you have already sent.
 
 ### Where the loop stands, agent by agent
 
-| Your agent | Install | The loop today |
-|---|---|---|
-| **Claude Code** (CLI, IDE, web) | `npx skills add`, or clone-and-unzip | **Verified end to end** — discovery, install, sheet generation, and scan-back all tested |
-| **claude.ai · Claude desktop · mobile** | upload the two `.skill` files | **Supported** — the chat-native path; a phone photographing the pages is what the return trip was built around |
-| **Cursor · Codex · Copilot · other CLI-routable agents** | `npx skills add … -a <agent>` | **Installs cleanly, loop untested** — the sheets need an agent that can run reportlab and read photographs back. A session report from one of these is the contribution we want most |
-| **Anything else that reads `SKILL.md` folders** | download a `.skill` (it's a zip), unzip into the agent's skills directory | Same as above |
+| Your agent | Install | The loop today | Also install |
+|---|---|---|---|
+| **Claude Code** (CLI, IDE, web) | `npx skills add`, or clone-and-unzip | **Verified end to end** — discovery, install, sheet generation, and scan-back all tested | `reportlab` + `pdfplumber`, on the machine running the agent |
+| **claude.ai · Claude desktop · mobile** | upload the two `.skill` files | **Supported** — the chat-native path; a phone photographing the pages is what the return trip was built around | Nothing by hand — the skill installs what it needs where it runs |
+| **Cursor · Codex · Copilot · other CLI-routable agents** | `npx skills add … -a <agent>` | **Installs cleanly, loop untested** — the sheets need an agent that can run reportlab and read photographs back. A session report from one of these is the contribution we want most | `reportlab` + `pdfplumber`, wherever that agent runs Python |
+| **Anything else that reads `SKILL.md` folders** | download a `.skill` (it's a zip), unzip into the agent's skills directory | Same as above | Same as above |
+| **Chat AI with no skills runtime** — ChatGPT, Gemini, Copilot chat, Perplexity, Le Chat, DeepSeek, Grok, Poe | paste `paper-session-paste.md`, then `scan-back/SKILL.md` | **Untested, per surface** — the forward half produces a hand-copied card, never a PDF, and nothing is verified because nothing is rendered. A pasted protocol also has no authority over the host's system prompt, so the bright lines hold only as far as the host chooses to hold them | Nothing — no PDF is generated, so no library is needed |
+
+Copilot appears twice on purpose, in two different products: the CLI-routable IDE agent in row three, the chat surface in row five.
+
+**Reading the printed page is a requirement no row above states, and there is a path for people who can't.** Say so and the session is dictated instead — the same linear card the no-printer path produces, for a braille slate, a typed file, a voice memo, or a scribe. The return matches it: dictated, typed, and scribed pages carry exactly the authority handwriting carries, and a scribe is never read as a second participant. It is not the same session, and nothing in either skill is allowed to imply it is: most of what the evidence brief measures depends on someone looking at a page, and [`references/evidence.md`](paper-session/references/evidence.md) names which clusters stop applying, one by one. No study tests a dictated, typed, or scribed return, and no session report has come back from one yet.
+
+**What the sheets can be set in.** Latin, Cyrillic, and Vietnamese work today, in all eight bundled faces — every character modern Russian, Ukrainian, Bulgarian, Serbian, Macedonian, Belarusian, and Kazakh need, and all 134 precomposed Vietnamese letters, are in every face's `cmap`, and a sheet set in them renders and passes `verify_layout.py`. CJK, Arabic, Hebrew, Devanagari, and Thai have no coverage at all: those characters print as blanks. Fonts alone would not fix that, which is the part worth knowing before anyone tries — reportlab maps characters straight through the `cmap` with no bidi reordering and no complex-script shaping, so even with a font that has the glyphs, Arabic sets left to right in isolated forms and lam-alef never joins. Greek is a half case: the Sans faces carry it, Serif and Mono don't, and the three-voice rule needs all three. A new script therefore means coverage *and* a shaping path, which is a larger contribution than it looks and a welcome one.
 
 Install directions live in this section and nowhere else in the repo — other documents link here rather than restating commands, so there is exactly one place to keep true.
 
@@ -104,7 +123,7 @@ I need to think about this offline.
 Print me something for the patio.
 ```
 
-**No printer?** Say so. Instead of a PDF you get a short card to copy into whatever notebook you already own — the prompts and the structure, never the machine's lists. A notebook is already what these sheets work to become: a mostly empty page where your pen is the loudest thing on it. Print is still better where you have it, and the loop closes the same way.
+**No printer, or no way to read the printed page?** Say either. Instead of a PDF you get a short card — the prompts and the structure, never the machine's lists — in linear text you can copy into whatever notebook you already own, or type, or hand to a scribe. A notebook is already what these sheets work to become: a mostly empty page where your pen is the loudest thing on it. Neither question is ever asked of you; the card only ever answers something you said.
 
 **Then it stops.** After handing you the PDF, the skill will not keep working the problem or quietly produce the answers the sheet is asking you for. The closing message is short by design. *"Printed. Go think."*
 
@@ -262,12 +281,18 @@ paper-session/          ← SOURCE. Edit this.
   references/           design.md · page-patterns.md · prompt-craft.md · evidence.md
   scripts/              verify_layout.py
   assets/fonts/         IBM Plex + its OFL license
+  requirements.txt      the two packages, shipped so an installed skill can install them
 scan-back/              ← SOURCE. Edit this.
   SKILL.md
 
-build.sh                zips both source dirs into .skill bundles
+build.sh                zips both source dirs into .skill bundles, and concatenates
+                        the paste artifact from the same source
 paper-session.skill     ← BUILD ARTIFACT, committed so people can install without cloning
 scan-back.skill         ← BUILD ARTIFACT
+paper-session-paste.md  ← BUILD ARTIFACT: the three forward documents concatenated, for
+                        chat products with no skills runtime to paste
+skills.sh.json          grouping metadata for the skills CLI registry: the two halves
+                        offered as one loop rather than two unrelated skills
 
 docs/
   sheet-*.png           the specimen images in this README
@@ -281,7 +306,7 @@ research/               how capability changes get decided: a numbered research
 
 One consequence of this layout is easy to miss: `paper-session/` and `scan-back/` sitting at the repo root is what lets `npx skills add` discover them — the CLI checks each immediate root-level directory for a `SKILL.md`. Moving them deeper would silently break the one-command install.
 
-**The unpacked directories are the source; the `.skill` files are generated.** Never hand-edit a bundle — a zip diff is unreviewable, which is exactly why the source is unpacked. Run `./build.sh` and commit the regenerated bundles alongside your source edit.
+**The unpacked directories are the source; the `.skill` files and `paper-session-paste.md` are generated.** Never hand-edit a bundle — a zip diff is unreviewable, which is exactly why the source is unpacked. Run `./build.sh` and commit the regenerated bundles alongside your source edit.
 
 Inside `paper-session/`:
 
@@ -294,6 +319,7 @@ Inside `paper-session/`:
 | `references/evidence.md` | every rule's source, plus the honest limitations |
 | `scripts/verify_layout.py` | the gate: no sheet ships unverified |
 | `assets/fonts/` | IBM Plex Serif, Sans, and Mono |
+| `requirements.txt` | `reportlab` and `pdfplumber`, so a skill installed anywhere can install what it runs on |
 
 The dependency runs one way: `SKILL.md` → references → `evidence.md`. Rules in `SKILL.md` are compressed restatements of reference rules, never inventions.
 
@@ -317,7 +343,11 @@ ln -sfn "$PWD/scan-back"     ~/.claude/skills/scan-back
 python3 paper-session/scripts/verify_layout.py sheet.pdf
 ```
 
-`build.sh` refuses to ship two specific mistakes: a `SKILL.md` whose declared `name:` doesn't match its directory (the bundle would install under one name and describe itself as another), and a bundle carrying the IBM Plex fonts without their license.
+`build.sh` needs `zip`, `unzip`, and `python3` on PATH — `python3` because the font-weight guard is a stdlib script rather than a dependency. It checks all three before writing anything, since discovering one missing after the first bundle is rewritten leaves the tree half-built.
+
+`build.sh` refuses to ship four specific mistakes: a `SKILL.md` whose declared `name:` doesn't match its directory (the bundle would install under one name and describe itself as another), a bundle carrying the IBM Plex fonts without their license, a cross-skill coupling literal that has fallen out of one side of a pair the two skills each specify separately (a presence gate only — it catches an outright deletion, never two sides that quietly disagree), and a face that does not carry the weight its name promises — a variable font, a duplicated PostScript name, or three Sans files sharing one set of outlines, all of which print a voice at the wrong weight and none of which look wrong on screen.
+
+A run that includes `paper-session` also rewrites `paper-session-paste.md`, because all three of its sources live in that directory; `./build.sh scan-back` on its own leaves it alone.
 
 `verify_layout.py` fails on text escaping the page bounds and on text that collides — across different baselines, and on a shared baseline, which needs its own glyph-level check because pdfplumber merges same-line overlapping characters into a single word. Those are the defects that survive casual inspection and ruin a sheet at the printer. It is deliberately narrow — it checks geometry, never taste. On failure, shorten or rewrap the text and regenerate. **Never present an unverified sheet.**
 
@@ -335,6 +365,7 @@ Full guide in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
 
 - New patterns for domains not covered yet — teaching, therapy, law, field science, music, kitchen work.
 - Non-Letter paper sizes. A4 is the obvious gap.
+- Scripts the bundled faces can't set. Cyrillic and Vietnamese already work; CJK, Arabic, Hebrew, Devanagari, and Thai need glyph coverage *and* a shaping path, which §Install describes.
 - Better handwriting transcription heuristics, particularly for spatial arrangements and photographed card layouts.
 - Anything from actually running sessions: which sheets get completed and which get abandoned. Completion rate is the metric that matters, and right now nobody has data.
 - Counter-evidence. If a citation in the evidence brief is weaker than represented, that's a valuable PR.

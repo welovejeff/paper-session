@@ -1,0 +1,13 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "groupings": [
+    {
+      "title": "The paper loop",
+      "description": "Two halves of one loop, installed together: paper-session hands the thinking over on paper, scan-back reads the pen marks and resumes.",
+      "skills": [
+        "paper-session",
+        "scan-back"
+      ]
+    }
+  ]
+}

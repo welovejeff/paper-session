@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Four install routes for paper-session and scan-back, and the compatibility ledger: what is verified end to end and what is not.">
+<title>Install — Paper Session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   DIRECTION A — ANCHORED. Interior: install + the ledger.
+   Same five steps, same datum, same rule ladder 5 / 3 / 1.
+   ───────────────────────────────────────────────────────────── */
+
+:root{
+  color-scheme: light;
+
+  --paper:      oklch(0.968 0.007 95);
+  --paper-page: oklch(0.993 0.003 95);
+  --paper-hi:   oklch(0.938 0.007 95);
+
+  --ink:    oklch(0.235 0.008 250);
+  --ink-2:  oklch(0.450 0.006 250);
+  --ink-3:  oklch(0.415 0.006 250);
+
+  --rule-soft: oklch(0.820 0.004 250);
+  --rule-mid:  oklch(0.700 0.004 250);
+
+  --rule-datum: 5px;
+  --rule-close: 3px;
+  --rule-hair:  1px;
+
+  --fs-ask:   clamp(2.45rem, 6.6vw, 6rem);
+  --fs-fig:   clamp(2.1rem, 3.5vw, 3.4rem);
+  --fs-body:  1.0625rem;
+  --fs-sec:   0.9375rem;
+  --fs-label: 0.6875rem;
+
+  --font-sans:  "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-mono:  "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --pad: clamp(20px, 4vw, 64px);
+  --maxw: 1400px;
+  --rail: 176px;
+  --gutter: 40px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-sans);
+  font-size:var(--fs-body);
+  line-height:1.62;
+  overflow-x:hidden;
+  font-feature-settings:"kern" 1;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{ max-width:var(--maxw); margin:0 auto; padding-inline:var(--pad); }
+
+.label{
+  font-family:var(--font-sans);
+  font-size:var(--fs-label);
+  font-weight:600;
+  letter-spacing:0.155em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  margin:0;
+  line-height:1.45;
+}
+.label--ink{ color:var(--ink); }
+
+.mono{ font-family:var(--font-mono); font-size:0.9375rem; line-height:1.72; }
+.measure{ max-width:62ch; }
+
+.masthead{
+  display:flex; justify-content:space-between; align-items:baseline;
+  gap:24px; flex-wrap:wrap; padding-block:26px 12px;
+}
+.masthead a{ text-decoration:none; }
+.masthead a:hover{ text-decoration:underline; }
+.datum{ height:var(--rule-datum); background:var(--ink); }
+
+.band{ display:grid; grid-template-columns:var(--rail) minmax(0,1fr); }
+.band__rail{ padding:64px 24px 64px 0; }
+.band__body{
+  border-left:var(--rule-hair) solid var(--rule-soft);
+  padding:64px 0 64px var(--gutter);
+  min-width:0;
+}
+
+.ask{
+  font-family:var(--font-serif); font-weight:400;
+  font-size:var(--fs-ask); line-height:0.98; letter-spacing:-0.02em;
+  margin:0 0 32px; text-wrap:balance;
+}
+
+a{ color:var(--ink); text-underline-offset:3px; text-decoration-thickness:1px; }
+:where(a,summary,button):focus-visible{
+  outline:2px solid var(--ink); outline-offset:3px; background:var(--paper-hi);
+}
+
+/* ── ROUTE ROWS: one click, and you are at the answer ─────── */
+
+.routes{ list-style:none; margin:36px 0 0; padding:0; }
+.routes li:last-child a{ border-bottom:var(--rule-hair) solid var(--rule-soft); }
+.routes a{
+  display:grid; grid-template-columns:minmax(0,1fr) auto;
+  gap:12px 32px; align-items:baseline;
+  padding:22px 16px 22px 0;
+  border-top:var(--rule-hair) solid var(--rule-soft);
+  text-decoration:none;
+}
+.routes a:hover{ background:var(--paper-hi); }
+.route__dest{
+  font-family:var(--font-mono); font-size:var(--fs-label);
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-3);
+  white-space:nowrap;
+}
+.routes a:hover .route__dest{ color:var(--ink); }
+
+/* ── DIRECTIONS: four routes, none privileged ─────────────── */
+
+.tracks{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0;
+  border-top:var(--rule-hair) solid var(--rule-soft);
+}
+.track{
+  padding:28px var(--gutter) 34px 0;
+  border-bottom:var(--rule-hair) solid var(--rule-soft);
+}
+.track:nth-child(even){ border-left:var(--rule-hair) solid var(--rule-soft); padding-left:var(--gutter); }
+.track p{ margin:14px 0 0; color:var(--ink-2); font-size:var(--fs-sec); max-width:46ch; }
+.cmd{
+  font-family:var(--font-mono); font-size:var(--fs-sec); line-height:1.75;
+  border-left:var(--rule-close) solid var(--ink);
+  padding:6px 0 6px 16px; margin:16px 0 0;
+  /* break at spaces only. `overflow-wrap:anywhere` split a clone URL
+     across three lines, which is a copy-paste hazard, not a wrap. */
+  overflow-wrap:normal; word-break:normal; overflow-x:auto;
+}
+.cmd a{ text-decoration-thickness:1px; }
+/* .track p was capping the commands at 46ch, which is one character
+   narrower than the clone URL. Mono is the machine: full ink, no cap. */
+.track .cmd{ max-width:none; color:var(--ink); }
+
+/* ── DEFINITIONS BEFORE THE TABLE ─────────────────────────── */
+
+.defs{ margin:0; }
+.defs__row{
+  display:grid; grid-template-columns:minmax(0,19rem) minmax(0,1fr);
+  gap:0 var(--gutter);
+  border-top:var(--rule-hair) solid var(--rule-soft);
+  padding:16px 0; align-items:baseline;
+}
+.defs__row:last-child{ border-bottom:var(--rule-hair) solid var(--rule-soft); }
+.defs__row dd{ margin:0; color:var(--ink-2); font-size:var(--fs-sec); }
+
+/* ── THE LEDGER ───────────────────────────────────────────── */
+
+.ledger-wrap{ overflow-x:auto; }
+.ledger{ width:100%; min-width:760px; border-collapse:collapse; }
+.ledger th,.ledger td{
+  text-align:left; vertical-align:top;
+  padding:20px 28px 20px 0;
+  border-top:var(--rule-hair) solid var(--rule-soft);
+  font-size:var(--fs-sec); font-weight:400;
+}
+.ledger thead th{
+  border-top:0; padding-top:0;
+  font-size:var(--fs-label); font-weight:600;
+  letter-spacing:0.155em; text-transform:uppercase; color:var(--ink-3);
+}
+.ledger tbody tr td:first-child{ font-weight:600; color:var(--ink); }
+.ledger td{ color:var(--ink-2); }
+.ledger col.c1{ width:22%; } .ledger col.c2{ width:20%; }
+.ledger col.c3{ width:32%; } .ledger col.c4{ width:26%; }
+
+.status{
+  display:inline-block;
+  border:var(--rule-hair) solid var(--ink);
+  padding:6px 10px;
+  font-size:var(--fs-label); font-weight:600;
+  letter-spacing:0.13em; text-transform:uppercase;
+  color:var(--ink); line-height:1.3;
+}
+.status + p{ margin:12px 0 0; font-size:var(--fs-sec); line-height:1.55; }
+code{ font-family:var(--font-mono); font-size:0.875em; }
+
+.ledger tfoot td{
+  border-top:var(--rule-close) solid var(--ink);
+  padding-top:22px; color:var(--ink);
+}
+.tally{ display:flex; flex-wrap:wrap; gap:10px 56px; }
+.tally{ align-items:baseline; }
+.tally b{
+  font-family:var(--font-sans); font-weight:600;
+  font-size:var(--fs-fig); line-height:1; letter-spacing:-0.025em;
+  text-transform:none; margin-left:16px;
+  font-variant-numeric:tabular-nums;
+}
+
+.note{ margin:26px 0 0; color:var(--ink-2); font-size:var(--fs-sec); max-width:62ch; }
+
+/* ── OPEN TERRITORY + FOOTER ──────────────────────────────── */
+
+.ot{ padding-top:88px; }
+.ot__rule{ height:var(--rule-close); background:var(--ink); margin-top:10px; }
+.ot__field{ min-height:34vh; display:flex; align-items:flex-end; padding-bottom:8px; }
+
+.foot{ border-top:var(--rule-hair) solid var(--rule-soft); margin-top:64px; padding:24px 0 72px; }
+.foot__nav{ display:flex; flex-wrap:wrap; gap:8px 36px; margin-bottom:26px; }
+.foot__nav a,.foot__nav span{
+  font-family:var(--font-mono); font-size:var(--fs-label);
+  letter-spacing:0.09em; text-transform:uppercase; color:var(--ink-3);
+  text-decoration:none;
+}
+.foot__nav a:hover{ color:var(--ink); text-decoration:underline; }
+.foot__bar{ display:flex; justify-content:space-between; gap:24px 40px; flex-wrap:wrap; align-items:baseline; }
+.foot__colophon{ max-width:74ch; }
+.nowrap{ white-space:nowrap; }
+
+@media (max-width:900px){
+  :root{ --rail:0px; --gutter:0px; }
+  .band{ grid-template-columns:1fr; }
+  .band__rail{ padding:44px 0 0; }
+  .band__body{ border-left:0; padding:14px 0 44px; }
+  .band__rail .label{ border-bottom:var(--rule-hair) solid var(--rule-soft); padding-bottom:10px; }
+  .tracks{ grid-template-columns:1fr; }
+  .track{ padding-right:0; }
+  .track:nth-child(even){ border-left:0; padding-left:0; }
+  .defs__row{ grid-template-columns:1fr; gap:6px; }
+  .routes a{ grid-template-columns:1fr; }
+}
+
+@media (prefers-reduced-motion:no-preference){
+  html{ scroll-behavior:smooth; }
+  .routes a,.foot__nav a{ transition:background 120ms linear, color 120ms linear; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="masthead">
+    <p class="label label--ink"><a href="landing.html">Paper Session</a></p>
+    <p class="label">Install &middot; 2 / 2</p>
+  </div>
+  <div class="datum" role="presentation"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ─── THE ASK ─────────────────────────────────────────── -->
+  <section class="band" aria-labelledby="ask">
+    <div class="band__rail"><p class="label">Install</p></div>
+    <div class="band__body">
+      <h1 class="ask" id="ask">Which of these is true of you?</h1>
+      <p class="measure">Take both halves or neither. Every sheet prints
+      <code class="nowrap">SCAN IT BACK TO CONTINUE.</code> along its bottom edge, and
+      without the return half that line is a promise nothing keeps.</p>
+
+      <ul class="routes">
+        <li><a href="#r1"><span>My AI is an app or a browser tab.</span><span class="route__dest">01 &middot; Two bundles &darr;</span></a></li>
+        <li><a href="#r2"><span>My AI runs in a terminal or my editor.</span><span class="route__dest">02 &middot; One command &darr;</span></a></li>
+        <li><a href="#r3"><span>A terminal, but no Node.</span><span class="route__dest">03 &middot; Clone and unzip &darr;</span></a></li>
+        <li><a href="#r4"><span>My AI cannot take skills at all.</span><span class="route__dest">04 &middot; Paste one file &darr;</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── THE DIRECTIONS ──────────────────────────────────── -->
+  <section class="band" aria-labelledby="dirs">
+    <div class="band__rail"><p class="label" id="dirs">The directions</p></div>
+    <div class="band__body">
+      <div class="tracks">
+
+        <div class="track" id="r1">
+          <p class="label label--ink">01 &middot; Chat app</p>
+          <p class="cmd">
+            <a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session.skill">paper-session.skill</a><br>
+            <a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back.skill">scan-back.skill</a>
+          </p>
+          <p>Download both and upload them where your client takes skills. No terminal,
+          no unzipping. The skill installs what it needs where it runs.</p>
+        </div>
+
+        <div class="track" id="r2">
+          <p class="label label--ink">02 &middot; Terminal or IDE</p>
+          <p class="cmd">npx skills add welovejeff/paper-session</p>
+          <p>Finds both skills in the repository and routes them to Claude Code, Cursor,
+          Codex, Copilot and 70+ other agents. Project-level by default; <code>-g</code>
+          installs user-level.</p>
+        </div>
+
+        <div class="track" id="r3">
+          <p class="label label--ink">03 &middot; No Node</p>
+          <p class="cmd">git clone https://github.com/welovejeff/paper-session.git<br>
+          cd paper-session<br>
+          unzip -o paper-session.skill -d ~/.claude/skills/<br>
+          unzip -o scan-back.skill -d ~/.claude/skills/</p>
+          <p>The bundles are ordinary zips. Whatever unpacks an archive on your machine
+          is enough.</p>
+        </div>
+
+        <div class="track" id="r4">
+          <p class="label label--ink">04 &middot; No skills runtime</p>
+          <p class="cmd">
+            <a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session-paste.md">paper-session-paste.md</a><br>
+            <a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back/SKILL.md">scan-back/SKILL.md</a>
+          </p>
+          <p>Nothing installs, because nothing reads a skills folder. Paste the forward
+          file, say what you are working on, and add the sentence in the box below. What
+          comes back is a card you copy into a notebook by hand, never a PDF.</p>
+        </div>
+
+      </div>
+
+      <p class="cmd" style="max-width:62ch; margin-top:36px">I can't print, and you can't make a PDF here, so
+      dictate the setup card for me to copy by hand &mdash; there is nothing to annotate.</p>
+      <p class="note">That sentence is load-bearing: it is what routes the host onto the
+      setup-card path.</p>
+    </div>
+  </section>
+
+  <!-- ─── PYTHON ──────────────────────────────────────────── -->
+  <section class="band" aria-labelledby="py">
+    <div class="band__rail"><p class="label" id="py">Python</p></div>
+    <div class="band__body">
+      <p class="cmd">python3 -m pip install -r ~/.claude/skills/paper-session/requirements.txt</p>
+      <p class="note"><code>reportlab</code> draws the page. <code>pdfplumber</code> runs
+      the layout gate no sheet is allowed to skip. Point pip at the copy that arrived with
+      the skill. Add <code>--break-system-packages</code> where pip reports the environment
+      is externally managed. Nothing to install on a chat surface; nothing at all on the
+      paste route, which renders no file.</p>
+    </div>
+  </section>
+
+  <!-- ─── HOW TO READ THE LEDGER ──────────────────────────── -->
+  <section class="band" aria-labelledby="defs">
+    <div class="band__rail"><p class="label" id="defs">Terms first</p></div>
+    <div class="band__body">
+      <dl class="defs">
+        <div class="defs__row">
+          <dt><span class="status">Verified end to end</span></dt>
+          <dd>Discovery, install, sheet generation and scan-back have all been run on this
+          agent by someone here.</dd>
+        </div>
+        <div class="defs__row">
+          <dt><span class="status">Supported</span></dt>
+          <dd>The chat-native path the return trip was designed around. It stops short of
+          a reported end-to-end run.</dd>
+        </div>
+        <div class="defs__row">
+          <dt><span class="status">Installs cleanly, loop untested</span></dt>
+          <dd>The install works. Nobody has carried a page all the way round on this agent.
+          One session report closes the row.</dd>
+        </div>
+        <div class="defs__row">
+          <dt><span class="status">Untested, per surface</span></dt>
+          <dd>Nothing is rendered, so nothing is verified. A pasted protocol also has no
+          authority over the host's system prompt.</dd>
+        </div>
+      </dl>
+      <p class="note">The word is the whole status. Nothing here is color-coded, because
+      roughly one reader in twelve would lose the ledger the moment it was.</p>
+    </div>
+  </section>
+
+  <!-- ─── THE LEDGER ──────────────────────────────────────── -->
+  <section class="band" aria-labelledby="led">
+    <div class="band__rail"><p class="label" id="led">The ledger</p></div>
+    <div class="band__body">
+      <div class="ledger-wrap">
+        <table class="ledger">
+          <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Your agent</th>
+              <th scope="col">Install</th>
+              <th scope="col">The loop today</th>
+              <th scope="col">Also install</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Claude Code &mdash; CLI, IDE, web</td>
+              <td><code>npx skills add</code>, or clone and unzip</td>
+              <td><span class="status">Verified end to end</span></td>
+              <td>reportlab + pdfplumber, on the machine running the agent</td>
+            </tr>
+            <tr>
+              <td>claude.ai &middot; Claude desktop &middot; mobile</td>
+              <td>Upload the two <code>.skill</code> files</td>
+              <td><span class="status">Supported</span>
+                <p>A phone photographing the pages is what the return trip was built around.</p></td>
+              <td>Nothing by hand. The skill installs what it needs where it runs</td>
+            </tr>
+            <tr>
+              <td>Cursor &middot; Codex &middot; Copilot &middot; other CLI-routable agents</td>
+              <td><code>npx skills add … -a &lt;agent&gt;</code></td>
+              <td><span class="status">Installs cleanly, loop untested</span>
+                <p>The sheets need an agent that can run reportlab and read photographs back.
+                A session report from one of these is the contribution we want most.</p></td>
+              <td>reportlab + pdfplumber, wherever that agent runs Python</td>
+            </tr>
+            <tr>
+              <td>Anything else that reads <code>SKILL.md</code> folders</td>
+              <td>Unzip a bundle into the agent's skills directory</td>
+              <td><span class="status">Installs cleanly, loop untested</span></td>
+              <td>reportlab + pdfplumber, wherever that agent runs Python</td>
+            </tr>
+            <tr>
+              <td>Chat AI with no skills runtime &mdash; ChatGPT, Gemini, Copilot chat, Perplexity, Le&nbsp;Chat, DeepSeek, Grok, Poe</td>
+              <td>Paste <code>paper-session-paste.md</code>, then <code>scan-back/SKILL.md</code></td>
+              <td><span class="status">Untested, per surface</span>
+                <p>The forward half produces a hand-copied card, never a PDF. The bright lines
+                hold only as far as the host chooses to hold them.</p></td>
+              <td>Nothing. No PDF is generated, so no library is needed</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <div class="tally">
+                  <span class="label label--ink">Rows verified end to end <b>1 / 5</b></span>
+                  <span class="label label--ink">Outside session reports on file <b>0</b></span>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="note">Copilot appears twice on purpose, in two different products: the
+      CLI-routable IDE agent in row three, the chat surface in row five.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="wrap">
+  <section class="ot" aria-labelledby="otl">
+    <p class="label label--ink" id="otl">Open territory</p>
+    <div class="ot__rule" role="presentation"></div>
+    <div class="ot__field"></div>
+  </section>
+
+  <footer class="foot">
+    <nav class="foot__nav" aria-label="Site index">
+      <a href="landing.html">1.1&nbsp; Index</a>
+      <span>1.2&nbsp; Install</span>
+      <a href="https://github.com/welovejeff/paper-session">1.3&nbsp; Repository</a>
+      <a href="https://github.com/welovejeff/paper-session/blob/main/LICENSE">1.4&nbsp; License &mdash; MIT</a>
+    </nav>
+    <div class="foot__bar">
+      <p class="label foot__colophon">Set in IBM Plex Serif, Sans and Mono. Serif asks and only asks.
+      Mono is text read out of the repository, never ours. Tracked caps is furniture. This
+      sentence is Sans regular, a fourth register the print system does not have. Five sizes,
+      three rule weights, no color.</p>
+      <p class="label">Paper Session &middot; 2 / 2</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

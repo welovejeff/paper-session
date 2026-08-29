@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install — Paper Session — Direction C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DIRECTION C — interior: install, and the ledger
+   Same three layers as the landing page.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --ground:    oklch(0.968 0.004 95);
+  --ground-2:  oklch(0.945 0.005 95);
+  --ink:       oklch(0.235 0.008 250);
+  --ink-2:     oklch(0.420 0.006 250);
+  --ink-3:     oklch(0.515 0.005 250);
+  --rule:      oklch(0.795 0.005 250);
+  --rule-2:    oklch(0.880 0.004 250);
+
+  --plate:       oklch(0.222 0.010 255);
+  --plate-ink:   oklch(0.900 0.006 250);
+  --plate-quiet: oklch(0.660 0.006 250);
+  --plate-rule:  oklch(0.360 0.010 255);
+
+  --pen-black: oklch(0.235 0.008 250);
+  --pen-red:   oklch(0.420 0.140 27);
+  --pen-green: oklch(0.420 0.140 152);
+  --pen-blue:  oklch(0.420 0.140 258);
+  --pen-red-p:   oklch(0.800 0.130 27);
+  --pen-green-p: oklch(0.800 0.130 152);
+  --pen-blue-p:  oklch(0.800 0.130 258);
+
+  --ask:  "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --inf:  "Archivo", "Helvetica Neue", Helvetica, system-ui, sans-serif;
+  --mach: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.1rem, 1.05rem + 3.9vw, 4.4rem);
+  --fs-ask:     clamp(1.45rem, 1.15rem + 1.1vw, 1.95rem);
+  --fs-body:    1.0625rem;
+  --fs-mono:    0.9375rem;
+  --fs-label:   0.6875rem;
+
+  --track: 0.15em;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--inf);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--ink); color: var(--ground); }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ---- grid ---------------------------------------------------------------- */
+
+.wrap {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 34rem) minmax(0, 19rem);
+  column-gap: clamp(1.5rem, 2.6vw, 3rem);
+  row-gap: 1.75rem;
+  align-items: start;
+}
+.col-main { grid-column: 2; min-width: 0; }
+.col-pen  { grid-column: 3; min-width: 0; }
+.span-mp  { grid-column: 2 / 4; min-width: 0; }
+.span-all { grid-column: 1 / -1; min-width: 0; }
+
+/* ---- infrastructure ------------------------------------------------------ */
+
+.caps {
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.rail { padding-top: 0.5rem; }
+.rail__n {
+  font-family: var(--mach);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.rail__label { color: var(--ink); }
+
+.masthead { padding-top: 1.5rem; }
+.masthead__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 0.7rem;
+}
+.masthead__name {
+  font-family: var(--inf);
+  font-weight: 700;
+  font-size: var(--fs-label);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.masthead__name a { text-decoration: none; }
+.masthead__name a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.datum { height: 3px; background: var(--ink); }
+.masthead__ink {
+  margin: 0.55rem 0 0;
+  text-align: right;
+  color: var(--ink-3);
+}
+
+section { padding-block: 4rem; }
+.air-1 { padding-block: 3.5rem 4rem; }
+.air-2 { padding-block: 5rem; }
+.air-3 { padding-block: 6rem; }
+.air-4 { padding-block: 7.5rem; }
+.air-5 { padding-block: 9rem clamp(11rem, 34vh, 24rem); }
+
+/* ---- voices -------------------------------------------------------------- */
+
+.ask {
+  font-family: var(--ask);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  margin: 0;
+  text-wrap: balance;
+}
+.ask--display { font-size: var(--fs-display); line-height: 1.06; letter-spacing: -0.018em; font-weight: 380; }
+.ask--section { font-size: var(--fs-ask); line-height: 1.18; letter-spacing: -0.01em; }
+
+.plate {
+  margin: 0;
+  background: var(--plate);
+  color: var(--plate-ink);
+  padding: 1.25rem 1.4rem 1.4rem;
+  font-family: var(--mach);
+  font-size: var(--fs-mono);
+  line-height: 1.62;
+}
+.plate__src {
+  display: block;
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--plate-quiet);
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid var(--plate-rule);
+}
+.plate p { margin: 0 0 0.7rem; }
+.plate p:last-child { margin-bottom: 0; }
+.plate a { color: var(--pen-blue-p); text-underline-offset: 3px; }
+.plate code { font: inherit; }
+.plate--tall { height: 100%; display: flex; flex-direction: column; }
+.plate--tall .plate__body { flex: 1 1 auto; }
+
+.cmd {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: transparent;
+  border-left: 2px solid var(--pen-blue-p);
+  padding: 0.15rem 0 0.15rem 0.8rem;
+  margin: 0 0 0.9rem;
+  font-family: var(--mach);
+  font-size: 0.9375rem;
+  color: var(--plate-ink);
+}
+
+.pen {
+  margin: 0 0 1.1rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid currentColor;
+  font-family: var(--mach);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--pen-black);
+}
+.pen:last-child { margin-bottom: 0; }
+.pen__ink {
+  display: block;
+  font-family: var(--inf);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.pen__mark { font-family: var(--mach); font-weight: 500; padding-right: 0.35em; }
+.pen--red { color: var(--pen-red); }
+.pen--green { color: var(--pen-green); }
+.pen--blue { color: var(--pen-blue); }
+.pen--black { color: var(--pen-black); }
+.pen code { font: inherit; }
+
+/* ---- routes -------------------------------------------------------------- */
+
+.routes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.route { min-width: 0; display: flex; flex-direction: column; }
+.route__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+.route__q {
+  font-family: var(--ask);
+  font-optical-sizing: auto;
+  font-size: 1.25rem;
+  line-height: 1.22;
+  font-weight: 400;
+  margin: 0 0 0.9rem;
+  min-height: 2.5em;
+}
+.route .plate { flex: 1 1 auto; }
+
+/* ---- copy control -------------------------------------------------------- */
+
+.copy {
+  font-family: var(--inf);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pen-blue-p);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--pen-blue-p);
+  padding: 0 0 0.25rem;
+  cursor: pointer;
+}
+.copy:hover { color: var(--plate-ink); border-color: var(--plate-ink); }
+.copy[data-done="1"] { color: var(--pen-green-p); border-color: var(--pen-green-p); }
+
+/* ---- definitions apparatus ---------------------------------------------- */
+
+.defs { margin: 0; }
+.defs__row {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: 0.5rem 2.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+}
+.defs__row:last-child { border-bottom: 1px solid var(--rule); }
+.defs dt {
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.defs dd {
+  margin: 0;
+  font-family: var(--mach);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.d-green { color: var(--pen-green); }
+.d-red { color: var(--pen-red); }
+.d-black { color: var(--pen-black); }
+
+/* ---- ledger table -------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table.ledger {
+  width: 100%;
+  min-width: 46rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+table.ledger caption {
+  text-align: left;
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding-bottom: 0.8rem;
+}
+table.ledger th, table.ledger td {
+  padding: 1rem 1.5rem 1rem 0;
+  vertical-align: top;
+  border-top: 1px solid var(--rule);
+}
+table.ledger thead th {
+  border-top: 0;
+  border-bottom: 3px solid var(--ink);
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.6rem;
+}
+table.ledger tbody tr:last-child th,
+table.ledger tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+table.ledger tbody th {
+  font-family: var(--mach);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  width: 22rem;
+}
+table.ledger td {
+  font-family: var(--mach);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.verdict {
+  display: block;
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+}
+.verdict .m { padding-right: 0.4em; font-family: var(--mach); }
+.v-green { color: var(--pen-green); }
+.v-red { color: var(--pen-red); }
+.v-black { color: var(--pen-black); }
+
+/* ---- exits --------------------------------------------------------------- */
+
+.exit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--pen-blue);
+  text-decoration: none;
+  border-bottom: 2px solid var(--pen-blue);
+  padding-bottom: 0.3rem;
+}
+.exit:hover { color: var(--ink); border-color: var(--ink); }
+.exit__arrow { font-family: var(--mach); }
+.exits { display: flex; flex-wrap: wrap; gap: 1.25rem 2.5rem; }
+
+.ot__rule { height: 2px; background: var(--ink); margin: 0.6rem 0 2.5rem; }
+
+/* ---- footer -------------------------------------------------------------- */
+
+footer { padding-block: 3rem 3.5rem; border-top: 1px solid var(--rule); margin-top: 5rem; }
+.inkkey {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 3rem;
+}
+.inkkey__i { border-top: 2px solid currentColor; padding-top: 0.6rem; }
+.inkkey__n {
+  font-family: var(--inf);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+}
+.inkkey__d { font-family: var(--mach); font-size: 0.8125rem; line-height: 1.5; color: var(--ink-2); margin: 0; }
+.colophon {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
+  gap: 0.75rem 2.5rem;
+  color: var(--ink-3);
+}
+@media (max-width: 68rem) { .colophon { grid-template-columns: 1fr; } }
+.colophon a { color: var(--ink-2); }
+
+/* ---- narrow -------------------------------------------------------------- */
+
+@media (max-width: 68rem) {
+  .routes { grid-template-columns: 1fr; }
+  .route__q { min-height: 0; }
+  .inkkey { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 64rem) {
+  .grid { grid-template-columns: minmax(0, 1fr); row-gap: 1.5rem; }
+  /* The margin note keeps a margin note's measure once it falls inline. */
+  .pen { max-width: 34rem; }
+  .col-main, .col-pen, .span-mp, .span-all { grid-column: 1; }
+  .rail { padding-top: 0; }
+  .rail__n { display: inline; margin-right: 0.6rem; }
+  .defs__row { grid-template-columns: minmax(0, 1fr); }
+  .inkkey { grid-template-columns: 1fr; }
+  section { padding-block: 3rem; }
+  .air-2, .air-3, .air-4 { padding-block: 3.5rem; }
+  .air-5 { padding-block: 4rem clamp(7rem, 26vh, 13rem); }
+  :root { --fs-display: clamp(1.9rem, 1.2rem + 4vw, 2.6rem); }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead wrap">
+  <div class="masthead__row">
+    <p class="masthead__name"><a href="landing.html">Paper&nbsp;Session</a></p>
+    <p class="caps" style="margin:0;">Install &middot; and where the loop stands</p>
+    <p class="caps" style="margin:0;color:var(--ink-3);">Direction C &middot; page 02 of 02</p>
+  </div>
+  <div class="datum" role="presentation"></div>
+  <p class="caps masthead__ink">All colour below is ink &middot; key at the foot</p>
+</header>
+
+<main>
+
+  <!-- 01 ------------------------------------------------------------------ -->
+  <section class="air-1" aria-labelledby="s1">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">01</span>
+        <span class="rail__label">Install</span>
+      </div>
+      <h1 class="ask ask--display span-mp" id="s1">Where does your AI keep the things you give it?</h1>
+
+      <div class="col-main" style="margin-top:1.25rem;">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README &sect;Install</span>
+          <p>Get <strong>both</strong> halves, whatever your setup &mdash; they&rsquo;re a
+          loop: <code>paper-session</code> prints &ldquo;SCAN IT BACK TO CONTINUE.&rdquo;
+          on every footer, and <code>scan-back</code> is what honors that promise.</p>
+        </blockquote>
+      </div>
+      <div class="col-pen"></div>
+    </div>
+  </section>
+
+  <!-- 02 ------------------------------------------------------------------ -->
+  <section class="air-2" aria-labelledby="s2">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">02</span>
+        <span class="rail__label">The routes</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s2">Is there a file picker, a terminal, or only a text box?</h2>
+    </div>
+
+    <div class="wrap" style="margin-top:2rem;">
+      <ul class="routes">
+
+        <li class="route">
+          <div class="route__head">
+            <span class="caps">A</span>
+            <span class="caps" style="color:var(--ink-3);">Chat app</span>
+          </div>
+          <p class="route__q">Can you attach a file to it?</p>
+          <blockquote class="plate plate--tall">
+            <span class="plate__src">Verbatim &middot; README &sect;Install</span>
+            <div class="plate__body">
+              <p>Download the two packaged bundles and upload them where your client takes
+              skills. No terminal, no unzipping:</p>
+              <p><a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session.skill"><code>paper-session.skill</code></a><br>
+              <a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back.skill"><code>scan-back.skill</code></a></p>
+              <p style="color:var(--plate-quiet);">Nothing to install by hand on a chat
+              surface, where the skill runs its own Python.</p>
+            </div>
+          </blockquote>
+        </li>
+
+        <li class="route">
+          <div class="route__head">
+            <span class="caps">B</span>
+            <span class="caps" style="color:var(--ink-3);">Terminal or IDE</span>
+          </div>
+          <p class="route__q">Do you have a shell?</p>
+          <blockquote class="plate plate--tall">
+            <span class="plate__src">Verbatim &middot; README &sect;Install</span>
+            <div class="plate__body">
+              <p>The <a href="https://github.com/vercel-labs/skills">skills CLI</a> finds
+              both skills in this repo and routes them to Claude Code, Cursor, Codex,
+              Copilot, and 70+ other agents:</p>
+              <code class="cmd" id="cmd">npx skills add welovejeff/paper-session</code>
+              <p><button class="copy" type="button" data-copy="#cmd">Copy the line</button></p>
+              <p style="color:var(--plate-quiet);">Project-level by default;
+              <code>-g</code> installs user-level. No Node? The bundles are ordinary zips
+              &mdash; clone and unzip into your skills directory.</p>
+            </div>
+          </blockquote>
+        </li>
+
+        <li class="route">
+          <div class="route__head">
+            <span class="caps">C</span>
+            <span class="caps" style="color:var(--ink-3);">No skills runtime</span>
+          </div>
+          <p class="route__q">Only a text box?</p>
+          <blockquote class="plate plate--tall">
+            <span class="plate__src">Verbatim &middot; README &sect;Install</span>
+            <div class="plate__body">
+              <p>ChatGPT, Gemini, Copilot chat, Perplexity, Le Chat, DeepSeek, Grok, Poe.
+              There is nothing to install and one file to paste:
+              <a href="https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session-paste.md"><code>paper-session-paste.md</code></a>.
+              Paste the whole file into the chat, say what you&rsquo;re working on, and
+              add this sentence:</p>
+              <p style="border-left:2px solid var(--plate-rule);padding-left:0.8rem;">I
+              can&rsquo;t print, and you can&rsquo;t make a PDF here, so dictate the setup
+              card for me to copy by hand &mdash; there is nothing to annotate.</p>
+            </div>
+          </blockquote>
+        </li>
+
+      </ul>
+    </div>
+
+    <div class="wrap grid" style="margin-top:2rem;">
+      <div class="rail"></div>
+      <div class="span-mp">
+        <p class="pen pen--red" style="max-width:52rem;">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">?</span>Red &middot; review, on route C</span>
+          A pasted protocol is user text with no standing against the host&rsquo;s own
+          system prompt. A model tuned to be maximally helpful can still pre-fill a zone
+          or volunteer a duration that the rules in the paste forbid. How often, on which
+          product, is unmeasured.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ------------------------------------------------------------------ -->
+  <section class="air-2" aria-labelledby="s3">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">03</span>
+        <span class="rail__label">The words in the ledger</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s3">What has to be true before a row gets its word?</h2>
+
+      <div class="span-mp" style="margin-top:1rem;">
+        <dl class="defs">
+          <div class="defs__row">
+            <dt class="d-green"><span aria-hidden="true">&#10003;</span> Verified end to end</dt>
+            <dd>Someone installed both halves on that agent, generated a sheet, printed
+            it, filled it in with a pen, photographed the page, and had the work resumed
+            from the photograph. One agent qualifies.</dd>
+          </div>
+          <div class="defs__row">
+            <dt class="d-black"><span aria-hidden="true">&bull;</span> Supported, not verified</dt>
+            <dd>The path the return trip was designed around, and where the skill installs
+            what it needs on its own. No tested loop is claimed on it, so the ledger does
+            not give it the same word.</dd>
+          </div>
+          <div class="defs__row">
+            <dt class="d-red"><span aria-hidden="true">?</span> Installs cleanly, loop untested</dt>
+            <dd>Discovery and install work. Whether that agent can run reportlab and read
+            a photograph back afterwards is not known, because nobody has tried it and
+            written it down.</dd>
+          </div>
+          <div class="defs__row">
+            <dt class="d-red"><span aria-hidden="true">?</span> Untested, per surface</dt>
+            <dd>Nothing is rendered, so nothing is verified. The forward half produces a
+            hand-copied card rather than a PDF, and there is no layout gate because there
+            is no file. Each host is its own case.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 ------------------------------------------------------------------ -->
+  <section class="air-3" aria-labelledby="s4">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">04</span>
+        <span class="rail__label">The ledger</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s4">Which of these has anyone finished?</h2>
+    </div>
+
+    <div class="wrap" style="margin-top:2rem;">
+      <div class="tablewrap">
+        <table class="ledger">
+          <caption>Where the loop stands, agent by agent. No row is graded up.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Agent</th>
+              <th scope="col">The loop today</th>
+              <th scope="col">Also install</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Claude Code &middot; CLI, IDE, web</th>
+              <td>
+                <span class="verdict v-green"><span class="m" aria-hidden="true">&#10003;</span>Green &middot; go &mdash; verified end to end</span>
+                Discovery, install, sheet generation, and scan-back all tested.
+              </td>
+              <td>reportlab + pdfplumber, on the machine running the agent</td>
+            </tr>
+            <tr>
+              <th scope="row">claude.ai &middot; Claude desktop &middot; mobile</th>
+              <td>
+                <span class="verdict v-black"><span class="m" aria-hidden="true">&bull;</span>Black &middot; note &mdash; supported, not verified</span>
+                A phone photographing the pages is what the return trip was built around.
+              </td>
+              <td>Nothing by hand &mdash; the skill installs what it needs where it runs</td>
+            </tr>
+            <tr>
+              <th scope="row">Cursor &middot; Codex &middot; Copilot &middot; other CLI-routable agents</th>
+              <td>
+                <span class="verdict v-red"><span class="m" aria-hidden="true">?</span>Red &middot; review &mdash; installs cleanly, loop untested</span>
+                A session report from one of these is the contribution wanted most.
+              </td>
+              <td>reportlab + pdfplumber, wherever that agent runs Python</td>
+            </tr>
+            <tr>
+              <th scope="row">Anything else that reads SKILL.md folders</th>
+              <td>
+                <span class="verdict v-red"><span class="m" aria-hidden="true">?</span>Red &middot; review &mdash; installs cleanly, loop untested</span>
+                Download a bundle, unzip it into the agent&rsquo;s skills directory.
+              </td>
+              <td>reportlab + pdfplumber, wherever that agent runs Python</td>
+            </tr>
+            <tr>
+              <th scope="row">Chat AI with no skills runtime &mdash; ChatGPT, Gemini, Copilot chat, Perplexity, Le Chat, DeepSeek, Grok, Poe</th>
+              <td>
+                <span class="verdict v-red"><span class="m" aria-hidden="true">?</span>Red &middot; review &mdash; untested, per surface</span>
+                The card is copied by hand into whatever notebook you already own.
+              </td>
+              <td>Nothing &mdash; no PDF is generated, so no library is needed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="wrap grid" style="margin-top:2.25rem;">
+      <div class="rail"></div>
+      <div class="col-main">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README &sect;Install</span>
+          <p>Copilot appears twice on purpose, in two different products: the
+          CLI-routable IDE agent in row three, the chat surface in row five.</p>
+        </blockquote>
+      </div>
+      <div class="col-pen">
+        <p class="pen pen--green" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">&#10003;</span>Green &middot; go</span>
+          One row of five is green. That is the count, and it is why there is no badge
+          anywhere on this page.
+        </p>
+        <p class="pen pen--red" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">!</span>Red &middot; priority</span>
+          Reading the printed page is a requirement no row above states. Say you
+          can&rsquo;t and the session is dictated instead, for a braille slate, a typed
+          file, or a scribe. No study tests a dictated return, and no session report has
+          come back from one.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ------------------------------------------------------------------ -->
+  <section class="air-3" aria-labelledby="s5">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">05</span>
+        <span class="rail__label">Python</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s5">Who draws the page, and who checks the drawing?</h2>
+
+      <div class="col-main" style="margin-top:1rem;">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README &sect;Install</span>
+          <p><code>reportlab</code> draws the sheet; <code>pdfplumber</code> runs
+          <code>verify_layout.py</code>, the layout gate no sheet is allowed to skip. The
+          list ships inside the bundle, so point pip at the copy that arrived with the
+          skill rather than at this repo:</p>
+          <code class="cmd" id="cmd2">python3 -m pip install -r ~/.claude/skills/paper-session/requirements.txt</code>
+          <p><button class="copy" type="button" data-copy="#cmd2">Copy the line</button></p>
+        </blockquote>
+      </div>
+      <div class="col-pen" style="margin-top:1rem;">
+        <p class="pen pen--black" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">&bull;</span>Black &middot; note</span>
+          Add <code>--break-system-packages</code> where pip reports the environment is
+          externally managed.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 ------------------------------------------------------------------ -->
+  <section class="air-4" aria-labelledby="s6">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">06</span>
+        <span class="rail__label">Before you install anything</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s6">Would you rather just hold one first?</h2>
+
+      <div class="col-main" style="margin-top:1rem;">
+        <div class="exits">
+          <a class="exit" href="../../../docs/specimen.pdf">
+            <span class="exit__arrow" aria-hidden="true">&rarr;</span>
+            <span>Print the specimen &middot; 3 pages, PDF</span>
+          </a>
+          <a class="exit" href="landing.html">
+            <span class="exit__arrow" aria-hidden="true">&rarr;</span>
+            <span>Back to page 01</span>
+          </a>
+        </div>
+      </div>
+      <div class="col-pen" style="margin-top:1rem;">
+        <p class="pen pen--blue" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">&rarr;</span>Blue &middot; do</span>
+          Three pages the generator built from a numeric spec and put through its own
+          layout verifier.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 ------------------------------------------------------------------ -->
+  <section class="air-5" aria-labelledby="s7">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">07</span>
+        <span class="rail__label">Open territory</span>
+      </div>
+      <div class="span-mp">
+        <div class="ot__rule" role="presentation"></div>
+        <h2 class="ask ask--display" id="s7">Which row are you going to close?</h2>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p class="caps" style="margin:0;">Ink key &middot; this page follows the sheet&rsquo;s protocol</p>
+  <div class="inkkey">
+    <div class="inkkey__i pen--black">
+      <p class="inkkey__n"><span aria-hidden="true">&bull;</span> Black &middot; note</p>
+      <p class="inkkey__d">An aside in the site&rsquo;s own voice.</p>
+    </div>
+    <div class="inkkey__i pen--red">
+      <p class="inkkey__n"><span aria-hidden="true">?</span> Red &middot; review</p>
+      <p class="inkkey__d">A limitation, or something nobody has tested yet.</p>
+    </div>
+    <div class="inkkey__i pen--green">
+      <p class="inkkey__n"><span aria-hidden="true">&#10003;</span> Green &middot; go</p>
+      <p class="inkkey__d">Verified, and the page says by whom.</p>
+    </div>
+    <div class="inkkey__i pen--blue">
+      <p class="inkkey__n"><span aria-hidden="true">&rarr;</span> Blue &middot; do</p>
+      <p class="inkkey__d">On a sheet, blue is an instruction to the AI. Here it marks the
+      things you can do from this page.</p>
+    </div>
+  </div>
+
+  <div class="colophon caps">
+    <span>Paper Session &middot; MIT &middot; <a href="https://github.com/welovejeff/paper-session">welovejeff/paper-session</a></span>
+    <span>Install directions live in README &sect;Install and are quoted here, never restated</span>
+    <span>Rendered sat 29 aug 2026 &middot; page 02 of 02 &middot; end</span>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll(".copy").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var el = document.querySelector(btn.getAttribute("data-copy"));
+    if (!el) return;
+    var text = el.textContent.trim();
+    var label = btn.textContent;
+    var done = function () {
+      btn.textContent = "Copied";
+      btn.setAttribute("data-done", "1");
+      window.setTimeout(function () {
+        btn.textContent = label;
+        btn.removeAttribute("data-done");
+      }, 2400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        btn.textContent = "Select it and copy";
+      });
+    } else {
+      btn.textContent = "Select it and copy";
+    }
+  });
+});
+</script>
+
+</body>
+</html>

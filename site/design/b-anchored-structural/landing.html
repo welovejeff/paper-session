@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Session · Index</title>
+<meta name="description" content="Claude stops mid-task. You get a page. It picks up from your handwriting.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;family=IBM+Plex+Serif:ital,wght@0,400;1,400&amp;display=swap">
+<style>
+/* ==========================================================================
+   DIRECTION B — ANCHORED x STRUCTURE AND BEHAVIOUR
+   The site is a finite, numbered document. Every page is bounded: a datum
+   rule at the top, a closing rule at the bottom, a folio under it, and
+   nothing after that. The index is one screen because the copy is one
+   screen — no overflow is hidden and no scroll is hijacked.
+   ========================================================================== */
+
+/* --- 1. Tokens ---------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+
+  /* Neutrals only. The colour channel belongs to the reader's pen, and a
+     website has no pen, so it spends none of it. Whites carry a faint warm
+     bias, ink is cool graphite; nothing is pure. */
+  --paper:    oklch(0.968 0.006 85);
+  --paper-2:  oklch(0.940 0.005 85);
+  --ink:      oklch(0.255 0.012 250);
+  --ink-2:    oklch(0.380 0.010 250);
+  --quiet:    oklch(0.460 0.010 250);  /* 6.4:1 on paper. label floor */
+  --guide:    oklch(0.800 0.004 250);  /* rules only, never type */
+  --guide-2:  oklch(0.878 0.003 250);
+
+  --font-sans:  "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "IBM Plex Serif", "Iowan Old Style", Georgia, serif;
+  --font-mono:  "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Print has a dense cluster of small sizes and then a jump. So does this:
+     four sizes, and the gap between row and ask is the whole hierarchy. */
+  --fs-ask:   clamp(1.85rem, 1.05rem + 2.0vw, 2.85rem);
+  --fs-row:   clamp(1.05rem, 0.96rem + 0.42vw, 1.3rem);
+  --fs-body:  0.9375rem;
+  --fs-mono:  0.875rem;
+  --fs-label: 0.6875rem;
+
+  /* Print rules run 2pt / 1.6pt / 0.5pt — a 4:1 spread between the datum
+     and the hairline. 3/2/1px collapses that to 3:1 with the hairline at
+     the rendering floor, so the ratio is preserved instead of the maths. */
+  --rule-datum: 4px;
+  --rule-close: 2px;
+  --rule-hair:  1px;
+
+  --track: 0.15em;
+  --rail: 12.5rem;
+  --pad-x: clamp(1.25rem, 4vw, 4.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:   oklch(0.196 0.008 250);
+    --paper-2: oklch(0.240 0.008 250);
+    --ink:     oklch(0.945 0.005 85);
+    --ink-2:   oklch(0.820 0.005 85);
+    --quiet:   oklch(0.720 0.006 85);
+    --guide:   oklch(0.430 0.006 250);
+    --guide-2: oklch(0.330 0.006 250);
+  }
+}
+
+/* --- 2. Reset ----------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+h1, h2, h3, p, ol, ul { margin: 0; }
+ol, ul { list-style: none; padding: 0; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: var(--pad-x); top: -4rem;
+  z-index: 10;
+  background: var(--paper);
+  border: var(--rule-hair) solid var(--ink);
+  padding: 0.5rem 0.9rem;
+  font: 600 var(--fs-label)/1 var(--font-sans);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.skip:focus { top: 0.75rem; }
+
+/* --- 3. The page object ------------------------------------------------- */
+/* One sheet = one bounded screen. min-height, never fixed height: at 200%
+   zoom or a short window it simply grows and scrolls. Nothing is clipped. */
+
+.sheet {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto auto auto 1fr auto;
+  padding-inline: var(--pad-x);
+}
+
+.runhead {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding-block: 1.15rem 0.85rem;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--quiet);
+}
+.runhead__mark { color: var(--ink); }
+.runhead__loop { flex: 1 1 auto; }
+.runhead__pos { margin-left: auto; }
+
+@media (max-width: 640px) {
+  .runhead__loop { display: none; }
+}
+
+.datum { height: var(--rule-datum); background: var(--ink); }
+
+/* --- 4. Bands: a fixed left rail, a hairline datum, content right ------- */
+
+.band {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  align-items: start;
+}
+.band + .band { border-top: var(--rule-hair) solid var(--guide); }
+
+/* Source order on the lead band is h1 then rail; the grid puts them back. */
+.band--lead .rail { grid-column: 1; grid-row: 1; }
+.band--lead .band__body { grid-column: 2; grid-row: 1; }
+
+.rail {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--quiet);
+  padding-block: var(--band-top) 0;
+  padding-right: 1.5rem;
+}
+
+.band__body {
+  border-left: var(--rule-hair) solid var(--guide);
+  padding: var(--band-body-top) 0 var(--band-body-bot) 2.25rem;
+  min-width: 0;
+}
+
+/* A tall window puts the slack into the bands rather than pooling it all
+   above the closing rule. The page fills; it does not sag. */
+:root {
+  --band-top: clamp(1.9rem, 3.4vh, 3.4rem);
+  --band-body-top: clamp(1.75rem, 3.2vh, 3.2rem);
+  --band-body-bot: clamp(2.1rem, 3.8vh, 3.8rem);
+}
+
+@media (max-width: 780px) {
+  .band { grid-template-columns: minmax(0, 1fr); }
+  .rail { padding-block: 1.75rem 0.6rem; }
+  .band__body { border-left: 0; padding: 0 0 1.9rem; }
+  /* One column: the rail goes back above the body it labels. */
+  .band--lead .rail { grid-column: 1; grid-row: 1; }
+  .band--lead .band__body { grid-column: 1; grid-row: 2; }
+}
+
+/* --- 5. The ask. Serif appears here and nowhere else on this page. ------ */
+
+.ask {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-ask);
+  line-height: 1.14;
+  letter-spacing: -0.005em;
+  max-width: 36ch;
+}
+.ask > span { display: block; }
+.ask > span + span { margin-top: 0.12em; }
+
+/* Mono means one thing: words this project did not write for you. */
+.verbatim { margin-top: 2.1rem; display: grid; gap: 0.4rem; }
+.verbatim__key {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--quiet);
+}
+.verbatim__line {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--fs-mono);
+  color: var(--ink);
+}
+
+/* --- 6. The index. Six statements, six addresses. ----------------------- */
+
+.rows { display: grid; }
+.rows li + li { border-top: var(--rule-hair) solid var(--guide); }
+
+.row {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 1.25rem;
+  padding: 0.72rem 0;
+  text-decoration: none;
+  transition: background-color 120ms linear;
+}
+.row:hover { background: var(--paper-2); }
+.row:focus-visible { outline-offset: -2px; }
+
+.row__n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  color: var(--quiet);
+  font-variant-numeric: tabular-nums;
+}
+.row__stmt {
+  font-family: var(--font-serif);
+  font-size: var(--fs-row);
+  line-height: 1.3;
+}
+.row__dest {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--quiet);
+  white-space: nowrap;
+  text-underline-offset: 0.35em;
+}
+.row:hover .row__dest,
+.row:focus-visible .row__dest { color: var(--ink); text-decoration: underline; }
+.row__dest::after { content: " \2192"; }
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    row-gap: 0.3rem;
+    padding-block: 0.85rem;
+  }
+  .row__dest { grid-column: 2; }
+}
+
+/* --- 7. The margin, and the end ---------------------------------------- */
+/* Not "open territory" — nobody writes on a website. It is the margin that
+   makes the closing rule legible as an ending rather than a cut-off. */
+
+.margin {
+  min-height: 4.5rem;
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+}
+/* The column rule runs on to the closing rule. The space below the last
+   band is the rest of the page, not the end of the build. */
+.margin::after { content: ""; grid-column: 2; border-left: var(--rule-hair) solid var(--guide); }
+@media (max-width: 780px) { .margin::after { display: none; } }
+
+.folio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+  align-items: baseline;
+  border-top: var(--rule-close) solid var(--ink);
+  padding-block: 0.85rem 1.6rem;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--quiet);
+}
+.folio a { color: var(--quiet); text-decoration: none; border-bottom: var(--rule-hair) solid var(--guide); }
+.folio a:hover, .folio a:focus-visible { color: var(--ink); border-color: var(--ink); }
+.folio__right { margin-left: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#index">Skip to the index</a>
+
+<div class="sheet">
+
+  <header class="runhead">
+    <span class="runhead__mark">Paper Session</span>
+    <span class="runhead__loop">Screen &middot; paper &middot; pen &middot; scan &middot; screen</span>
+    <span class="runhead__pos">Index</span>
+  </header>
+
+  <div class="datum" role="presentation"></div>
+
+  <section class="band band--lead" aria-labelledby="loop-rail">
+    <div class="band__body">
+      <h1 class="ask">
+        <span>Claude stops mid&#8209;task.</span>
+        <span>You get a page.</span>
+        <span>It picks up from your handwriting.</span>
+      </h1>
+      <p class="verbatim">
+        <span class="verbatim__key">Verbatim &middot; the closing message</span>
+        <span class="verbatim__line">Printed. Go think.</span>
+      </p>
+    </div>
+    <h2 class="rail" id="loop-rail">The loop</h2>
+  </section>
+
+  <section class="band" id="index" aria-labelledby="index-rail">
+    <h2 class="rail" id="index-rail">Where you are</h2>
+    <div class="band__body">
+      <ol class="rows">
+        <li><a class="row" href="https://github.com/welovejeff/paper-session#what-comes-out-of-the-printer">
+          <span class="row__n">01</span>
+          <span class="row__stmt">I can print.</span>
+          <span class="row__dest">Get a sheet</span>
+        </a></li>
+        <li><a class="row" href="https://github.com/welovejeff/paper-session#using-it">
+          <span class="row__n">02</span>
+          <span class="row__stmt">I have no printer, or no way to read a printed page.</span>
+          <span class="row__dest">The card path</span>
+        </a></li>
+        <li><a class="row" href="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back/SKILL.md">
+          <span class="row__n">03</span>
+          <span class="row__stmt">I have marked&#8209;up paper already.</span>
+          <span class="row__dest">Scan it back</span>
+        </a></li>
+        <li><a class="row" href="interior.html">
+          <span class="row__n">04</span>
+          <span class="row__stmt">I want both halves wired into the agent I use.</span>
+          <span class="row__dest">Install</span>
+        </a></li>
+        <li><a class="row" href="https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session-paste.md">
+          <span class="row__n">05</span>
+          <span class="row__stmt">My AI cannot install skills at all.</span>
+          <span class="row__dest">Paste one file</span>
+        </a></li>
+        <li><a class="row" href="https://github.com/welovejeff/paper-session#what-the-research-does-not-support">
+          <span class="row__n">06</span>
+          <span class="row__stmt">I want to know where the evidence stops.</span>
+          <span class="row__dest">The limits</span>
+        </a></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="margin" role="presentation"></div>
+
+  <footer class="folio">
+    <p class="folio__left"><a href="https://github.com/welovejeff/paper-session">Source</a> &middot; MIT &middot; IBM Plex under SIL OFL 1.1</p>
+    <p class="folio__right">Index &middot; six pages</p>
+  </footer>
+
+</div>
+</body>
+</html>

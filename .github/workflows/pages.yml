@@ -1,0 +1,72 @@
+name: pages
+
+# The site is built from the repo it documents: build.py reads README §Install,
+# scan-back/SKILL.md, evidence.md and the specimen straight out of the tree at
+# build time. That is what keeps the single-source rule mechanical rather than a
+# promise — so the site is rebuilt on every push to main rather than committed,
+# and site/dist/ stays git-ignored.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # The templates and the build script, obviously — but also every source
+      # file the build reads. A README edit that changes the install directions
+      # has to reach the site without anyone remembering to redeploy.
+      - 'site/**'
+      - 'README.md'
+      - 'scan-back/SKILL.md'
+      - 'paper-session/SKILL.md'
+      - 'paper-session/references/**'
+      - 'docs/specimen.py'
+      - 'docs/specimen.pdf'
+      - 'docs/sheet-*.png'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# Only the newest commit needs to be live; cancel a run the next push supersedes.
+# Never cancel one already uploading — that leaves Pages serving a half-deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the site
+        # --strict fails the build on a dangling internal link or an
+        # unsubstituted template token. A broken link is worth a red deploy;
+        # it is not worth shipping.
+        run: python3 site/build.py --strict
+
+      - name: The build is reproducible
+        # Same inputs, byte-identical output. If a second run differs, something
+        # non-deterministic (a timestamp, a set iteration) has crept into the
+        # generator, and the site would churn on every unrelated push.
+        run: |
+          mv site/dist /tmp/first
+          python3 site/build.py --strict
+          diff -r /tmp/first site/dist
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

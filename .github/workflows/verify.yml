@@ -27,13 +27,64 @@ jobs:
             echo "$skill.skill matches source"
           done
 
+      # Ordering is load-bearing, and for the same reason the bundle check above
+      # runs first: the step below this one runs ./build.sh, which rewrites
+      # paper-session-paste.md on disk. A content check placed after it would
+      # compare the artifact CI just generated against the sources CI just
+      # generated it from, and could never fail.
+      - name: The paste artifact's body is exactly what build.sh emits
+        run: |
+          ./build.sh --paste-body > /tmp/paste-body
+          # Absence is its own failure, checked before the sed rather than
+          # inferred after it: the pipe below swallows sed's exit status, so a
+          # missing file reaches `test -s` as an empty body and would be
+          # reported as a corrupted artifact — the wrong repair, badly named.
+          test -f paper-session-paste.md \
+            || { echo "::error::paper-session-paste.md is missing — run ./build.sh and commit the result"; exit 1; }
+          # Keyed on the sentinel line, not on a byte count of the fresh body:
+          # a renamed or deleted sentinel then fails with its own message
+          # instead of silently shifting the comparison window.
+          sed -n '/^<!-- source begins;/,$p' paper-session-paste.md | tail -n +2 \
+            > /tmp/committed-body
+          test -s /tmp/committed-body \
+            || { echo "::error::paper-session-paste.md has no sentinel line, or nothing after it"; exit 1; }
+          diff /tmp/committed-body /tmp/paste-body \
+            || { echo "::error::paper-session-paste.md does not match source — run ./build.sh and commit the result"; exit 1; }
+          echo "paper-session-paste.md matches source"
+
+      - name: The instruction line is identical in the artifact and README
+        # This one string genuinely lives in two places: it is the install
+        # procedure for the paste channel, so it has to ship inside the artifact
+        # the host reads, and README §Install is where install directions live.
+        # A fixed literal compared byte for byte is the technique this file
+        # trusts — not the prose grep it rejects below.
+        run: |
+          line=$(sed -n 's/.*add this sentence: "\(.*\)"$/\1/p' paper-session-paste.md | head -1)
+          test -n "$line" \
+            || { echo "::error::instruction line missing from paper-session-paste.md"; exit 1; }
+          grep -qF "$line" README.md \
+            || { echo "::error::README quotes a different instruction line than the artifact ships"; exit 1; }
+
       - name: build.sh reproduces the bundles cleanly
-        run: ./build.sh
+        run: |
+          ./build.sh
+          # Two checks, because they catch different mistakes. `git diff` catches
+          # a stale committed artifact — a changed preamble, say, which the
+          # content check above does not look at — but it reports nothing at all
+          # for a file that was generated and never `git add`ed, which is exactly
+          # the state a hurried maintainer leaves behind.
+          git ls-files --error-unmatch paper-session-paste.md \
+            || { echo "::error::paper-session-paste.md is not tracked — git add it"; exit 1; }
+          git diff --exit-code -- paper-session-paste.md \
+            || { echo "::error::paper-session-paste.md is stale — run ./build.sh and commit the result"; exit 1; }
 
   skill-integrity:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Each SKILL.md declares a name matching its directory
         run: |
@@ -48,6 +99,66 @@ jobs:
           test -f paper-session/assets/fonts/LICENSE-IBMPlex.txt
           unzip -Z1 paper-session.skill > /tmp/listing
           grep -q 'assets/fonts/LICENSE-IBMPlex.txt' /tmp/listing
+
+      - name: The shipped faces carry the weights their names promise
+        # design.md maps three voices onto eight registered faces. The three Sans
+        # files once shipped as three copies of one variable font, every one
+        # reporting usWeightClass 400, so SemiBold and Bold rendered as Regular
+        # and every sheet the project produced printed flat. Nothing caught it,
+        # because nothing compared the faces to each other.
+        #
+        # build.sh runs the same four assertions with a stdlib TTF parser, so a
+        # build needs no font library. This step states them independently
+        # against fontTools — this job's habit is to restate build.sh's checks
+        # rather than delegate to it, and an independent reading is a better
+        # duplicate than a copied parser, which could drift without either copy
+        # being wrong on its own.
+        run: |
+          python3 -m pip install --quiet 'fonttools>=4.50'
+          python3 - <<'PY'
+          import hashlib, sys
+          from fontTools.ttLib import TTFont
+
+          EXPECTED = {
+              "IBMPlexSans-Regular.ttf":   400,
+              "IBMPlexSans-SemiBold.ttf":  600,
+              "IBMPlexSans-Bold.ttf":      700,
+              "IBMPlexSerif-Regular.ttf":  400,
+              "IBMPlexSerif-Italic.ttf":   400,
+              "IBMPlexSerif-SemiBold.ttf": 600,
+              "IBMPlexMono-Regular.ttf":   400,
+              "IBMPlexMono-Medium.ttf":    500,
+          }
+          SANS = [f for f in EXPECTED if f.startswith("IBMPlexSans")]
+          FONTS = "paper-session/assets/fonts/"
+
+          bad, weights, names, outlines = [], {}, {}, {}
+          for face, want in EXPECTED.items():
+              font = TTFont(FONTS + face, lazy=True)
+              if "fvar" in font:
+                  bad.append(f"{face} is a variable font; reportlab renders it at the default instance")
+              weights[face] = font["OS/2"].usWeightClass
+              names[face] = font["name"].getDebugName(6)
+              outlines[face] = hashlib.sha256(font.reader["glyf"]).hexdigest()
+              if weights[face] != want:
+                  bad.append(f"{face} reports usWeightClass {weights[face]}, not {want}")
+
+          # reportlab keys on the PostScript name, so two faces sharing one are
+          # one face however they are filed.
+          if len(set(names.values())) != len(names):
+              bad.append(f"PostScript names are not pairwise distinct: {sorted(names.values())}")
+          if len({weights[f] for f in SANS}) != len(SANS):
+              bad.append(f"the three Sans faces share a usWeightClass: {[weights[f] for f in SANS]}")
+          # The assertion that catches the defect on its own: three files
+          # correctly named and correctly reweighted but never re-outlined pass
+          # everything above and still print flat.
+          if len({outlines[f] for f in SANS}) != len(SANS):
+              bad.append("the three Sans faces share their glyf outlines")
+
+          for message in bad:
+              print(f"::error::{message}")
+          sys.exit(1 if bad else 0)
+          PY
 
       - name: The pen protocol still exists on both sides
         # Specified twice with no shared file: design.md §9 prints the ink key,

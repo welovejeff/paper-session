@@ -1,0 +1,84 @@
+<!--page
+title: Get a sheet
+slug: get-a-sheet
+description: A sheet at US Letter size, in the page. Print it and go think.
+nav_label: Get a sheet
+nav_order: 10
+body_class: ps-sheet-page
+sheet: true
+sheet_pages: 1
+-->
+
+<!-- /get-a-sheet/ is the print organ.
+
+     The sheet below is not a picture of a sheet and not a download. It is the
+     page, in the DOM, at 612 x 792pt, and Ctrl+P puts it on paper. Every number
+     it is set in arrives as a --ps-* custom property generated from
+     paper-session/references/design.md by site/sheetspec.py; `sheet: true` in
+     the front matter above makes build.py print this page with chromium and run
+     paper-session/scripts/verify_layout.py over the result. Nothing here is
+     allowed to restate the print spec by hand.
+
+     State 01: the sheet knows nothing about the visitor, so it proposes
+     nothing. There is no I PROPOSE column, no example answer, and no claim
+     about paper-session anywhere on the paper. -->
+
+<section class="band air-1">
+  <div class="wrap">
+
+    <div class="ps-sheet-hold">
+      <span class="cm1" aria-hidden="true"></span><span class="cm2" aria-hidden="true"></span>
+
+      <article class="ps-sheet">
+        <div class="s-datum" role="presentation"></div>
+        <h1 class="s-title">The decision under the work</h1>
+        <p class="s-meta">Undated</p>
+        <p class="s-intent">Name the decision under the work you left on screen, and settle it in pen before you go back to it.</p>
+
+        <div class="s-zone s-body-top">
+          <div class="s-label">First three are free</div>
+          <div class="s-box">
+            <p class="s-prompt">The answers you already have. Down here, out of the way.</p>
+            <div class="s-lines">
+              <p class="s-line"><span class="s-num">01</span><span class="s-rule"></span></p>
+              <p class="s-line"><span class="s-num">02</span><span class="s-rule"></span></p>
+              <p class="s-line"><span class="s-num">03</span><span class="s-rule"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s-zone">
+          <div class="s-label">One provocation</div>
+          <p class="s-prov">Which decision are you still calling a discussion?</p>
+          <p class="s-sub">One line. The decision itself, not the case for it.</p>
+        </div>
+
+        <div class="s-zone">
+          <div class="s-label">Sketch field</div>
+          <p class="s-prompt">Draw the week after you decide. Mark the part you cannot take back.</p>
+          <!-- The dot grid is style.css §21. Six is a row count, not a
+               measurement; every value it is drawn with is a generated token. -->
+          <div class="s-dots" role="presentation" style="--s-dot-rows: 6"></div>
+        </div>
+
+        <div class="s-open">
+          <div class="s-label">Open territory</div>
+          <div class="s-close" role="presentation"></div>
+        </div>
+        <div class="s-territory" role="presentation"></div>
+
+        <p class="s-foot">
+          {% if repo_footer_line %}<span>{{ repo_footer_line }}</span>{% endif %}
+          <span>Deep &middot; 1 of 1</span>
+        </p>
+      </article>
+    </div>
+
+    <!-- Print is a verb. The control ships hidden and site.js reveals it, so a
+         browser that cannot be asked to print never shows a dead button; Ctrl+P
+         does the same job with JavaScript off. -->
+    <button class="btn" type="button" data-print hidden>Print this sheet</button>
+
+    {% include "_print-note.html" %}
+  </div>
+</section>

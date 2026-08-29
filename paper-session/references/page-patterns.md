@@ -42,7 +42,7 @@ Universal requirements, from the research:
 
 **Constraint box.** A box that physically fits about twelve words, with the constraint stated above it. The limit does the editing.
 
-**Sketch field (required somewhere in every Deep kit).** A dot-grid zone with a prompt that asks for a drawing, diagram, or spatial arrangement rather than sentences: "Draw the shape of the arc." "Sketch what the room looks like in week eight." Drawing outperforms writing on recall, and it recruits a different retrieval path than prose.
+**Sketch field (required somewhere in every Deep kit).** A dot-grid zone with a prompt that asks for a drawing, diagram, or spatial arrangement rather than sentences: "Draw the shape of the arc." "Sketch what the room looks like in week eight." Drawing outperforms writing on recall, and it recruits a different retrieval path than prose. The requirement is scoped rather than absolute, and it yields on exactly one path — a dictated session worked without sight of a page, where there is nothing to draw on and nothing to look at again. There, where the sketch cannot be worked, the kit carries the prompt the drawing was there to ask, and nothing takes the drawing's place: a substitute activity would inherit the mechanism's name and none of the evidence under it (`evidence.md`, the sketching entry under the non-visual path).
 
 ## Light patterns
 
@@ -106,7 +106,7 @@ Whole-session structures with real lineages — the after-action review out of A
 
 ## Notebook translation (when the session is dictated, not printed)
 
-When the human cannot print, the session is dictated as a setup card to copy into whatever notebook they own (`prompt-craft.md`, "Dictating instead of printing"). Choose against this gate before designing anything: some patterns survive the copy intact, some survive only under a restriction, and some do not survive at all.
+When the human cannot print, or cannot read the printed sheet, the session is dictated as a setup card to copy into whatever notebook they own — or into whatever stands in for one, since a person who cannot read the page may work the card as a typed file, a slate, or a scribe's transcription (`prompt-craft.md`, "Dictating instead of printing"). Choose against this gate before designing anything: some patterns survive the copy intact, some survive only under a restriction, and some do not survive at all.
 
 The restriction is one line: **machine handles never appear on a page carrying a generative zone.** Copying by hand is deeper exposure than glancing at a printed page — the working hypothesis, flagged as unsourced in `evidence.md` — which makes handles safe where reacting is the task and corrosive where generating is. It bans handles, not every machine word: a Spent Ground category is a fence, not material to work from.
 
@@ -114,7 +114,7 @@ The restriction is one line: **machine handles never appear on a page carrying a
 
 - One provocation per page — the best case in the library. A question copied at the top of an empty page is the entire pattern.
 - The long list — with one procedural rule standing in for the gravity of printed slots: number every line before writing in any of them. A page numbered as it fills stops where the obvious categories stop.
-- Sketch field, and Second reading with it — arguably improved. Dot grid is what most notebooks already are, and the second-reading prompt is one line to copy.
+- Sketch field, and Second reading with it — arguably improved. Dot grid is what most notebooks already are, and the second-reading prompt is one line to copy. That holds where the card is worked on a page; where it is worked without sight of one, the scoping above applies — the prompt the drawing was there to ask still carries, and nothing takes the drawing's place.
 - Constraint box — the human draws the box. A hand-drawn box fits what it fits, and the limit still does the editing.
 - Distanced pair — the isolation a dedicated sheet gives it becomes a page turn. Start it on a fresh page, keep both zones there in order, and let no ranking or planning zone share it.
 - First Three Are Free — both halves were always human-only, so there is nothing to dictate but the prompt.

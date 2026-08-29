@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Session — Direction C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Serif:ital,wght@0,400;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DIRECTION C — free × typography and composition
+   --------------------------------------------------------------------------
+   Three layers, three type worlds, one colour law.
+
+     SITE LAYER    Newsreader. Asks only. Every serif line ends in "?".
+     MACHINE LAYER IBM Plex Mono on a dark plate. The repository's own words,
+                   verbatim. The only face shared with the printed sheet.
+     PEN LAYER     Colour. The site's opinions, held to the length of a
+                   margin note, spoken in the sheet's own ink protocol.
+
+   Infrastructure is Archivo caps, tracked. Furniture, not a voice.
+
+   Colour law: the sheet is grayscale because the pen needs the channel.
+   This page has no pen, so it supplies one. Every coloured thing on it is
+   ink, carries its mark, and names itself in words (WCAG 1.4.1).
+   Pen inks share lightness and chroma exactly and vary only in hue.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --ground:    oklch(0.968 0.004 95);
+  --ground-2:  oklch(0.945 0.005 95);
+  --ink:       oklch(0.235 0.008 250);
+  --ink-2:     oklch(0.420 0.006 250);
+  --ink-3:     oklch(0.515 0.005 250);
+  --rule:      oklch(0.795 0.005 250);
+  --rule-2:    oklch(0.880 0.004 250);
+
+  --plate:       oklch(0.222 0.010 255);
+  --plate-ink:   oklch(0.900 0.006 250);
+  --plate-quiet: oklch(0.660 0.006 250);
+  --plate-rule:  oklch(0.360 0.010 255);
+
+  /* Pen. Identical L and C; hue is the only variable, as on paper. */
+  --pen-black: oklch(0.235 0.008 250);
+  --pen-red:   oklch(0.420 0.140 27);
+  --pen-green: oklch(0.420 0.140 152);
+  --pen-blue:  oklch(0.420 0.140 258);
+  --pen-red-p:   oklch(0.800 0.130 27);
+  --pen-green-p: oklch(0.800 0.130 152);
+  --pen-blue-p:  oklch(0.800 0.130 258);
+
+  --ask:  "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --inf:  "Archivo", "Helvetica Neue", Helvetica, system-ui, sans-serif;
+  --mach: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --plex-sans:  "IBM Plex Sans", "Archivo", Helvetica, sans-serif;
+  --plex-serif: "IBM Plex Serif", Georgia, serif;
+
+  /* Discontinuous. A dense cluster, then a jump. Nothing in the middle. */
+  --fs-display: clamp(2.1rem, 1.05rem + 3.9vw, 4.4rem);
+  --fs-ask:     clamp(1.45rem, 1.15rem + 1.1vw, 1.95rem);
+  --fs-body:    1.0625rem;
+  --fs-mono:    0.9375rem;
+  --fs-label:   0.6875rem;
+
+  --track: 0.15em;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--inf);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  font-weight: 400;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--ink); color: var(--ground); }
+
+a { color: inherit; }
+
+:focus-visible {
+  /* Deliberately ink, not blue. Blue is spoken for. */
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ---- grid ---------------------------------------------------------------- */
+
+.wrap {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 34rem) minmax(0, 19rem);
+  column-gap: clamp(1.5rem, 2.6vw, 3rem);
+  row-gap: 1.75rem;
+  align-items: start;
+}
+
+.col-main { grid-column: 2; min-width: 0; }
+.col-pen  { grid-column: 3; min-width: 0; }
+.span-mp  { grid-column: 2 / 4; min-width: 0; }
+.span-all { grid-column: 1 / -1; min-width: 0; }
+
+/* ---- infrastructure ------------------------------------------------------ */
+
+.caps {
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+
+.rail { padding-top: 0.5rem; }
+.rail__n {
+  font-family: var(--mach);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.rail__label { color: var(--ink); }
+
+/* ---- masthead ------------------------------------------------------------ */
+
+.masthead { padding-top: 1.5rem; }
+.masthead__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 0.7rem;
+}
+.masthead__name {
+  font-family: var(--inf);
+  font-weight: 700;
+  font-size: var(--fs-label);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.datum { height: 3px; background: var(--ink); }
+.masthead__ink {
+  margin: 0.55rem 0 0;
+  text-align: right;
+  color: var(--ink-3);
+}
+
+/* ---- sections ------------------------------------------------------------ */
+
+section { padding-block: 4rem; }
+/* Pages decompress downward: air grows toward the bottom. */
+.air-1 { padding-block: 3.5rem 4rem; }
+.air-2 { padding-block: 5rem; }
+.air-3 { padding-block: 6rem; }
+.air-4 { padding-block: 7.5rem; }
+.air-5 { padding-block: 9rem clamp(11rem, 34vh, 24rem); }
+
+.hr-hair { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+
+/* ---- the asking voice ---------------------------------------------------- */
+
+.ask {
+  font-family: var(--ask);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+.ask--display {
+  font-size: var(--fs-display);
+  line-height: 1.06;
+  letter-spacing: -0.018em;
+  font-weight: 380;
+}
+.ask--section {
+  font-size: var(--fs-ask);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+/* ---- the machine plate --------------------------------------------------- */
+
+.plate {
+  margin: 0;
+  background: var(--plate);
+  color: var(--plate-ink);
+  padding: 1.25rem 1.4rem 1.4rem;
+  font-family: var(--mach);
+  font-size: var(--fs-mono);
+  line-height: 1.62;
+}
+.plate__src {
+  display: block;
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--plate-quiet);
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid var(--plate-rule);
+}
+.plate p { margin: 0 0 0.7rem; }
+.plate p:last-child { margin-bottom: 0; }
+.plate code { font: inherit; color: var(--plate-ink); }
+.plate a { color: var(--pen-blue-p); text-underline-offset: 3px; }
+
+/* ---- the pen layer ------------------------------------------------------- */
+
+.pen {
+  margin: 0 0 1.1rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid currentColor;
+  font-family: var(--mach);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--pen-black);
+}
+.pen:last-child { margin-bottom: 0; }
+.pen__ink {
+  display: block;
+  font-family: var(--inf);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.pen__mark {
+  font-family: var(--mach);
+  font-weight: 500;
+  padding-right: 0.35em;
+}
+.pen--red   { color: var(--pen-red); }
+.pen--green { color: var(--pen-green); }
+.pen--blue  { color: var(--pen-blue); }
+.pen--black { color: var(--pen-black); }
+
+.pen a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+/* ---- body text ----------------------------------------------------------- */
+
+.body { max-width: 34rem; }
+.body p { margin: 0 0 1rem; }
+.body p:last-child { margin-bottom: 0; }
+
+/* ---- exits --------------------------------------------------------------- */
+
+.exit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--pen-blue);
+  text-decoration: none;
+  border-bottom: 2px solid var(--pen-blue);
+  padding-bottom: 0.3rem;
+}
+.exit:hover { color: var(--ink); border-color: var(--ink); }
+.exit__arrow { font-family: var(--mach); }
+
+.exits { display: flex; flex-wrap: wrap; gap: 1.25rem 2.5rem; }
+
+/* ---- the numbers --------------------------------------------------------- */
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem;
+}
+.figure { border-top: 3px solid var(--ink); padding-top: 0.85rem; }
+.figures__src { margin: 0 0 1.35rem; color: var(--ink-3); }
+.figure__n {
+  /* Mono, not serif: a figure is something the machine reports. */
+  font-family: var(--mach);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 0.95rem + 2.1vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.8rem;
+}
+.figure__cond {
+  font-family: var(--mach);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* ---- status rows --------------------------------------------------------- */
+
+.status { display: grid; gap: 0; }
+.status__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 19rem);
+  gap: 1rem 2rem;
+  padding: 0.95rem 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.status__row:last-child { border-bottom: 1px solid var(--rule); }
+.status__who { font-family: var(--mach); font-size: 0.9375rem; margin: 0; }
+.status__verdict {
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+.v-green { color: var(--pen-green); }
+.v-red   { color: var(--pen-red); }
+.v-black { color: var(--pen-black); }
+
+/* ---- two-column ledger --------------------------------------------------- */
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* ==========================================================================
+   THE SHEET, RENDERED TO SPEC
+   Every size below is the print value from references/design.md multiplied
+   by --pt, which is one typographic point expressed in container width.
+   612pt wide page -> 1pt = 100/612 cqw.
+   ========================================================================== */
+
+.bleed {
+  /* The specimen spread is the one band allowed to run wider than the text
+     column. Left edge still lands on the datum; only the right edge moves. */
+  max-width: 92rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.sheets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.sheet-slot { min-width: 0; margin: 0; }
+.sheet-slot__cap {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sheet {
+  container-type: inline-size;
+  background: oklch(0.99 0.002 95);
+  border: 1px solid var(--rule);
+  box-shadow: 0 1px 0 var(--rule-2);
+}
+.page {
+  --pt: 0.16340cqw;
+  aspect-ratio: 612 / 792;
+  padding: calc(54 * var(--pt));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--plex-sans);
+  color: var(--ink);
+}
+.p-datum { height: calc(2 * var(--pt)); background: var(--ink); flex: none; }
+.p-title {
+  font-family: var(--plex-sans);
+  font-weight: 700;
+  font-size: calc(16 * var(--pt));
+  line-height: 1.15;
+  margin: calc(14 * var(--pt)) 0 0;
+}
+.p-meta {
+  font-family: var(--plex-sans);
+  font-weight: 400;
+  font-size: calc(6.8 * var(--pt));
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: calc(7 * var(--pt)) 0 0;
+}
+.p-intent {
+  font-family: var(--plex-serif);
+  font-style: italic;
+  font-size: calc(9.5 * var(--pt));
+  line-height: 1.35;
+  color: var(--ink-2);
+  margin: calc(9 * var(--pt)) 0 0;
+}
+.p-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(24 * var(--pt));
+  margin-top: calc(26 * var(--pt));
+}
+.p-voice {
+  font-family: var(--plex-sans);
+  font-weight: 700;
+  font-size: calc(8 * var(--pt));
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  border-bottom: calc(1.6 * var(--pt)) solid var(--ink);
+  padding-bottom: calc(4 * var(--pt));
+  margin-bottom: calc(12 * var(--pt));
+}
+.p-item { display: grid; grid-template-columns: calc(18 * var(--pt)) 1fr; margin-bottom: calc(14 * var(--pt)); }
+.p-n {
+  font-family: var(--plex-sans);
+  font-size: calc(8 * var(--pt));
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.p-ai {
+  font-family: var(--mach);
+  font-weight: 500;
+  font-size: calc(9.2 * var(--pt));
+  line-height: 1.3;
+  margin: 0;
+}
+.p-ai-2 {
+  font-family: var(--mach);
+  font-weight: 400;
+  font-size: calc(7.6 * var(--pt));
+  line-height: 1.35;
+  color: var(--ink-3);
+  margin: calc(2 * var(--pt)) 0 0;
+}
+.p-guide { border-bottom: max(0.75px, calc(0.5 * var(--pt))) solid var(--rule); height: calc(16 * var(--pt)); }
+.p-spacer { flex: 1 1 auto; min-height: calc(24 * var(--pt)); }
+.p-ot {
+  font-family: var(--plex-sans);
+  font-weight: 600;
+  font-size: calc(6.8 * var(--pt));
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 0 0 calc(4 * var(--pt));
+}
+.p-close { height: calc(1.6 * var(--pt)); background: var(--ink); }
+.p-field { min-height: calc(96 * var(--pt)); }
+.p-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(12 * var(--pt));
+  font-family: var(--plex-sans);
+  font-weight: 600;
+  font-size: calc(6.8 * var(--pt));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* the pen, on sheet B */
+.k-red   { color: var(--pen-red); }
+.k-green { color: var(--pen-green); }
+.k-blue  { color: var(--pen-blue); }
+.p-hand {
+  font-family: var(--mach);
+  font-weight: 500;
+  font-size: calc(9.6 * var(--pt));
+  line-height: 1.35;
+  margin: 0;
+}
+.p-hand-2 { font-size: calc(8.2 * var(--pt)); }
+.p-killed {
+  text-decoration: line-through;
+  text-decoration-color: var(--pen-red);
+  text-decoration-thickness: calc(1.2 * var(--pt));
+}
+.p-ring {
+  display: inline-block;
+  border: calc(0.9 * var(--pt)) solid var(--pen-green);
+  border-radius: 50%;
+  padding: 0 calc(3.5 * var(--pt));
+  line-height: 1.5;
+}
+.p-tldr {
+  font-family: var(--mach);
+  font-weight: 500;
+  font-size: calc(9 * var(--pt));
+  line-height: 1.4;
+  color: var(--pen-black);
+  margin: calc(10 * var(--pt)) 0 0;
+}
+
+/* ---- the placeholder stamp ---------------------------------------------- */
+
+.stamp {
+  border: 2px solid var(--pen-red);
+  padding: 1rem 1.15rem;
+  color: var(--pen-red);
+}
+.stamp__h {
+  font-family: var(--inf);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+}
+.stamp p { font-family: var(--mach); font-size: 0.8125rem; line-height: 1.55; margin: 0; }
+.stamp code { font: inherit; }
+
+/* ---- open territory ------------------------------------------------------ */
+
+.ot__rule { height: 2px; background: var(--ink); margin: 0.6rem 0 2.5rem; }
+
+/* ---- footer -------------------------------------------------------------- */
+
+footer { padding-block: 3rem 3.5rem; border-top: 1px solid var(--rule); margin-top: 5rem; }
+.inkkey {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 3rem;
+}
+.inkkey__i { border-top: 2px solid currentColor; padding-top: 0.6rem; }
+.inkkey__n {
+  font-family: var(--inf);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+}
+.inkkey__d {
+  font-family: var(--mach);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0;
+}
+.colophon {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
+  gap: 0.75rem 2.5rem;
+  color: var(--ink-3);
+}
+@media (max-width: 68rem) { .colophon { grid-template-columns: 1fr; } }
+.colophon a { color: var(--ink-2); }
+
+/* ---- narrow -------------------------------------------------------------- */
+
+@media (max-width: 62rem) {
+  .figures { grid-template-columns: 1fr; gap: 2rem; }
+  .sheets { grid-template-columns: 1fr; }
+  .inkkey { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 64rem) {
+  .grid { grid-template-columns: minmax(0, 1fr); row-gap: 1.5rem; }
+  /* The margin note keeps a margin note's measure once it falls inline. */
+  .pen { max-width: 34rem; }
+  .col-main, .col-pen, .span-mp, .span-all { grid-column: 1; }
+  .rail { padding-top: 0; }
+  .rail__n { display: inline; margin-right: 0.6rem; }
+  .status__row { grid-template-columns: minmax(0, 1fr); gap: 0.4rem; }
+  .split { grid-template-columns: 1fr; row-gap: 1.75rem; }
+  .inkkey { grid-template-columns: 1fr; }
+  section { padding-block: 3rem; }
+  .air-2, .air-3, .air-4 { padding-block: 3.5rem; }
+  .air-5 { padding-block: 4rem clamp(7rem, 26vh, 13rem); }
+  :root { --fs-display: clamp(1.9rem, 1.2rem + 4vw, 2.6rem); }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead wrap">
+  <div class="masthead__row">
+    <p class="masthead__name">Paper&nbsp;Session</p>
+    <p class="caps" style="margin:0;">Screen &rarr; paper &rarr; pen &rarr; scan &rarr; screen</p>
+    <p class="caps" style="margin:0;color:var(--ink-3);">Direction C &middot; page 01 of 02</p>
+  </div>
+  <div class="datum" role="presentation"></div>
+  <p class="caps masthead__ink">All colour below is ink &middot; key at the foot</p>
+</header>
+
+<main>
+
+  <!-- 00 ------------------------------------------------------------------ -->
+  <section class="air-1" aria-labelledby="s0">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">00</span>
+        <span class="rail__label">The problem</span>
+      </div>
+      <h1 class="ask ask--display span-mp" id="s0">Where does the machine stop and you start?</h1>
+
+      <div class="col-main" style="margin-top:1.25rem;">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README.md</span>
+          <p>In agentic workflows the bottleneck is no longer AI output. It&rsquo;s your
+          ability to metabolize that output. When a task reaches work that is genuinely
+          yours &mdash; sequencing, weighing tradeoffs, naming something, deciding what
+          matters &mdash; the right move is to stop generating and get off the screen.</p>
+        </blockquote>
+      </div>
+
+      <div class="col-pen" style="margin-top:1.25rem;">
+        <p class="pen pen--black" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">&bull;</span>Black &middot; note</span>
+          Two skills. One prints the page, the other reads your marks and picks the work
+          back up.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 ------------------------------------------------------------------ -->
+  <section class="air-2" aria-labelledby="s1">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">01</span>
+        <span class="rail__label">The artifact</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s1">If a blank sheet looks finished, what was it for?</h2>
+
+      <div class="col-main">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README &sect;Anatomy of a sheet</span>
+          <p>Grayscale only &mdash; nothing meaningful prints below 50% gray, no fills, no
+          tint panels, no images, no AI-generated imagery. At least 50% of every page is
+          space for your pen, and your pen must be the highest-contrast element on the
+          finished page. <em>If a blank sheet looks finished, it&rsquo;s wrong.</em></p>
+        </blockquote>
+      </div>
+
+      <div class="col-pen">
+        <p class="pen pen--red" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">?</span>Red &middot; review</span>
+          Both are drawings, built from the numbers in
+          <code>references/design.md</code>. B is the transcription, not the paper: real
+          handwriting is crooked and half of it is hard to read.
+        </p>
+      </div>
+    </div>
+
+    <div class="bleed" style="margin-top:3rem;">
+      <div class="sheets">
+
+        <!-- ============ SHEET A ============ -->
+        <figure class="sheet-slot">
+          <figcaption class="sheet-slot__cap">
+            <span class="caps">A &middot; Printed</span>
+            <span class="caps" style="color:var(--ink-3);">Deep &middot; two-column react</span>
+          </figcaption>
+          <div class="sheet">
+            <div class="page">
+              <div class="p-datum" role="presentation"></div>
+              <p class="p-title">Fall Course: Session Arc</p>
+              <p class="p-meta">Session printed sat 29 aug 2026</p>
+              <p class="p-intent">Re-sequence the eight studio sessions so week eight lands
+              on capacity rather than on a deadline.</p>
+
+              <div class="p-cols">
+                <div>
+                  <div class="p-voice">I propose</div>
+                  <div class="p-item"><span class="p-n">01</span><div>
+                    <p class="p-ai">The map and the ground rules</p>
+                    <p class="p-ai-2">why this field, what counts as good</p></div></div>
+                  <div class="p-item"><span class="p-n">02</span><div>
+                    <p class="p-ai">Tools as instruments</p>
+                    <p class="p-ai-2">first build, no critique</p></div></div>
+                  <div class="p-item"><span class="p-n">03</span><div>
+                    <p class="p-ai">Reading the room</p>
+                    <p class="p-ai-2">precedent studies, in pairs</p></div></div>
+                  <div class="p-item"><span class="p-n">04</span><div>
+                    <p class="p-ai">Ship and defend</p>
+                    <p class="p-ai-2">mid-term review, outside guest</p></div></div>
+                </div>
+                <div>
+                  <div class="p-voice">You decide</div>
+                  <div class="p-item"><span class="p-n">01</span><div>
+                    <div class="p-guide"></div><div class="p-guide"></div></div></div>
+                  <div class="p-item"><span class="p-n">02</span><div>
+                    <div class="p-guide"></div><div class="p-guide"></div></div></div>
+                  <div class="p-item"><span class="p-n">03</span><div>
+                    <div class="p-guide"></div><div class="p-guide"></div></div></div>
+                  <div class="p-item"><span class="p-n">04</span><div>
+                    <div class="p-guide"></div><div class="p-guide"></div></div></div>
+                </div>
+              </div>
+
+              <div class="p-spacer"></div>
+              <p class="p-ot">Open territory</p>
+              <div class="p-close" role="presentation"></div>
+              <div class="p-field"></div>
+              <div class="p-foot">
+                <span>Scan it back to continue.</span>
+                <span>Deep &middot; 1 of 2</span>
+              </div>
+            </div>
+          </div>
+        </figure>
+
+        <!-- ============ SHEET B ============ -->
+        <figure class="sheet-slot">
+          <figcaption class="sheet-slot__cap">
+            <span class="caps">B &middot; Returned</span>
+            <span class="caps" style="color:var(--ink-3);">As <span style="font-family:var(--mach);text-transform:none;letter-spacing:0;">scan-back</span> reads it</span>
+          </figcaption>
+          <div class="sheet">
+            <div class="page">
+              <div class="p-datum" role="presentation"></div>
+              <p class="p-title">Fall Course: Session Arc</p>
+              <p class="p-meta">Session printed sat 29 aug 2026</p>
+              <p class="p-intent">Re-sequence the eight studio sessions so week eight lands
+              on capacity rather than on a deadline.</p>
+
+              <div class="p-cols">
+                <div>
+                  <div class="p-voice">I propose</div>
+                  <div class="p-item"><span class="p-n">01</span><div>
+                    <p class="p-ai">The map and the ground rules</p>
+                    <p class="p-ai-2">why this field, what counts as good</p></div></div>
+                  <div class="p-item"><span class="p-n">02</span><div>
+                    <p class="p-ai">Tools as instruments</p>
+                    <p class="p-ai-2">first build, no critique</p></div></div>
+                  <div class="p-item"><span class="p-n">03</span><div>
+                    <p class="p-ai">Reading the room</p>
+                    <p class="p-ai-2">precedent studies, in pairs</p></div></div>
+                  <div class="p-item"><span class="p-n">04</span><div>
+                    <p class="p-ai p-killed">Ship and defend</p>
+                    <p class="p-ai-2 p-killed">mid-term review, outside guest</p></div></div>
+                </div>
+                <div>
+                  <div class="p-voice">You decide</div>
+                  <div class="p-item"><span class="p-n">01</span><div>
+                    <p class="p-hand k-blue">merge w/ 02 &rarr; one week</p></div></div>
+                  <div class="p-item"><span class="p-n">02</span><div>
+                    <p class="p-hand k-black">field week moves here</p></div></div>
+                  <div class="p-item"><span class="p-n">03</span><div>
+                    <p class="p-hand k-green"><span class="p-ring">keep</span></p></div></div>
+                  <div class="p-item"><span class="p-n">04</span><div>
+                    <p class="p-hand k-red">gone. it teaches defence, not taste</p></div></div>
+                </div>
+              </div>
+
+              <div class="p-spacer"></div>
+              <p class="p-ot">Open territory</p>
+              <div class="p-close" role="presentation"></div>
+              <div class="p-field">
+                <p class="p-tldr"><span class="k-black">TLDR:</span> <span class="k-black">they don&rsquo;t
+                have taste yet. that&rsquo;s the whole problem.</span></p>
+                <p class="p-tldr k-blue">&rarr; rebuild the arc as taste, not skills</p>
+              </div>
+              <div class="p-foot">
+                <span>Scan it back to continue.</span>
+                <span>Deep &middot; 1 of 2</span>
+              </div>
+            </div>
+          </div>
+        </figure>
+
+      </div>
+    </div>
+
+    <div class="wrap grid" style="margin-top:2.5rem;">
+      <div class="rail"></div>
+      <div class="col-main">
+        <div class="stamp">
+          <p class="stamp__h">Placeholder &middot; photograph not shot</p>
+          <p>A photograph of a real sheet belongs here: printed, filled in with two or
+          three inks, shot badly on a table, at <code>site/static/hero.jpg</code>. No
+          illustration and no generated image goes in that slot.</p>
+        </div>
+      </div>
+      <div class="col-pen"></div>
+    </div>
+  </section>
+
+  <!-- 02 ------------------------------------------------------------------ -->
+  <section class="air-2" aria-labelledby="s2">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">02</span>
+        <span class="rail__label">The one rule</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s2">Whose thought does this slot belong to?</h2>
+
+      <div class="span-mp" style="margin-top:1rem;">
+        <div class="split">
+          <blockquote class="plate">
+            <span class="plate__src">Verbatim &middot; README &sect;The one rule</span>
+            <p><strong>The AI contributes</strong> where it has done work worth reacting
+            to &mdash; a proposed order, gathered options, a draft sequence, one
+            well-chosen analogy. Print it so you can re-rank it, cross it out, argue with
+            it in the margin.</p>
+          </blockquote>
+          <blockquote class="plate">
+            <span class="plate__src">Verbatim &middot; README &sect;The one rule</span>
+            <p><strong>The AI withholds</strong> where you are better &mdash; creative
+            generation, judgment calls, naming, deciding what matters. Print the
+            provocation. Leave the space empty. When in doubt, withhold.</p>
+          </blockquote>
+        </div>
+      </div>
+
+      <div class="rail"></div>
+      <div class="col-main">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README &sect;The one rule</span>
+          <p>Design fixation is the most replicated finding in design cognition: show
+          someone an example and their ideas come to resemble it, producing fewer ideas
+          across fewer distinct categories. Telling them not to copy <strong>does not fix
+          it</strong> &mdash; groups instructed to avoid an example incorporated its
+          features at the same rate as groups given no instruction at all.</p>
+        </blockquote>
+      </div>
+      <div class="col-pen">
+        <p class="pen pen--black" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">&bull;</span>Black &middot; note</span>
+          Which is why the empty half of sheet A is empty. Instruction cannot do that job.
+          Layout can.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ------------------------------------------------------------------ -->
+  <section class="air-3" aria-labelledby="s3">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">03</span>
+        <span class="rail__label">The evidence</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s3">How much of this is known?</h2>
+
+      <div class="span-all" style="margin-top:1.5rem;">
+        <p class="caps figures__src">Verbatim &middot; README &sect;Why paper &mdash; three numbers</p>
+        <div class="figures">
+          <div class="figure">
+            <p class="figure__n">d = 0.93</p>
+            <p class="figure__cond">Walking&rsquo;s effect on divergent thinking,
+            meta-analytic across 23 studies. It persists after you sit back down, which
+            means a walk <em>before</em> a Deep sheet may be worth as much as the
+            sheet.</p>
+          </div>
+          <div class="figure">
+            <p class="figure__n">58%</p>
+            <p class="figure__cond">More ideas produced by employees given unexpected idle
+            time, in a natural experiment at real work.</p>
+          </div>
+          <div class="figure">
+            <p class="figure__n">Held steady</p>
+            <p class="figure__cond">In an AI-assisted design study, output quality and
+            ideational diversity fell while participants&rsquo; self-assessed creativity
+            did not move.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail"></div>
+      <div class="col-main" style="margin-top:2rem;">
+        <blockquote class="plate">
+          <span class="plate__src">Verbatim &middot; README &sect;Why paper</span>
+          <p>The tools degrade the work and leave the confidence intact, and paper is
+          where you find out.</p>
+        </blockquote>
+      </div>
+      <div class="col-pen" style="margin-top:2rem;">
+        <p class="pen pen--red" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">?</span>Red &middot; review</span>
+          No study tests this artifact. There is no research on AI-generated worksheets
+          completed offline and returned. Six more limitations are written down, including
+          a failed replication at N&nbsp;=&nbsp;443.
+        </p>
+        <p class="pen pen--red" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">!</span>Red &middot; priority</span>
+          A paper session will feel less productive than the same hour on screen,
+          including on the days it is most productive.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 ------------------------------------------------------------------ -->
+  <section class="air-4" aria-labelledby="s4">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">04</span>
+        <span class="rail__label">Where it stands</span>
+      </div>
+      <h2 class="ask ask--section span-mp" id="s4">Has anyone carried a page all the way round?</h2>
+
+      <div class="span-mp" style="margin-top:1.25rem;">
+        <div class="status">
+          <div class="status__row">
+            <p class="status__who">Claude Code &middot; CLI, IDE, web</p>
+            <p class="status__verdict v-green"><span aria-hidden="true">&#10003;</span>
+              <span>Green &middot; go &mdash; verified end to end</span></p>
+          </div>
+          <div class="status__row">
+            <p class="status__who">claude.ai &middot; desktop &middot; mobile</p>
+            <p class="status__verdict v-black"><span aria-hidden="true">&bull;</span>
+              <span>Black &middot; note &mdash; supported, not verified</span></p>
+          </div>
+          <div class="status__row">
+            <p class="status__who">Cursor &middot; Codex &middot; Copilot &middot; other CLI-routable agents</p>
+            <p class="status__verdict v-red"><span aria-hidden="true">?</span>
+              <span>Red &middot; review &mdash; installs cleanly, loop untested</span></p>
+          </div>
+          <div class="status__row">
+            <p class="status__who">ChatGPT &middot; Gemini &middot; Perplexity &middot; anything with no skills runtime</p>
+            <p class="status__verdict v-red"><span aria-hidden="true">?</span>
+              <span>Red &middot; review &mdash; untested, per surface</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail"></div>
+      <div class="col-main" style="margin-top:1.75rem;">
+        <div class="exits">
+          <a class="exit" href="interior.html">
+            <span class="exit__arrow" aria-hidden="true">&rarr;</span>
+            <span>The ledger, and how to install</span>
+          </a>
+          <a class="exit" href="../../../docs/specimen.pdf">
+            <span class="exit__arrow" aria-hidden="true">&rarr;</span>
+            <span>Print the specimen &middot; 3 pages, PDF</span>
+          </a>
+        </div>
+      </div>
+      <div class="col-pen" style="margin-top:1.75rem;">
+        <p class="pen pen--green" role="note">
+          <span class="pen__ink"><span class="pen__mark" aria-hidden="true">&#10003;</span>Green &middot; go</span>
+          One row is green. Closing a red one takes one person running one real session
+          and writing it down.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ------------------------------------------------------------------ -->
+  <section class="air-5" aria-labelledby="s5">
+    <div class="wrap grid">
+      <div class="rail caps">
+        <span class="rail__n">05</span>
+        <span class="rail__label">Open territory</span>
+      </div>
+      <div class="span-mp">
+        <div class="ot__rule" role="presentation"></div>
+        <h2 class="ask ask--display" id="s5">What is the next thing you should not ask a machine to do?</h2>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p class="caps" style="margin:0;">Ink key &middot; this page follows the sheet&rsquo;s protocol</p>
+  <div class="inkkey">
+    <div class="inkkey__i pen--black">
+      <p class="inkkey__n"><span aria-hidden="true">&bull;</span> Black &middot; note</p>
+      <p class="inkkey__d">An aside in the site&rsquo;s own voice.</p>
+    </div>
+    <div class="inkkey__i pen--red">
+      <p class="inkkey__n"><span aria-hidden="true">?</span> Red &middot; review</p>
+      <p class="inkkey__d">A limitation, or something nobody has tested yet.</p>
+    </div>
+    <div class="inkkey__i pen--green">
+      <p class="inkkey__n"><span aria-hidden="true">&#10003;</span> Green &middot; go</p>
+      <p class="inkkey__d">Verified, and the page says by whom.</p>
+    </div>
+    <div class="inkkey__i pen--blue">
+      <p class="inkkey__n"><span aria-hidden="true">&rarr;</span> Blue &middot; do</p>
+      <p class="inkkey__d">On a sheet, blue is an instruction to the AI. Here it marks the
+      things you can do from this page.</p>
+    </div>
+  </div>
+
+  <div class="colophon caps">
+    <span>Paper Session &middot; MIT &middot; <a href="https://github.com/welovejeff/paper-session">welovejeff/paper-session</a></span>
+    <span>Typefaces: Newsreader asks &middot; Archivo is furniture &middot; IBM Plex Mono is the machine</span>
+    <span>Rendered sat 29 aug 2026 &middot; page 01 of 02</span>
+  </div>
+</footer>
+
+</body>
+</html>

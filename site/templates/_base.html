@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if is_home %}Paper Session{% else %}{{ title|e }} — Paper Session{% endif %}</title>
+<meta name="description" content="{{ description|e }}">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{% if is_home %}Paper Session{% else %}{{ title|e }} — Paper Session{% endif %}">
+<meta property="og:description" content="{{ description|e }}">
+<link rel="icon" href="{{ base }}favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;600;700&amp;family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&amp;display=swap">
+<link rel="stylesheet" href="{{ base }}style.css">
+<script>
+  /* Apply a stored theme before first paint. Everything still works without
+     this: the tokens have a full light palette and a prefers-color-scheme
+     dark override. */
+  try {
+    var t = localStorage.getItem("ps-theme");
+    if (t === "dark" || t === "light") {
+      document.documentElement.setAttribute("data-theme", t);
+    }
+  } catch (e) {}
+</script>
+</head>
+<body class="{{ body_class }}">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead__bar">
+      <a class="wordmark" href="{{ home_url }}">Paper Session</a>
+      {% if is_home %}{% else %}<nav class="nav" aria-label="Sections">
+        {{ nav }}
+      </nav>{% endif %}
+    </div>
+  </div>
+  <div class="wrap"><div class="datum" role="presentation"></div></div>
+</header>
+
+<main id="main">
+{{ content }}
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__rule" role="presentation"></div>
+    <div class="footer__grid">
+      <p class="footer__meta">
+        {% if repo_footer_line %}<span class="page-foot">{{ repo_footer_line }}</span><br>{% endif %}
+        <a href="{{ repo_url }}">Source on GitHub</a> ·
+        <a href="{{ repo_url }}/blob/main/LICENSE">MIT</a> ·
+        Typefaces IBM Plex, SIL&nbsp;OFL&nbsp;1.1
+      </p>
+      <button type="button" class="theme-toggle" data-theme-toggle hidden>Theme</button>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ base }}site.js" defer></script>
+</body>
+</html>

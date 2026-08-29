@@ -41,6 +41,18 @@ SPECIMEN_DATE = datetime.date(2026, 8, 12)
 DATE_LINE = "SESSION PRINTED " + SPECIMEN_DATE.strftime("%a %d %b %Y").upper()
 WEEKDAY = SPECIMEN_DATE.strftime("%A")
 
+# --- document metadata (design.md section 10) -----------------------------
+# Set on the file, printed nowhere. Left alone, reportlab ships /Title
+# (untitled) and no /Lang at all, and that is what a reader who is not looking
+# at the page would be told it is holding.
+DOC_LANG = "en-US"               # BCP 47, the language the sheets are written in
+# Section 10 puts a sheet's printed title here verbatim, and a multi-page kit
+# takes its title once. This file is neither a sheet nor a kit: it is a
+# specimen carrying pages from two different sessions, so it takes a
+# document-level name in the neutral-constant shape section 10 specifies for
+# the serial disclosure kit. A generated sheet uses item 2 of its header.
+DOC_TITLE = "Paper Session — Design Specimen"
+
 REGISTER = {
     "Sans": "IBMPlexSans-Regular.ttf",
     "SansSB": "IBMPlexSans-SemiBold.ttf",
@@ -252,7 +264,9 @@ PAGES = [
 
 def build_pdf():
     register_fonts()
-    c = canvas.Canvas(str(PDF), pagesize=letter)
+    c = canvas.Canvas(str(PDF), pagesize=letter, lang=DOC_LANG)
+    c.setTitle(DOC_TITLE)
+    c.setViewerPreference("DisplayDocTitle", "true")
     for draw_page, _ in PAGES:
         draw_page(c)
         c.showPage()

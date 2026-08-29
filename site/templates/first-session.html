@@ -1,0 +1,481 @@
+<!--page
+title: First session
+description: Twelve opening lines you can copy, each written as a precondition you actually have rather than a command, so the format that fits is the one the skill prints.
+nav_label: First session
+nav_order: 45
+-->
+
+<section class="band air-1">
+  <div class="wrap">
+    <p class="label">You installed it and then nothing happened</p>
+    <h1 class="provocation provocation--wide">You don&rsquo;t have to know the format. You only have to say what is true.</h1>
+    <p class="intent">Twelve opening lines below. Each one is a precondition &mdash; a description of the
+    situation you are actually in &mdash; rather than an instruction. Copy the one that is true, put your
+    own specifics in the blanks, and let the skill choose the kit.</p>
+  </div>
+</section>
+
+<section class="band air-1" aria-labelledby="why-preconditions">
+  <div class="wrap measure">
+    <h2 class="question" id="why-preconditions">Why a precondition and not a command?</h2>
+    <p>Because several of the named session formats will not print without one, and the honest way
+    to satisfy a gate is to state the thing yourself rather than be interviewed about it. An
+    after-action review needs a plan you recorded before you started and a log of what actually
+    happened. A weekly review needs an inventory of open loops your assistant can genuinely see.
+    Brainwriting rounds need three to six people in one room. Say the condition in your own words
+    and the gate is answered in the same breath as the request.</p>
+    <p>The reverse also holds, and it is a feature: if the condition isn&rsquo;t true, the format
+    should decline. A sheet that prints anyway &mdash; a reference class it invented, an inventory
+    of loops it guessed at &mdash; is worse than no sheet.</p>
+
+    <p class="label label--spaced">The three the repo already documents</p>
+    {% if repo_prompts_html %}
+    <div class="machine">
+      <span class="caption">Verbatim &middot; README &sect;Using it</span>
+      {{ repo_prompts_html }}
+    </div>
+    <p class="aside">Those three always work, and mostly you won&rsquo;t need any of them: the skill is
+    written to offer itself when the work turns into judgment work. The twelve below are for the
+    times you want to aim it.</p>
+    {% else %}
+    <p class="aside">The repository&rsquo;s own example prompts are being edited and are not in this
+    build. The twelve below stand on their own.</p>
+    {% endif %}
+
+    {% include "_print-note.html" %}
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="lines-heading">
+  <div class="wrap">
+    <p class="label">Twelve lines</p>
+    <h2 class="question" id="lines-heading">Grouped by the situation, because that is the part you already know.</h2>
+    <p class="situation__lede">Everything set in serif below is yours to type. Square brackets are
+    blanks &mdash; replace them before you send. Read the note under a line before you copy it; some
+    of these formats are wrong for some people, and that is stated on purpose.</p>
+
+    <div class="situation">
+      <h2 class="question" id="sit-1">Something just ended.</h2>
+
+      <ol class="openers">
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 1</span> &middot; After-action review<span class="opener__scope"> &middot; Deep, 2&ndash;3 pages</span></h3>
+          <p class="say" id="say-1">The <span class="slot">[spring launch]</span> is finished. I have
+          the plan we wrote down before we started and the log of what actually happened, both in
+          this thread. Give me an after-action review on paper.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-1" hidden>Copy<span class="sr"> the after-action review line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>No record, no review. The recorded plan and the execution log are a hard condition
+            rather than decoration: written reflection with no objective record to react to is the
+            version that produces no improvement at all. If you have only your memory of it, take
+            line 2 instead.</p>
+            <p>Nothing gets ranked on this kit, and it is not the sheet for emotional processing
+            after something distressing &mdash; that is line 2 as well.</p>
+          </div>
+                  {% if repo_format_after_action_review_html %}
+          <details class="disclosure">
+            <summary>After-action review, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_after_action_review_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 2</span> &middot; Distanced pair<span class="opener__scope"> &middot; Deep, its own sheet</span></h3>
+          <p class="say" id="say-2">Something about <span class="slot">[the handover]</span> went badly
+          and I want to sit with it rather than diagnose it. Give me a reflection sheet, not a review.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-2" hidden>Copy<span class="sr"> the reflection line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>Two zones: what happened and what you make of it, then what it felt like &mdash; both,
+            because writing about thoughts and feelings together beats either alone. The prompts are
+            written at arm&rsquo;s length, in the second person, because that distance is the working
+            part. It keeps its own sheet: no ranking, no planning, nothing to prioritise beside it.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="situation">
+      <h2 class="question" id="sit-2">Something is about to be committed.</h2>
+
+      <ol class="openers" start="3">
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 3</span> &middot; Premortem<span class="opener__scope"> &middot; Deep, 2 pages</span></h3>
+          <p class="say" id="say-3">The <span class="slot">[migration plan]</span> is committed and
+          I&rsquo;m confident in it. It&rsquo;s a year from now and it has failed completely. Print me
+          the premortem.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-3" hidden>Copy<span class="sr"> the premortem line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note note--caution">
+            <span class="note__key">Read this before you copy it</span>
+            <p>The premortem exists to deflate overconfidence, and every study behind it targets
+            exactly that. If you are already lying awake about this plan, there is nothing here to
+            deflate and no evidence that deflating the deflated helps &mdash; take line 4, or line 2.
+            It also does not want a repeat run at an unchanged plan.</p>
+            <p>The kit deliberately prints no countermeasures. Naming the ways it fails and then
+            fixing them are separate events; the fixing happens on screen after you scan back.</p>
+          </div>
+                  {% if repo_format_premortem_html %}
+          <details class="disclosure">
+            <summary>Premortem, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_premortem_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 4</span> &middot; Outside view<span class="opener__scope"> &middot; Deep, 2 pages</span></h3>
+          <p class="say" id="say-4">I&rsquo;m about to commit to <span class="slot">[a date / a budget
+          / an adoption number]</span>. There are comparable past cases, some of them ours. Give me
+          the outside view before I sign up to it.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-4" hidden>Copy<span class="sr"> the outside view line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>The kit prints a reference class with its provenance stated on the page, and your own
+            past cases beat strangers&rsquo; whenever you have them. If no defensible reference class
+            exists, or the base rates cannot be sourced out loud, the format is supposed to decline:
+            a fabricated distribution printed as an anchor is worse than no sheet.</p>
+            <p>What it promises is calibration, never accuracy. It removes systematic optimism; it
+            does not sharpen any individual estimate.</p>
+          </div>
+                  {% if repo_format_outside_view_html %}
+          <details class="disclosure">
+            <summary>Outside view, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_outside_view_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+      </ol>
+    </div>
+
+    <div class="situation">
+      <h2 class="question" id="sit-3">Something was just explained to you at length.</h2>
+
+      <ol class="openers" start="5">
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 5</span> &middot; Teach-back sheet<span class="opener__scope"> &middot; Deep, 2 pages, closed book</span></h3>
+          <p class="say" id="say-5">You&rsquo;ve spent this whole session explaining
+          <span class="slot">[how the auth flow works]</span> and I stayed with all of it. Close the
+          book &mdash; give me the teach-back sheet.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-5" hidden>Copy<span class="sr"> the teach-back line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note note--caution">
+            <span class="note__key">Read this before you copy it</span>
+            <p>Only if you genuinely engaged with the explanation. A closed-book prompt after a skim
+            measurably hurts, because nothing is loaded to retrieve. Say so honestly and take a
+            different line if you were really only skimming.</p>
+            <p>The sheet withholds every scrap of the explanation you just read, including the parts
+            the machine obviously still has. That withholding is the instrument: print the content
+            and a calibration test becomes a recognition test. Gap marks are annotation, never a
+            score. This is the one place where scan-back checks your handwriting against the source
+            instead of simply taking it as true &mdash; it is authoritative about what you believe,
+            not about the subject.</p>
+          </div>
+                  {% if repo_format_teach_back_sheet_html %}
+          <details class="disclosure">
+            <summary>Teach-back sheet, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_teach_back_sheet_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+      </ol>
+    </div>
+
+    <div class="situation">
+      <h2 class="question" id="sit-4">It&rsquo;s the top of the week, or the end of a long day.</h2>
+
+      <ol class="openers" start="6">
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 6</span> &middot; Weekly review<span class="opener__scope"> &middot; Deep, 2 pages, recurring</span></h3>
+          <p class="say" id="say-6">It&rsquo;s the top of my week. Inventory the open loops you can
+          actually see &mdash; the threads here, <span class="slot">[my task list, my calendar]</span>
+          &mdash; and print the weekly review.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-6" hidden>Copy<span class="sr"> the weekly review line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note note--caution">
+            <span class="note__key">Read this before you copy it</span>
+            <p>Only what it can genuinely see. If your assistant has no real view of your threads,
+            tasks or calendar, the format should be skipped rather than filled with guesses &mdash; a
+            page of invented loops is design fixation in its purest form, and the second page, the
+            mind-sweep of what has your attention that no system knows about, is never pre-filled at
+            all.</p>
+            <p>No quadrants, no priority matrix, no scoring of any kind. Weekly, not daily. Next
+            actions get drafted after you scan it back, not on the sheet.</p>
+          </div>
+                  {% if repo_format_weekly_review_html %}
+          <details class="disclosure">
+            <summary>Weekly review, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_weekly_review_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 7</span> &middot; Light sheet<span class="opener__scope"> &middot; exactly one page</span></h3>
+          <p class="say" id="say-7">It&rsquo;s the evening and I&rsquo;m on the couch. Give me a Light
+          sheet on <span class="slot">[the backlog]</span> &mdash; things to react to, circle and cross
+          out. One page.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-7" hidden>Copy<span class="sr"> the Light sheet line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>Light means one page, and one pen gesture per item: circle, rank, strike, a single
+            word. It is a capacity, not a difficulty setting &mdash; a Deep provocation printed on a
+            Light sheet simply does not get done, which is why naming your capacity up front is worth
+            a clause.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="situation">
+      <h2 class="question" id="sit-5">You have to make something that isn&rsquo;t there yet.</h2>
+
+      <ol class="openers" start="8">
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 8</span> &middot; Long list, with Spent Ground<span class="opener__scope"> &middot; Deep</span></h3>
+          <p class="say" id="say-8">I need <span class="slot">[twenty names for this thing]</span> and
+          everything I&rsquo;ve come up with so far is the obvious version. Name the obvious
+          territories as already-walked ground, then leave the rest of the page to me.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-8" hidden>Copy<span class="sr"> the long list line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>&ldquo;Territories&rdquo; is doing real work in that sentence. The pattern names the
+            obvious ground as abstract categories, never as examples: categories roughly double
+            creative output, while listing specific solutions and asking you to avoid them increases
+            fixation instead. Expect ten to fourteen numbered lines rather than four &mdash; the
+            common categories get used up in the first third, and the back half is where the odd ones
+            live.</p>
+          </div>
+        </li>
+
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 9</span> &middot; One provocation per page<span class="opener__scope"> &middot; Deep, one question per page</span></h3>
+          <p class="say" id="say-9">There are <span class="slot">[three]</span> questions here I keep
+          deferring. Put one at the top of each page and nothing else on the page.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-9" hidden>Copy<span class="sr"> the one-provocation-per-page line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>The whole kit is the questions and the emptiness underneath them. It is also the
+            format that survives being dictated into a notebook completely intact, so it is the one
+            to ask for if you have <a href="{{ base }}no-printer/">no printer</a>.</p>
+          </div>
+        </li>
+
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 10</span> &middot; Cut-apart cards<span class="opener__scope"> &middot; Deep, sequencing</span></h3>
+          <p class="say" id="say-10">I have <span class="slot">[eleven studio sessions]</span> and the
+          order is the problem, not the pieces. Print them as cards I can cut apart and move around a
+          table.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-10" hidden>Copy<span class="sr"> the cut-apart cards line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>Cards earn their place when the arrangement is genuinely hard to hold in your head:
+            many items, spatial or relational. Moving things with your hands is not a general
+            creativity booster &mdash; controlled studies find no such effect &mdash; so a four-item
+            list does not qualify. Ask for cards when the arrangement <em>is</em> the problem. The set
+            comes with blank cards, because without them it reads as closed.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="situation">
+      <h2 class="question" id="sit-6">You are not alone, or not at a desk.</h2>
+
+      <ol class="openers" start="11">
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 11</span> &middot; Brainwriting rounds<span class="opener__scope"> &middot; Deep, group only</span></h3>
+          <p class="say" id="say-11">There will be <span class="slot">[five]</span> of us in one room
+          on <span class="slot">[Thursday]</span> with one problem to open up:
+          <span class="slot">[the onboarding drop-off]</span>. Print one brainwriting sheet per person.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-11" hidden>Copy<span class="sr"> the brainwriting rounds line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>Group only: three to six people, in the same room, passing sheets by hand. Never solo
+            &mdash; the solo variant was evaluated and cut, because re-anchoring you on your own first
+            ideas may reinstate the fixation the pass was relieving. The page cap counts per
+            participant, so five people is one page pattern printed five times, not a five-page kit.</p>
+            <p>Nothing on the sheet is a timer and no round count is promised; the passing is
+            event-based &mdash; when your three are down, pass left. The name box is optional and
+            leaving it blank is fully supported. Choosing a winner happens afterwards, on a separate
+            sheet.</p>
+          </div>
+                  {% if repo_format_brainwriting_rounds_html %}
+          <details class="disclosure">
+            <summary>Brainwriting rounds, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_brainwriting_rounds_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+
+        <li class="opener">
+          <h3 class="opener__format"><span class="opener__num">Line 12</span> &middot; Grinnell field kit<span class="opener__scope"> &middot; Deep series, one kit per sitting</span></h3>
+          <p class="say" id="say-12">Over the next several days I&rsquo;ll be
+          <span class="slot">[running these interviews]</span>, and the same
+          <span class="slot">[three teams]</span> keep coming up. Set me up with a Grinnell field kit,
+          one per sitting.</p>
+          <p class="say__actions">
+            <button type="button" class="say__copy" data-copy="say-12" hidden>Copy<span class="sr"> the Grinnell field kit line</span></button>
+            <span class="say__hint">Or select the sentence and copy it.</span>
+          </p>
+          <div class="note">
+            <span class="note__key">Scope</span>
+            <p>A series, not a sheet: one kit per sitting, up to four pages each, with an account page
+            per recurring entity that accumulates across days. More entities means more sessions, not
+            more pages. On the return trip, scan-back appends to each entity&rsquo;s running account
+            and reorders by the dates in your own handwriting.</p>
+            <p>It is a journal in the fact-forward register, not a diary &mdash; the reflective voice
+            belongs on line 2 and never merges with this. If nothing actually recurs, ask for a plain
+            observation log instead.</p>
+          </div>
+                  {% if repo_format_grinnell_field_kit_html %}
+          <details class="disclosure">
+            <summary>Grinnell field kit, specified in full</summary>
+            <div class="machine machine--wide">
+              <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+              {{ repo_format_grinnell_field_kit_html }}
+            </div>
+          </details>
+          {% endif %}
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="excluded">
+  <div class="wrap measure">
+    <p class="label">One format is deliberately not on this page</p>
+    <h2 class="question" id="excluded">The serial disclosure kit has a gate a copy button cannot carry.</h2>
+    <p>It is three sittings of expressive writing on consecutive days &mdash; the only pages in the
+    whole system that print <strong>private</strong> and never come back &mdash; closed by a fourth
+    page, the distillation, which is the one that does return. The offer itself has to do things a button cannot do: say out loud, before you agree, that
+    the first sittings reliably feel worse and that the dip is unrelated to whether the thing works;
+    promise no relief; and propose the whole series rather than a page, because the effect is small,
+    delayed, and accrues across sittings.</p>
+    <p>It is for work friction and professional setbacks only, never therapy, treatment or clinical
+    support, and it is ruled out entirely for anyone in acute distress, after recent or severe
+    trauma, or seeking trauma processing. All of that is a conversation with something that can hear
+    your answer. A copy button hears nothing, so there is nothing here to copy. If it sounds like
+    your situation, describe the situation in your own words and let the skill make the offer
+    properly &mdash; including the parts you would rather it skipped.</p>
+    {% if repo_format_serial_disclosure_kit_html %}
+    <details class="disclosure">
+      <summary>Serial disclosure kit, specified in full</summary>
+      <div class="machine machine--wide">
+        <span class="caption">Verbatim &middot; page-patterns.md &sect;Named session formats</span>
+        {{ repo_format_serial_disclosure_kit_html }}
+      </div>
+    </details>
+    {% endif %}
+    <p class="aside after-lead">Every format on this page is specified in full, gates and contraindications
+    included, in
+    <a href="{{ repo_url }}/blob/main/paper-session/references/page-patterns.md">page-patterns.md</a>.
+    Read the entry before you commit to a series.</p>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="cant-print">
+  <div class="wrap measure">
+    <p class="label">One more sentence, and it is not a session</p>
+    <h2 class="question" id="cant-print">If you can&rsquo;t print, you have to be the one to say so.</h2>
+    <p>The skill never asks whether you have a printer and never asks whether you can read the
+    sheet. Both questions are banned outright, so the card path only ever answers something you
+    said first. Add this to any line above, or send it on its own after a PDF has already
+    appeared.</p>
+    <p class="say" id="say-13">I can&rsquo;t print anything today. Dictate this as a card I can copy
+    into the notebook I already have.</p>
+    <p class="say__actions">
+      <button type="button" class="say__copy" data-copy="say-13" hidden>Copy<span class="sr"> the no-printer line</span></button>
+      <span class="say__hint">Or select the sentence and copy it.</span>
+    </p>
+    <div class="note">
+      <span class="note__key">Scope</span>
+      <p>You get the prompts and the structure, never the machine&rsquo;s lists. Some patterns cross
+      to a notebook intact, some cross only as numbered handles, and some do not cross at all. The
+      full account is on <a href="{{ base }}no-printer/">the no-printer path</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="then-stops">
+  <div class="wrap measure">
+    <h2 class="question" id="then-stops">Then it stops.</h2>
+    {% if repo_stop_line %}
+    <p>Whichever line you typed, the session ends when the file lands. It will not keep working the
+    problem, and it will not quietly produce the answers the sheet is asking you for. The closing
+    message is three words: <em>{{ repo_stop_line }}</em></p>
+    {% else %}
+    <p>Whichever line you typed, the session ends when the file lands. It will not keep working the
+    problem, and it will not quietly produce the answers the sheet is asking you for.</p>
+    {% endif %}
+    <p class="btn-row">
+      <a class="btn btn--primary" href="{{ base }}get-a-sheet/">Get a sheet first</a>
+      <a class="btn" href="{{ base }}scan-back/">The return trip</a>
+      <a class="btn" href="{{ base }}install/">Install</a>
+    </p>
+  </div>
+</section>
+
+<section class="band air-4">
+  <div class="wrap">
+    <div class="open-territory">
+      <p class="label label--strong">Open territory</p>
+      <div class="open-territory__rule" role="presentation"></div>
+      <div class="open-territory__field"></div>
+    </div>
+  </div>
+</section>
+
+<p class="sr" role="status" aria-live="polite" id="copy-status"></p>
+

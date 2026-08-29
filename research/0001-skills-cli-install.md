@@ -135,6 +135,12 @@ needed correcting.
 
 - **There is no `skills.json`** (Option C). The registry's optional
   customization file is `skills.sh.json`, and it is not required for listing.
+  *Added 2026-08-28:* the repo now carries one, written in the onramp batch
+  alongside `0003`–`0006`. It is grouping metadata only — it presents the two
+  halves as one loop rather than two unrelated skills — and it changes no
+  install path, which is why it rides this brief's appendix rather than
+  earning a number of its own. Listing still follows install telemetry, so it
+  does not make the repo discoverable on its own.
 - **skills.sh listing needs no submission at all**: repos appear automatically
   through the CLI's anonymous install telemetry once someone installs from
   them, ranked by install counts. At validation time this repo was not yet

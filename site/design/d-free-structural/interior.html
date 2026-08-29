@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The return trip — Paper Session</title>
+<meta name="description" content="You have marked-up paper. One file, pasted into any AI you already own, reads it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* ============================================================
+   DIRECTION D — interior: the return trip.
+   Chosen because this is the half of the loop that already
+   works on paper the visitor has and on an AI they already own.
+   Colour appears on this page and nowhere else on the site,
+   because this is the only page where the pen speaks.
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  --paper:   oklch(0.968 0.004 95);
+  --paper-2: oklch(0.945 0.005 95);
+
+  --ink:     oklch(0.245 0.008 245);
+  --ink-2:   oklch(0.420 0.007 245);
+  --quiet:   oklch(0.460 0.006 245);
+  --rule:    oklch(0.760 0.005 245);
+
+  --pen-red:   oklch(0.52 0.14 27);
+  --pen-green: oklch(0.52 0.14 152);
+  --pen-blue:  oklch(0.52 0.14 262);
+  --pen-black: var(--ink);
+
+  --f-serif: "IBM Plex Serif", "Iowan Old Style", Georgia, serif;
+  --f-sans:  "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:  "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --fs-ask:   clamp(2.1rem, 1.1rem + 4.2vw, 4.6rem);
+  --fs-body:  1rem;
+  --fs-label: 0.6875rem;
+
+  --track: 0.15em;
+  --rail: 13ch;
+  --pad: clamp(1.25rem, 3.4vw, 3.25rem);
+  --max: 1400px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:   oklch(0.198 0.006 245);
+    --paper-2: oklch(0.235 0.006 245);
+    --ink:     oklch(0.945 0.004 245);
+    --ink-2:   oklch(0.780 0.005 245);
+    --quiet:   oklch(0.690 0.005 245);
+    --rule:    oklch(0.400 0.006 245);
+    --pen-red:   oklch(0.72 0.14 27);
+    --pen-green: oklch(0.72 0.14 152);
+    --pen-blue:  oklch(0.72 0.14 262);
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--f-sans); font-size: var(--fs-body); line-height: 1.55;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ul, ol, dl, dd, table { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+.rh {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  max-width: var(--max); margin: 0 auto; padding: 1.1rem var(--pad) 0.6rem;
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.rh a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+.datum { max-width: var(--max); margin: 0 auto; border-top: 3px solid var(--ink); }
+
+.open {
+  max-width: var(--max); margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5.5rem) var(--pad) clamp(2.5rem, 7vw, 6rem);
+  display: grid; gap: clamp(1.75rem, 4vw, 2.75rem);
+}
+.ask {
+  font-family: var(--f-serif); font-weight: 400; font-size: var(--fs-ask);
+  line-height: 1.06; letter-spacing: -0.015em; max-width: 19ch;
+  text-wrap: balance; overflow-wrap: break-word;
+}
+
+.band { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+.band__in {
+  display: grid; grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 clamp(1.5rem, 3vw, 3rem);
+  border-top: 1px solid var(--rule);
+  padding: 1.25rem 0 clamp(3rem, 7vw, 6rem);
+}
+.rail {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet); line-height: 1.5;
+}
+.rail b { display: block; font-family: var(--f-mono); font-weight: 500;
+          color: var(--ink); letter-spacing: 0.02em; }
+
+.machine {
+  font-family: var(--f-mono); font-size: 0.875rem; line-height: 1.6;
+  color: var(--ink-2); border-left: 2px solid var(--rule);
+  padding-left: 1rem; max-width: 62ch;
+}
+.machine cite {
+  display: block; font-style: normal; font-family: var(--f-sans);
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; color: var(--quiet); margin-top: 0.6rem;
+}
+
+.do {
+  display: inline-block;
+  font-family: var(--f-sans); font-size: var(--fs-label);
+  letter-spacing: var(--track); text-transform: uppercase; font-weight: 600;
+  padding: 0.7rem 1.1rem; background: var(--ink); color: var(--paper);
+  border: 0; cursor: pointer; text-decoration: none;
+}
+.do:hover { background: var(--ink-2); }
+
+.paste { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.paste code {
+  font-family: var(--f-mono); font-size: 0.8125rem;
+  background: var(--paper-2); padding: 0.6rem 0.75rem;
+  border: 1px solid var(--rule); overflow-wrap: anywhere;
+}
+
+.steps { display: grid; gap: 0; margin-top: 1.6rem; max-width: 52ch; }
+.step {
+  display: grid; grid-template-columns: 2.5rem 1fr; gap: 1rem;
+  border-top: 1px solid var(--rule); padding: 0.75rem 0;
+}
+.step span:first-child { font-family: var(--f-mono); color: var(--quiet); }
+
+/* ---- the pen. The only colour on the site. ------------------ */
+.pen {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
+}
+.pen h3 {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+  padding-bottom: 0.6rem;
+}
+.rows { width: 100%; border-collapse: collapse; text-align: left; }
+.rows td {
+  border-top: 1px solid var(--rule); padding: 0.65rem 0.9rem 0.65rem 0;
+  vertical-align: baseline;
+}
+.rows td:first-child { width: 8.5rem; font-weight: 600; }
+.rows td:last-child { color: var(--ink-2); font-size: 0.9375rem; padding-right: 0; }
+.swatch {
+  display: inline-block; width: 0.7rem; height: 0.7rem;
+  margin-right: 0.5rem; vertical-align: -0.02rem;
+  border: 1px solid currentColor;
+}
+.ink-black .swatch { background: var(--pen-black); color: var(--pen-black); }
+.ink-red   .swatch { background: var(--pen-red);   color: var(--pen-red); }
+.ink-green .swatch { background: var(--pen-green); color: var(--pen-green); }
+.ink-blue  .swatch { background: var(--pen-blue);  color: var(--pen-blue); }
+
+.mark { font-family: var(--f-mono); font-size: 0.9375rem; }
+.mark.strike { text-decoration: line-through; }
+
+.note {
+  font-family: var(--f-serif); font-style: italic;
+  color: var(--ink-2); max-width: 64ch; margin-top: 1.4rem;
+}
+
+/* ---- filing --------------------------------------------------- */
+.filing { width: 100%; border-collapse: collapse; text-align: left; }
+.filing td {
+  border-top: 1px solid var(--rule); padding: 0.85rem 1.25rem 0.85rem 0;
+  vertical-align: baseline;
+}
+.filing td:first-child { width: 3rem; font-family: var(--f-mono); color: var(--quiet); }
+.filing td:nth-child(2) { width: 34%; font-weight: 600; }
+.filing td:last-child { color: var(--ink-2); font-size: 0.9375rem; padding-right: 0; }
+.stamp {
+  font-family: var(--f-mono); font-size: var(--fs-label);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--quiet);
+  margin-bottom: 1rem;
+}
+
+/* ---- terminal -------------------------------------------------- */
+.end { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+.end__in { border-top: 2px solid var(--ink); padding-top: 1rem; }
+.end__label {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.end__field { min-height: 34vh; }
+.end__foot {
+  padding: 1rem 0 2.5rem;
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 900px) {
+  .pen { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 700px) {
+  :root { --rail: auto; }
+  .band__in { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .rail b { display: inline; margin-right: 0.6em; }
+  .rows td:first-child { width: 7rem; }
+  .filing, .filing tbody, .filing tr, .filing td { display: block; width: auto; }
+  .filing tr { border-top: 1px solid var(--rule); padding: 0.8rem 0; }
+  .filing td { border-top: 0; padding: 0.1rem 0; width: auto !important; }
+}
+
+/* This page is deliberately NOT offered as a printable. Dressed up at
+   54pt margins it runs to three pages and verify_layout.py fails it on
+   a character collision in the serif-italic notes — a font-metrics
+   artifact, but the gate does not take excuses and neither does the
+   project. The only printable on this site is the sheet. */
+@media print {
+  body { background: #fff; color: #000; }
+  .do { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="rh">
+  <a href="landing.html">&larr; Paper Session</a>
+  <span>02 / 02</span>
+</header>
+<div class="datum" role="presentation"></div>
+
+<section class="open">
+  <h1 class="ask">Where your pen contradicts the machine, which one is right?</h1>
+  <p class="machine">
+    &ldquo;Your handwriting wins. Where your pen contradicts what the AI proposed earlier,
+    the pen is right, silently and completely. No relitigating, no gentle pushback on a
+    judgment you already settled.&rdquo;
+    <cite>README &sect; Using it, verbatim</cite>
+  </p>
+</section>
+
+<main>
+
+<!-- 01 -------------------------------------------------------- -->
+<section class="band" aria-labelledby="r1">
+  <div class="band__in">
+    <p class="rail" id="r1"><b>01</b>The one file</p>
+    <div>
+      <p class="paste">
+        <code>github.com/welovejeff/paper-session/raw/main/scan-back/SKILL.md</code>
+        <button class="do" type="button" data-copy="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back/SKILL.md">Copy the link</button>
+      </p>
+      <div class="steps">
+        <p class="step"><span>01</span><span>Open the chat the photographs are going to land in.</span></p>
+        <p class="step"><span>02</span><span>Paste the file. Nothing else in that message.</span></p>
+        <p class="step"><span>03</span><span>Send the photographs with no message at all.</span></p>
+      </div>
+      <p class="note">Paste it when the pages land, not before. A host holding transcription
+      instructions for pages that do not exist yet will narrate the return trip, or invent
+      its contents.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -------------------------------------------------------- -->
+<section class="band" aria-labelledby="r2">
+  <div class="band__in">
+    <p class="rail" id="r2"><b>02</b>The pen</p>
+    <div>
+      <div class="pen">
+        <div>
+          <h3>Ink &mdash; amplifies</h3>
+          <table class="rows">
+            <tbody>
+              <tr class="ink-black"><td><span class="swatch" aria-hidden="true"></span>Black</td><td>Notes, context, general text. The default voice.</td></tr>
+              <tr class="ink-red"><td><span class="swatch" aria-hidden="true"></span>Red</td><td>Needs review, stop, delete, push back on this.</td></tr>
+              <tr class="ink-green"><td><span class="swatch" aria-hidden="true"></span>Green</td><td>Approved, yes, move forward.</td></tr>
+              <tr class="ink-blue"><td><span class="swatch" aria-hidden="true"></span>Blue</td><td>An instruction to the AI: do this on return.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Mark &mdash; carries</h3>
+          <table class="rows">
+            <tbody>
+              <tr><td><span class="mark strike">strike</span></td><td>Kill it. A considered rejection, not an absence.</td></tr>
+              <tr><td><span class="mark">circle</span></td><td>Elevate it. This matters.</td></tr>
+              <tr><td><span class="mark">?</span></td><td>Explain or expand this on return.</td></tr>
+              <tr><td><span class="mark">!</span></td><td>Priority.</td></tr>
+              <tr><td><span class="mark">star</span></td><td>Worth keeping beyond this task.</td></tr>
+              <tr><td><span class="mark">&rarr;</span></td><td>Sequence or causation. This leads to that.</td></tr>
+              <tr><td><span class="mark">@name</span></td><td>Route it to a person, tool, or system.</td></tr>
+              <tr><td><span class="mark">TLDR:</span></td><td>Treat this line as the zone&rsquo;s headline answer.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="note">The mark is the carrier and the hue is the amplifier, so a page done in
+      one black ballpoint is the primary case rather than the fallback. Write a legend anywhere
+      on the paper and it outranks all of this for the session.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -------------------------------------------------------- -->
+<section class="band" aria-labelledby="r3">
+  <div class="band__in">
+    <p class="rail" id="r3"><b>03</b>If the chat is cold</p>
+    <div>
+      <p class="machine">
+        &ldquo;The chat holds no memory of the session, so it reconstructs from what the sheet
+        itself prints &mdash; title, date, intent line, footer numbering &mdash; and spends its
+        one re-anchoring question there. The pages are the whole record.&rdquo;
+        <cite>README &sect; Install, verbatim</cite>
+      </p>
+      <p class="note">This is why the sheets carry no QR code, no session ID, and no
+      machine-readable block. Nothing printed on them is addressed to a machine that was
+      already in the room.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -------------------------------------------------------- -->
+<section class="band" aria-labelledby="r4">
+  <div class="band__in">
+    <p class="rail" id="r4"><b>04</b>What the research does not support</p>
+    <div>
+      <p class="stamp">Filed as of 29 Aug 2026 &middot; references/evidence.md</p>
+      <table class="filing">
+        <tbody>
+          <tr><td>1</td><td>No study tests this artifact</td><td>There is no research on AI-generated worksheets completed offline and returned. Every claim is assembled from adjacent literatures.</td></tr>
+          <tr><td>2</td><td>Mind-wandering is contested</td><td>As the mechanism, including a well-powered failed replication at N = 443.</td></tr>
+          <tr><td>3</td><td>Handwriting recall is oversold</td><td>The encoding evidence is good. Simple recall superiority is not established.</td></tr>
+          <tr><td>4</td><td>Screen inferiority is conditional</td><td>It disappears when the stakes already force depth, and a tablet closes part of the gap.</td></tr>
+          <tr><td>5</td><td>Mostly undergraduates in labs</td><td>Ecological validity is a limitation the researchers themselves flag.</td></tr>
+          <tr><td>6</td><td>The AI-harm side is correlational</td><td>Nearly all of it.</td></tr>
+        </tbody>
+      </table>
+      <p class="note">A paper session will feel less productive than the same hour on
+      screen, including on the days it is most productive.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="end">
+  <div class="end__in">
+    <p class="end__label">Open territory</p>
+    <div class="end__field" role="presentation"></div>
+    <p class="end__foot">02 / 02 &middot; End</p>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll("[data-copy]").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var t = b.getAttribute("data-copy");
+    var done = function () { b.textContent = "Copied"; };
+    if (navigator.clipboard) { navigator.clipboard.writeText(t).then(done, function(){}); }
+    else { done(); }
+  });
+});
+</script>
+</body>
+</html>
