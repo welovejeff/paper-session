@@ -1681,6 +1681,12 @@ def print_to_pdf(browser: str, page: Path, out: Path) -> None:
             "--headless=new",
             "--disable-gpu",
             "--no-sandbox",
+            # CI runners give a container a 64MB /dev/shm, which Chromium's
+            # renderer exhausts and then blocks on forever rather than failing.
+            # Without this the gate does not error, it HANGS — the local build
+            # passes in seconds and the same commit times out on the runner.
+            "--disable-dev-shm-usage",
+            "--disable-software-rasterizer",
             "--no-pdf-header-footer",
             "--run-all-compositor-stages-before-draw",
             "--virtual-time-budget=8000",
