@@ -41,6 +41,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pinned, matching verify.yml. This job asserts byte-identical output
+      # from two consecutive builds, so the interpreter is an input to the
+      # thing being asserted — a runner upgrade must not be able to change
+      # generated output or fail the reproducibility check on its own.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The sheet gate renders /get-a-sheet/ to PDF and runs verify_layout.py
+      # on it, and that verifier needs pdfplumber. build.py itself stays
+      # stdlib-only; this is the gate's dependency, not the generator's.
+      - run: pip install -r requirements.txt
+
       - name: Build the site
         # --strict fails the build on a dangling internal link or an
         # unsubstituted template token. A broken link is worth a red deploy;
