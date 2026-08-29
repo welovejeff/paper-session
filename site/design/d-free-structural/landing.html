@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Session</title>
+<meta name="description" content="A sheet you can print or copy onto paper you already have.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* ============================================================
+   DIRECTION D — free / structure and behaviour
+   The site does not describe the loop. It completes the half of
+   the loop a static page is actually capable of: it hands you a
+   page. Then it ends.
+
+   VOICE REMAP, declared because it differs from the sheet:
+     Serif  — asks. Questions only. Never running prose.
+     Mono   — the machine. On this site that means: words lifted
+              verbatim out of the repository. Nothing else.
+     Sans   — everything the site says in its own voice, plus all
+              infrastructure in tracked caps.
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Toned whites and blacks. Chroma on the paper is 0.004. */
+  --paper:      oklch(0.968 0.004 95);
+  --paper-2:    oklch(0.945 0.005 95);
+  --sheet:      oklch(0.988 0.003 95);
+
+  --ink:        oklch(0.245 0.008 245);
+  --ink-2:      oklch(0.420 0.007 245);
+  --quiet:      oklch(0.460 0.006 245);   /* small-caps floor, ~4.9:1 */
+  --rule:       oklch(0.760 0.005 245);
+  --guide:      oklch(0.835 0.004 245);
+
+  /* The pen. The only colour on the site, and it appears only
+     where actual pen intent is being shown. Shared L and C. */
+  --pen-red:    oklch(0.52 0.14 27);
+  --pen-green:  oklch(0.52 0.14 152);
+  --pen-blue:   oklch(0.52 0.14 262);
+  --pen-black:  var(--ink);
+
+  --f-serif: "IBM Plex Serif", "Iowan Old Style", Georgia, serif;
+  --f-sans:  "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:  "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* THREE sizes. There is no midrange, so there is nowhere to
+     write a lead paragraph. */
+  --fs-ask:   clamp(2.1rem, 1.1rem + 4.2vw, 4.6rem);
+  --fs-body:  1rem;
+  --fs-label: 0.6875rem;
+
+  --track: 0.15em;
+  --rail: 13ch;
+  --pad: clamp(1.25rem, 3.4vw, 3.25rem);
+  --max: 1400px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:   oklch(0.198 0.006 245);
+    --paper-2: oklch(0.235 0.006 245);
+    --ink:     oklch(0.945 0.004 245);
+    --ink-2:   oklch(0.780 0.005 245);
+    --quiet:   oklch(0.690 0.005 245);
+    --rule:    oklch(0.400 0.006 245);
+    --guide:   oklch(0.330 0.006 245);
+    --pen-red:   oklch(0.72 0.14 27);
+    --pen-green: oklch(0.72 0.14 152);
+    --pen-blue:  oklch(0.72 0.14 262);
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-sans);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* ---- running head. No clock. -------------------------------- */
+.rh {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 1rem;
+  max-width: var(--max); margin: 0 auto;
+  padding: 1.1rem var(--pad) 0.6rem;
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.rh a { text-decoration: none; }
+.datum {
+  max-width: var(--max); margin: 0 auto;
+  border-top: 3px solid var(--ink);
+}
+
+/* ---- the interruption --------------------------------------- */
+.open {
+  max-width: var(--max); margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5.5rem) var(--pad) clamp(3rem, 9vw, 8rem);
+  min-height: min(78vh, 760px);
+  display: grid; grid-template-rows: auto auto 1fr;
+  gap: clamp(1.75rem, 4vw, 3rem);
+}
+.ask {
+  font-family: var(--f-serif); font-weight: 400;
+  font-size: var(--fs-ask); line-height: 1.06;
+  letter-spacing: -0.015em;
+  max-width: 19ch;
+  text-wrap: balance; overflow-wrap: break-word;
+}
+.claim {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600;
+  max-width: 46ch; line-height: 1.9; color: var(--ink-2);
+}
+.cue {
+  font-family: var(--f-mono); font-size: var(--fs-label);
+  letter-spacing: 0.08em; color: var(--quiet); text-transform: uppercase;
+  align-self: end;
+}
+
+/* ---- banded rail layout ------------------------------------- */
+.band {
+  max-width: var(--max); margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.band__in {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 clamp(1.5rem, 3vw, 3rem);
+  border-top: 1px solid var(--rule);
+  padding: 1.25rem 0 clamp(3rem, 7vw, 6rem);
+}
+.rail {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+  line-height: 1.5;
+}
+.rail b { display: block; font-family: var(--f-mono); font-weight: 500;
+          color: var(--ink); letter-spacing: 0.02em; }
+
+/* ---- the sheet + its two verbs ------------------------------ */
+.sheet-row {
+  display: grid;
+  grid-template-columns: minmax(0, 680px) minmax(240px, 1fr);
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
+  align-items: start;
+}
+
+/* The sheet has two states, and the difference between them IS the
+   rule the whole system runs on. State 01 knows nothing about you and
+   therefore proposes nothing. State 02 has done work, so it proposes
+   in Mono and leaves the right-hand column to the pen. */
+.pick { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.6rem; }
+.pick > input { position: absolute; width: 1px; height: 1px; opacity: 0;
+                clip-path: inset(50%); }
+.pick > label {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+  padding-bottom: 0.35rem; border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.pick > input:checked + label { color: var(--ink); border-bottom-color: var(--ink); }
+.pick > input:focus-visible + label { outline: 2px solid var(--ink); outline-offset: 4px; }
+.pick > .sheet-hold { flex: 1 0 100%; margin-top: 0.9rem; }
+#st1:checked ~ .sheet-hold #sheet-2,
+#st2:checked ~ .sheet-hold #sheet-1 { display: none; }
+
+/* corner crop marks: this is a print artifact */
+.sheet-hold { position: relative; padding: 14px; container-type: inline-size; }
+.sheet-hold::before, .sheet-hold::after,
+.sheet-hold > .cm1, .sheet-hold > .cm2 {
+  content: ""; position: absolute; width: 13px; height: 13px;
+}
+.sheet-hold::before { top: 0; left: 0;
+  border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+.sheet-hold::after  { top: 0; right: 0;
+  border-top: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+.sheet-hold > .cm1  { bottom: 0; left: 0;
+  border-bottom: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+.sheet-hold > .cm2  { bottom: 0; right: 0;
+  border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+
+.sheet {
+  background: var(--sheet);
+  color: oklch(0.20 0.006 245);
+  aspect-ratio: 612 / 792;
+  /* The sheet scales as an object, not as a stack of rem values:
+     one container-relative unit drives every size inside it. */
+  font-size: 2.32cqw;
+  display: flex; flex-direction: column;
+  padding: 6.8% 8.8% 3.8%;
+  border: 1px solid var(--rule);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sheet { border-color: transparent; }
+}
+.s-datum { border-top: 2.6px solid currentColor; }
+.s-title {
+  font-weight: 700; font-size: 1.06em; letter-spacing: -0.005em;
+  margin-top: 0.85em; line-height: 1.2;
+}
+.s-meta {
+  font-size: 0.5625em; letter-spacing: 0.1em; text-transform: uppercase;
+  color: oklch(0.47 0.006 245); margin-top: 0.4em;
+}
+.s-intent { margin-top: 0.95em; }
+.s-intent .s-label { display: block; margin-bottom: 0.25em; }
+.s-intent input {
+  width: 100%; border: 0; border-bottom: 1px solid var(--guide);
+  background: transparent; padding: 0 0 3px;
+  font-family: var(--f-serif); font-style: italic; font-size: 0.8125em;
+  color: oklch(0.30 0.006 245);
+}
+.s-intent input:focus { outline: 0; border-bottom-color: currentColor; }
+.s-intent input:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+.s-zone { margin-top: 1.55em; }
+.s-label {
+  font-size: 0.5625em; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 600; color: oklch(0.42 0.006 245);
+}
+.s-box {
+  border: 1px solid oklch(0.60 0.006 245);
+  padding: 0.55em 0.7em 0.7em; margin-top: 0.4em;
+}
+.s-prompt {
+  font-family: var(--f-serif); font-size: 0.8125em; line-height: 1.35;
+}
+.s-lines { margin-top: 0.5em; display: grid; gap: 0.68em; }
+.s-line { display: grid; grid-template-columns: 1.45em 1fr; align-items: end; }
+.s-num { font-size: 0.625em; color: oklch(0.55 0.006 245); }
+.s-rule { border-bottom: 1px solid var(--guide); height: 0.95em; }
+.s-guides { margin-top: 0.8em; display: grid; gap: 0.76em; }
+
+.s-prov {
+  font-family: var(--f-serif); font-size: 1.28em; line-height: 1.28;
+  margin-top: 0.55em; max-width: 26ch;
+}
+.s-sub {
+  font-family: var(--f-serif); font-style: italic; font-size: 0.75em;
+  color: oklch(0.45 0.006 245); margin-top: 0.35em;
+}
+/* two-column react: the machine on the left, the pen on the right */
+.s-react {
+  display: grid; grid-template-columns: 1.12fr 1fr;
+  gap: 0 1.4em; margin-top: 1.3em; align-items: start;
+}
+.s-colh { padding-bottom: 0.3em; border-bottom: 1.6px solid currentColor; }
+.s-prop, .s-ans {
+  display: grid; grid-template-columns: 2.2em 1fr; gap: 0 0.4em;
+  padding-top: 0.66em;
+}
+.s-prop span:last-child {
+  font-family: var(--f-mono); font-size: 0.6875em; line-height: 1.45;
+}
+.s-alines { display: grid; gap: 0.62em; }
+.s-hint {
+  font-family: var(--f-serif); font-style: italic; font-size: 0.6875em;
+  color: oklch(0.45 0.006 245); margin-top: 0.75em; text-align: right;
+}
+
+.s-open { padding-top: 1.8em; }
+.s-close { border-top: 1.8px solid currentColor; margin-top: 0.35em; }
+.s-foot {
+  display: flex; justify-content: space-between; gap: 1em;
+  padding-top: 0.95em;
+  font-size: 0.5625em; letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 600; color: oklch(0.45 0.006 245);
+}
+.s-territory { flex: 1 1 auto; min-height: 14%; }
+
+/* ---- the verbs ---------------------------------------------- */
+.verbs { display: grid; gap: 0; }
+.verb { border-top: 1px solid var(--rule); padding: 1rem 0 1.35rem; }
+.verb:first-child { border-top: 0; padding-top: 0; }
+.verb h3 {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.verb p { margin-top: 0.5rem; max-width: 40ch; color: var(--ink-2); }
+
+.do {
+  display: inline-block; margin-top: 0.7rem;
+  font-family: var(--f-sans); font-size: var(--fs-label);
+  letter-spacing: var(--track); text-transform: uppercase; font-weight: 600;
+  padding: 0.7rem 1.1rem;
+  background: var(--ink); color: var(--paper);
+  border: 0; cursor: pointer; text-decoration: none;
+}
+.do:hover { background: var(--ink-2); }
+.do--ghost {
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--ink); padding: 0.65rem 1.05rem;
+}
+.do--ghost:hover { background: var(--paper-2); }
+
+/* ---- machine voice: verbatim repository text ---------------- */
+.machine {
+  font-family: var(--f-mono); font-size: 0.875rem; line-height: 1.6;
+  color: var(--ink-2);
+  border-left: 2px solid var(--rule); padding-left: 1rem;
+  max-width: 62ch;
+}
+.machine cite { display: block; font-style: normal; font-size: var(--fs-label);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--quiet);
+  margin-top: 0.6rem; font-family: var(--f-sans); }
+
+.paste {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+.paste code {
+  font-family: var(--f-mono); font-size: 0.8125rem;
+  background: var(--paper-2); padding: 0.6rem 0.75rem;
+  overflow-wrap: anywhere; border: 1px solid var(--rule);
+}
+
+/* ---- the three numbers -------------------------------------- */
+.nums {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 clamp(1.5rem, 3vw, 3rem);
+}
+.num { border-top: 1px solid var(--rule); padding-top: 0.9rem; }
+.num dt {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.num b {
+  display: block; font-family: var(--f-sans); font-weight: 600;
+  font-size: clamp(2rem, 3.4vw, 3.4rem); line-height: 1;
+  letter-spacing: -0.03em; margin: 0.5rem 0 0.6rem;
+}
+.num b.words { font-size: clamp(1.15rem, 1.5vw, 1.6rem); letter-spacing: -0.01em; }
+.num dd { margin: 0; color: var(--ink-2); max-width: 34ch; font-size: 0.9375rem; }
+
+/* ---- ledger: status words, never ticks, never colour -------- */
+/* Every status word the table uses is defined here, so the claim can
+   be checked instead of trusted. A word in the table with no row here
+   would be the one thing this ledger is not allowed to do. */
+.defs {
+  display: grid; grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.4rem 1.6rem; margin-bottom: 1.5rem; max-width: 88ch;
+}
+.defs dt {
+  font-family: var(--f-mono); font-size: 0.8125rem;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.defs dd {
+  margin: 0; font-family: var(--f-serif); font-style: italic;
+  color: var(--ink-2);
+}
+@media (max-width: 700px) {
+  .defs { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+  .defs dd { margin-bottom: 0.8rem; }
+}
+.ledger { width: 100%; border-collapse: collapse; text-align: left; }
+.ledger th, .ledger td {
+  border-top: 1px solid var(--rule); padding: 0.8rem 1rem 0.8rem 0;
+  vertical-align: top; font-weight: 400;
+}
+.ledger thead th {
+  border-top: 0; font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+  padding-bottom: 0.5rem;
+}
+.ledger td:first-child { font-weight: 600; width: 30%; }
+.ledger .status {
+  font-family: var(--f-mono); font-size: 0.8125rem; text-transform: uppercase;
+  letter-spacing: 0.04em; width: 34%;
+}
+.ledger td:last-child { color: var(--ink-2); font-size: 0.9375rem; }
+
+/* ---- terminal ----------------------------------------------- */
+.end {
+  max-width: var(--max); margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.end__in { border-top: 2px solid var(--ink); padding-top: 1rem; }
+.end__label {
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.end__field { min-height: 34vh; }
+.end__foot {
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  padding: 1rem 0 2.5rem;
+  font-size: var(--fs-label); letter-spacing: var(--track);
+  text-transform: uppercase; font-weight: 600; color: var(--quiet);
+}
+.end__foot a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+
+/* ---- the stop ----------------------------------------------- */
+.stopped { display: none; }
+body[data-state="ended"] .rh,
+body[data-state="ended"] .datum,
+body[data-state="ended"] .open,
+body[data-state="ended"] main,
+body[data-state="ended"] .end { display: none; }
+body[data-state="ended"] .stopped {
+  display: grid; align-content: start; gap: 1.5rem;
+  min-height: 100vh; max-width: var(--max); margin: 0 auto;
+  padding: clamp(3rem, 10vh, 8rem) var(--pad);
+}
+/* The closing line is the skill's own message, so it is the machine
+   speaking, and the machine is Mono. Serif would be a rule break: on
+   this site Serif only ever asks. */
+.stopped h2 {
+  font-family: var(--f-mono); font-weight: 500; line-height: 1.1;
+  font-size: clamp(1.5rem, 0.85rem + 2.7vw, 3.1rem);
+  letter-spacing: -0.02em;
+}
+.stopped h2:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+/* The stop is the point. Being unable to get out of it is not: the
+   browser fires afterprint on cancel too, so the way back is a control
+   at the same weight as every other control on the site, reachable
+   from anywhere with Escape. Nothing is lost by returning
+   — the scroll position and anything typed into the intent line come
+   back exactly as they were. */
+.stopped .back { justify-self: start; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ---- narrow -------------------------------------------------- */
+/* Below this width, Letter proportions would drive the sheet's own
+   type under 8px, and the object the whole page rests on would become
+   a picture of a sheet — the exact thing this direction refuses to
+   print. Legibility wins; the printed output is unaffected. */
+@media (max-width: 620px) {
+  .sheet { aspect-ratio: auto; font-size: 13px; padding: 7% 7% 6%; }
+  .s-territory { min-height: 130px; }
+  .s-react { grid-template-columns: minmax(0, 1fr); gap: 0.2em; }
+  .s-react .s-colh + .s-colh { margin-top: 1.1em; }
+}
+
+@media (max-width: 900px) {
+  .sheet-row { grid-template-columns: minmax(0, 1fr); }
+  .nums { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .num { padding-bottom: 1.25rem; }
+}
+@media (max-width: 700px) {
+  :root { --rail: auto; }
+  .band__in { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .rail b { display: inline; margin-right: 0.6em; }
+  .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; width: auto; }
+  .ledger thead { display: none; }
+  .ledger tr { border-top: 1px solid var(--rule); padding: 0.8rem 0; }
+  .ledger td { border-top: 0; padding: 0.15rem 0; width: auto !important; }
+  .ledger td:first-child { width: auto; }
+}
+
+/* ============================================================
+   PRINT. This is not a stylesheet for a web page that happens
+   to be printable. It is the sheet, at the real numbers from
+   references/design.md: Letter, 54pt margins, 2pt datum rule.
+   ============================================================ */
+@page { size: letter portrait; margin: 54pt; }
+
+@media print {
+  :root { --sheet: #fff; }
+  body { background: #fff; color: #000; }
+  .rh, .datum, .band, .end, .stopped, .open { display: none !important; }
+  .pick > label { display: none !important; }
+  .pick > .sheet-hold { margin-top: 0; }
+  #sheet-band { display: block !important; padding: 0; max-width: none; }
+  #sheet-band .band__in { display: block; border: 0; padding: 0; }
+  #sheet-band .rail, #sheet-band .verbs { display: none; }
+  #sheet-band .sheet-row { display: block; }
+  .sheet-hold { padding: 0; container-type: normal; }
+  .sheet-hold::before, .sheet-hold::after,
+  .sheet-hold > .cm1, .sheet-hold > .cm2 { display: none; }
+  .sheet {
+    aspect-ratio: auto; height: 100vh; width: 100%;
+    font-size: 12pt;
+    padding: 0; border: 0; background: #fff; color: #000;
+    display: flex; flex-direction: column;
+  }
+  .s-datum  { border-top-width: 2pt; }
+  .s-title  { font-size: 16pt; margin-top: 22pt; }
+  .s-meta   { font-size: 6.8pt; letter-spacing: 0.08em; margin-top: 8pt; color: #666; }
+  .s-intent { margin-top: 14pt; }
+  .s-intent input { font-size: 9.5pt; color: #4d4d4d; border-bottom-color: #8c8c8c; }
+  .s-zone   { margin-top: 26pt; }
+  .s-label  { font-size: 6.8pt; letter-spacing: 0.14em; color: #666; }
+  .s-box    { border-color: #808080; padding: 8pt 10pt 10pt; }
+  .s-prompt { font-size: 9.5pt; }
+  .s-lines, .s-guides { gap: 16pt; }
+  .s-rule   { border-bottom-color: #8c8c8c; height: 12pt; }
+  .s-num    { font-size: 8pt; color: #808080; }
+  .s-prov   { font-size: 21pt; line-height: 28pt; margin-top: 8pt; }
+  .s-sub    { font-size: 10pt; color: #666; margin-top: 6pt; }
+  .s-react  { gap: 0 18pt; margin-top: 20pt; }
+  .s-prop, .s-ans { padding-top: 9pt; }
+  .s-prop span:last-child { font-size: 8.5pt; line-height: 12pt; }
+  .s-alines { gap: 13pt; }
+  .s-hint   { font-size: 8pt; margin-top: 9pt; color: #666; }
+  .s-open   { padding-top: 24pt; }
+  .s-close  { border-top-width: 1.6pt; margin-top: 5pt; }
+  .s-territory { min-height: 108pt; }
+  .s-foot   { font-size: 6.8pt; letter-spacing: 0.12em; color: #737373; padding-top: 12pt; }
+}
+</style>
+</head>
+<body>
+
+<header class="rh">
+  <span>Paper Session</span>
+  <span>01 / 02</span>
+</header>
+<div class="datum" role="presentation"></div>
+
+<section class="open">
+  <h1 class="ask">What are you agreeing with because arguing takes longer?</h1>
+  <p class="claim">This page is a sheet.</p>
+  <p class="cue">&darr; 01</p>
+</section>
+
+<main>
+
+<!-- 01 ---------------------------------------------------------- -->
+<section class="band" id="sheet-band" aria-labelledby="r1">
+  <div class="band__in">
+    <p class="rail" id="r1"><b>01</b>The sheet</p>
+    <div class="sheet-row">
+
+      <div class="pick" role="radiogroup" aria-label="Which sheet this page prints">
+      <input type="radio" name="st" id="st1" checked>
+      <label for="st1">01 &nbsp; Knowing nothing about you</label>
+      <input type="radio" name="st" id="st2">
+      <label for="st2">02 &nbsp; Having done work</label>
+
+      <div class="sheet-hold">
+        <span class="cm1" aria-hidden="true"></span><span class="cm2" aria-hidden="true"></span>
+        <article class="sheet" id="sheet-1">
+          <div class="s-datum" role="presentation"></div>
+          <h2 class="s-title">The thing you keep not deciding</h2>
+          <p class="s-meta printed-on">Session printed sat 29 aug 2026</p>
+
+          <p class="s-intent">
+            <label class="s-label" for="intent">Intent &mdash; for somebody picking the page up cold</label>
+            <input id="intent" type="text" autocomplete="off" spellcheck="false">
+          </p>
+
+          <div class="s-zone">
+            <p class="s-label">First three are free</p>
+            <div class="s-box">
+              <p class="s-prompt">The obvious answers. Write them here so they stop taking up room.</p>
+              <div class="s-lines">
+                <p class="s-line"><span class="s-num">01</span><span class="s-rule"></span></p>
+                <p class="s-line"><span class="s-num">02</span><span class="s-rule"></span></p>
+                <p class="s-line"><span class="s-num">03</span><span class="s-rule"></span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="s-zone">
+            <p class="s-label">One provocation</p>
+            <p class="s-prov">Name the decision you have been describing instead of making.</p>
+            <p class="s-sub">Not the reasons. The decision.</p>
+            <div class="s-guides">
+              <span class="s-rule"></span><span class="s-rule"></span><span class="s-rule"></span>
+            </div>
+          </div>
+
+          <div class="s-open">
+            <p class="s-label">Open territory</p>
+            <div class="s-close" role="presentation"></div>
+          </div>
+          <div class="s-territory" role="presentation"></div>
+
+          <p class="s-foot"><span>Scan it back to continue.</span><span>Deep &middot; 1 of 1</span></p>
+        </article>
+
+        <!-- State 02. The only work this website has actually done is its
+             own argument, so that is what it is allowed to propose. It goes
+             in the machine's column, in the machine's face, with the pen's
+             column left empty beside it. -->
+        <article class="sheet" id="sheet-2">
+          <div class="s-datum" role="presentation"></div>
+          <h2 class="s-title">Argue with the project that printed this</h2>
+          <p class="s-meta printed-on">Session printed sat 29 aug 2026</p>
+
+          <p class="s-intent">
+            <label class="s-label" for="intent2">Intent &mdash; for somebody picking the page up cold</label>
+            <input id="intent2" type="text" autocomplete="off" spellcheck="false">
+          </p>
+
+          <div class="s-react">
+            <p class="s-label s-colh">I propose</p>
+            <p class="s-label s-colh">You decide</p>
+
+            <p class="s-prop"><span class="s-num">01</span><span>Your metabolism of the output is the bottleneck, not the output.</span></p>
+            <p class="s-ans"><span class="s-num">01</span><span class="s-alines"><span class="s-rule"></span><span class="s-rule"></span></span></p>
+
+            <p class="s-prop"><span class="s-num">02</span><span>Where you are better than the machine, the page should stay empty.</span></p>
+            <p class="s-ans"><span class="s-num">02</span><span class="s-alines"><span class="s-rule"></span><span class="s-rule"></span></span></p>
+
+            <p class="s-prop"><span class="s-num">03</span><span>A printed time limit makes the thinking shallower. No sheet carries one.</span></p>
+            <p class="s-ans"><span class="s-num">03</span><span class="s-alines"><span class="s-rule"></span><span class="s-rule"></span></span></p>
+
+            <p class="s-prop"><span class="s-num">04</span><span>No study tests this artifact. The evidence is assembled from adjacent fields.</span></p>
+            <p class="s-ans"><span class="s-num">04</span><span class="s-alines"><span class="s-rule"></span><span class="s-rule"></span></span></p>
+
+            <p class="s-prop"><span class="s-num">05</span><span>This will feel less productive than the same hour on screen, including when it is not.</span></p>
+            <p class="s-ans"><span class="s-num">05</span><span class="s-alines"><span class="s-rule"></span><span class="s-rule"></span></span></p>
+          </div>
+
+          <p class="s-hint">Cross out freely.</p>
+
+          <div class="s-open">
+            <p class="s-label">Open territory</p>
+            <div class="s-close" role="presentation"></div>
+          </div>
+          <div class="s-territory" role="presentation"></div>
+
+          <p class="s-foot"><span>Scan it back to continue.</span><span>Deep &middot; 1 of 1</span></p>
+        </article>
+      </div>
+      </div>
+
+      <div class="verbs">
+        <div class="verb">
+          <h3>If you can print</h3>
+          <p>Letter, grayscale, margins already correct.</p>
+          <button class="do" type="button" data-print>Print this page</button>
+        </div>
+        <div class="verb">
+          <h3>If you cannot</h3>
+          <p>Six lines into the notebook on your desk: the title, the box, the three rules, the question. Leave the rest of the paper alone.</p>
+        </div>
+        <div class="verb">
+          <h3>What decides which of the two</h3>
+          <p>A website has read none of your work, so state 01 proposes nothing. The installed skill is the half that has read it.</p>
+          <a class="do do--ghost"
+             href="https://github.com/welovejeff/paper-session#install">Install both halves</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 02 ---------------------------------------------------------- -->
+<section class="band" aria-labelledby="r2">
+  <div class="band__in">
+    <p class="rail" id="r2"><b>02</b>When you come back</p>
+    <div>
+      <p class="machine">
+        &ldquo;<code>scan-back</code> is one markdown file with nothing behind it &mdash; no scripts,
+        no Python, no fonts, no second document to fetch &mdash; so it pastes into a single
+        chat message anywhere text goes.&rdquo;
+        <cite>README &sect; Install, verbatim</cite>
+      </p>
+      <p class="paste">
+        <code>github.com/welovejeff/paper-session/raw/main/scan-back/SKILL.md</code>
+        <button class="do" type="button" data-copy="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back/SKILL.md">Copy the link</button>
+      </p>
+      <p class="rail" style="margin-top:1rem">Paste it. Add the photos. Say nothing else.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ---------------------------------------------------------- -->
+<section class="band" aria-labelledby="r3">
+  <div class="band__in">
+    <p class="rail" id="r3"><b>03</b>Three numbers</p>
+    <dl class="nums">
+      <div class="num">
+        <dt>Walking, divergent thinking</dt>
+        <b>d = 0.93</b>
+        <dd>Meta-analytic across 23 studies. It persists after you sit back down.</dd>
+      </div>
+      <div class="num">
+        <dt>Unexpected idle time</dt>
+        <b>58%</b>
+        <dd>More ideas from employees given it, in a natural experiment at real work.</dd>
+      </div>
+      <div class="num">
+        <dt>AI-assisted design study</dt>
+        <b class="words">Confidence held steady</b>
+        <dd>Output quality and ideational diversity fell. Self-assessed creativity did not move.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- 04 ---------------------------------------------------------- -->
+<section class="band" aria-labelledby="r4">
+  <div class="band__in">
+    <p class="rail" id="r4"><b>04</b>Where the loop stands</p>
+    <div>
+      <dl class="defs">
+        <dt>Verified end to end</dt>
+        <dd>One person carried a real session through every step: install, generation,
+        printing, pen, photograph, resume.</dd>
+        <dt>Supported</dt>
+        <dd>The surface the return trip was built around. Weaker than verified: no single
+        run has been written up.</dd>
+        <dt>Installs cleanly, loop untested</dt>
+        <dd>The first half of that sentence and none of the second.</dd>
+        <dt>Untested, per surface</dt>
+        <dd>Nobody has checked, and the answer may differ by product.</dd>
+      </dl>
+      <table class="ledger">
+        <thead>
+          <tr><th scope="col">Agent</th><th scope="col">Status</th><th scope="col">What that leaves</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude Code</td>
+            <td class="status">Verified end to end</td>
+            <td>Needs reportlab and pdfplumber on the machine running the agent.</td>
+          </tr>
+          <tr>
+            <td>claude.ai, desktop, mobile</td>
+            <td class="status">Supported</td>
+            <td>The chat-native path. A phone photographing the pages is what the return trip was built around.</td>
+          </tr>
+          <tr>
+            <td>Cursor, Codex, Copilot</td>
+            <td class="status">Installs cleanly, loop untested</td>
+            <td>A session report from one of these is the contribution wanted most.</td>
+          </tr>
+          <tr>
+            <td>ChatGPT, Gemini, Perplexity, Grok</td>
+            <td class="status">Untested, per surface</td>
+            <td>No skills runtime, so no PDF and no verify gate. You copy a dictated card by hand.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="end">
+  <div class="end__in">
+    <p class="end__label">Open territory</p>
+    <div class="end__field" role="presentation"></div>
+    <p class="end__foot">
+      <span>01 / 02</span>
+      <a href="interior.html">02 &nbsp; The return trip &rarr;</a>
+    </p>
+  </div>
+</div>
+
+<div class="stopped" aria-live="polite">
+  <h2 tabindex="-1">Printed. Go think.</h2>
+  <p class="claim">One file reads the marked-up page back, in any AI you already own.</p>
+  <p class="paste">
+    <code>github.com/welovejeff/paper-session/raw/main/scan-back/SKILL.md</code>
+    <button class="do" type="button" data-copy="https://raw.githubusercontent.com/welovejeff/paper-session/main/scan-back/SKILL.md">Copy the link</button>
+  </p>
+  <button class="do do--ghost back" type="button" data-resume>&larr; Not yet &mdash; go back</button>
+</div>
+
+<script>
+(function () {
+  // The date the sheet was printed. Tracked caps, like the sheet.
+  var d = new Date();
+  var D = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];
+  var M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];
+  var stamp = "Session printed " + D + " " + String(d.getDate()).padStart(2, "0") +
+              " " + M + " " + d.getFullYear();
+  document.querySelectorAll(".printed-on").forEach(function (el) { el.textContent = stamp; });
+
+  document.querySelectorAll("[data-print]").forEach(function (b) {
+    b.addEventListener("click", function () { window.print(); });
+  });
+
+  // The site's own stop rule. Invoking print ends the visit.
+  // afterprint also fires when the dialogue is cancelled, and no browser
+  // will say which happened, so the stop has to be free to undo: the
+  // visit is put away, never destroyed.
+  var parked = 0;
+  function stop() {
+    parked = window.scrollY;
+    document.body.dataset.state = "ended";
+    window.scrollTo(0, 0);
+    var h = document.querySelector(".stopped h2");
+    if (h) { h.focus(); }
+  }
+  function resume() {
+    if (document.body.dataset.state !== "ended") { return; }
+    delete document.body.dataset.state;
+    window.scrollTo(0, parked);
+    var b = document.querySelector("[data-print]");
+    if (b) { b.focus(); }
+  }
+  window.addEventListener("afterprint", stop);
+  document.querySelectorAll("[data-resume]").forEach(function (b) {
+    b.addEventListener("click", resume);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { resume(); }
+  });
+
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var t = b.getAttribute("data-copy");
+      var done = function () { b.textContent = "Copied"; };
+      if (navigator.clipboard) { navigator.clipboard.writeText(t).then(done, function(){}); }
+      else { done(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

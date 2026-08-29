@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Paper Session">
+  <style>
+    .ink { fill: #191c1e; }
+    .guide { fill: #c3c6c2; }
+    .pen { stroke: #1f4c9e; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #eef0ec; }
+      .guide { fill: #4b5153; }
+      .pen { stroke: #8fb6f5; }
+    }
+  </style>
+  <!-- the 2pt datum rule -->
+  <rect class="ink" x="4" y="5" width="24" height="3"/>
+  <!-- writing guides -->
+  <rect class="guide" x="4" y="13" width="24" height="1"/>
+  <rect class="guide" x="4" y="19" width="24" height="1"/>
+  <!-- the closing rule -->
+  <rect class="ink" x="4" y="26" width="24" height="2"/>
+  <!-- the pen: the highest-contrast mark on the page -->
+  <path class="pen" d="M7 22 L17 10" fill="none" stroke-width="3" stroke-linecap="butt"/>
+</svg>

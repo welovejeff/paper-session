@@ -1,0 +1,166 @@
+<!--page
+title: Install
+description: Both skills, both tracks, and an honest account of where the loop stands agent by agent.
+nav_label: Install
+nav_order: 40
+-->
+
+<section class="band air-1" aria-labelledby="install-heading">
+  <div class="wrap">
+    <p class="label">Both halves, both tracks</p>
+    <h1 class="page-title" id="install-heading">Install</h1>
+    {% if repo_footer_line %}
+    <p class="intent">Take both or neither. Every sheet the forward half
+    prints closes with <span class="page-foot">{{ repo_footer_line }}</span>
+    and the return half is what honours that, so one without the other leaves
+    a finished page with nowhere to go.</p>
+    {% else %}
+    <p class="intent">Take both or neither. The forward half prints a page
+    that promises the return half by name, so one without the other leaves a
+    finished page with nowhere to go.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-1" aria-labelledby="which-heading">
+  <div class="wrap">
+    <h2 class="question" id="which-heading">Which of these are you?</h2>
+    <p class="aside measure">One of these sentences is true of you, and that
+    is the whole decision. These cards are only a way in: the directions
+    themselves are further down this page, in a single block, exactly as the
+    repository states them, and that block is the complete and current list
+    whether or not a card here describes your case.</p>
+
+    <ul class="routes">
+      <li class="route">
+        <h3>Your AI is an app or a browser tab.</h3>
+        <p>There is somewhere to attach a file and no terminal to type into.
+        Both halves ship as packaged bundles for exactly this. It is the
+        shortest way in and it is not the lesser one; the ledger below says
+        where it stands, in the same words it uses for everything else.</p>
+        <a class="route__jump" href="#directions">The directions &darr;</a>
+      </li>
+
+      <li class="route">
+        <h3>Your AI runs in a terminal or your editor.</h3>
+        <p>You have a shell, and Node with it. One installer knows this
+        repository, finds both skills in it, and knows where your particular
+        agent keeps them — including the ones nobody here has tested.</p>
+        <a class="route__jump" href="#directions">The directions &darr;</a>
+      </li>
+
+      <li class="route">
+        <h3>A terminal, but no Node.</h3>
+        <p>The bundles are not a special format. Whatever unpacks an archive
+        on your machine is enough, and the destination is a folder your agent
+        already reads.</p>
+        <a class="route__jump" href="#directions">The directions &darr;</a>
+      </li>
+
+      <li class="route">
+        <h3>Your AI cannot take skills at all.</h3>
+        <p>Nothing installs, because nothing reads a skills folder. The
+        forward half travels as text you paste, and what comes back is a card
+        you copy into a notebook by hand — never a PDF, and nothing verified,
+        because nothing is rendered.</p>
+        <a class="route__jump" href="{{ base }}no-printer/">The no-printer path &rarr;</a>
+      </li>
+    </ul>
+
+    <div class="prose measure">
+      <p>Whichever of them you are, Python enters the picture twice:
+      something has to draw the page, and something has to check the drawing
+      before you ever see it. Whether either of those lands on you to install
+      by hand depends on where your agent runs Python, not on which route you
+      took. The directions below say what they are and why; the ledger below
+      that says which of them you need, agent by agent.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-2" id="directions" aria-labelledby="directions-heading">
+  <div class="wrap">
+    <p class="label">The directions</p>
+    <h2 class="question" id="directions-heading">Not written for this website.</h2>
+    <p class="aside measure">Mono means one thing here: these are not our
+    words. The block below is the repository&rsquo;s own install section, read
+    out of the file when this page was generated. The project keeps exactly
+    one copy of these commands and this page is not it — which is the only
+    arrangement under which a website stays true to a repository that keeps
+    moving.</p>
+
+    <div class="machine measure">
+      <span class="caption">Verbatim &middot; README &sect;Install</span>
+      {{ repo_install_html }}
+    </div>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="ledger-heading">
+  <div class="wrap">
+    <p class="label">Where it actually stands</p>
+    {% if repo_ledger_heading %}
+    <h2 class="question" id="ledger-heading">{{ repo_ledger_heading }}</h2>
+    {% else %}
+    <h2 class="question" id="ledger-heading">Agent by agent, what has actually been run.</h2>
+    {% endif %}
+
+    <div class="prose measure">
+      <p>No row is graded up. A verdict that stops short of end to end is set
+      in the same type, boxed the same way, as one that does not — because
+      which agents have carried a page all the way round is the most useful
+      thing this project can tell you, and the honest list is short.</p>
+      <p>A row that says the loop is untested is a finding, not an apology.
+      It marks the place where someone running a real session on that agent
+      would tell us something nobody knows yet, and closing one takes one
+      person and one report.</p>
+    </div>
+
+    <p class="verdict-key">
+      <span class="verdict">Verdict</span>
+      <span>Each row&rsquo;s status is boxed like this, in the ledger&rsquo;s
+      own words. The box is the entire encoding: nothing here is
+      colour-coded, and nothing is amber. A traffic light would read a true
+      finding as a warning, and colour alone carries no meaning anywhere on
+      this site.</span>
+    </p>
+
+    <div class="ledger-table">
+      {{ repo_ledger_table_html }}
+    </div>
+
+    {% if repo_install_note_html %}
+    <div class="machine measure">
+      <span class="caption">Verbatim &middot; README &sect;Install</span>
+      {{ repo_install_note_html }}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-4" aria-labelledby="next-heading">
+  <div class="wrap">
+    <p class="label">Once it is in</p>
+    <h2 class="question" id="next-heading">Mostly you will not invoke it. It offers when the work turns into judgment work.</h2>
+
+    <div class="prose measure">
+      <p>And you do not have to install anything to find out whether you want
+      it. A specimen the skill generated and put through its own layout
+      verifier prints from a browser, with no account and nothing to agree
+      to.</p>
+    </div>
+
+    {% include "_print-note.html" %}
+
+    <p class="btn-row">
+      <a class="btn btn--primary" href="{{ base }}get-a-sheet/">Get a sheet</a>
+      <a class="btn" href="{{ base }}scan-back/">I already have paper</a>
+    </p>
+
+    <div class="open-territory">
+      <p class="label label--strong">Open territory</p>
+      <div class="open-territory__rule" role="presentation"></div>
+      <div class="open-territory__field"></div>
+    </div>
+  </div>
+</section>

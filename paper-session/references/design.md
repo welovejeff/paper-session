@@ -67,7 +67,7 @@ The three voices, never blended:
 
 Dot grid is used when the activity invites sketching or spatial marks (drawing activities, field logs, arrangement zones). Ruled lines are the default for prose answers. Cut lines appear only on sheets the human will actually cut (card kits); never as decoration.
 
-**Every Deep kit must contain at least one dot-grid sketch zone.** Drawn content outperforms handwritten content on recall across multiple studies, including ones that found no advantage for handwriting over typing. A kit that is entirely ruled lines is leaving the strongest available effect on the table.
+**Every Deep kit must contain at least one dot-grid sketch zone.** Drawn content outperforms handwritten content on recall across multiple studies, including ones that found no advantage for handwriting over typing. A kit that is entirely ruled lines is leaving the strongest available effect on the table. The requirement yields on exactly one path — a dictated session worked without sight of a page, where there is nothing to draw on and nothing to look at again. There the kit carries the prompt the drawing was there to ask, and nothing takes the drawing's place; a substitute activity would inherit the mechanism's name and none of the evidence under it. A sighted copyist working the card onto paper still gets the sketch field.
 
 **No sheet prints a time limit, countdown, or suggested duration.** Not in the header, not in a zone label, not in the footer. Time pressure is the specific trigger for shallow processing, and the creativity benefit of input constraints holds only when the clock is not also constrained. Constraints belong in the prompt, never on the timer.
 
@@ -122,7 +122,7 @@ The printed layer is grayscale by law (section 0), which reserves the entire col
 **Ink codes intent, never identity.** No channel is ever assigned to a person. On a group format, where several hands write on several copies of one sheet, a red strike from the fourth participant means what a red strike means, and no sheet asks a hand to pick an ink of its own. Where attribution is wanted at all it is the `HAND:` box (section 6), which is optional and which nothing asks to be filled.
 
 **The protocol is user-definable.** These are defaults, not rules. The authority cascade, highest first:
-1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session. On a group format returning several sheets in several hands, it governs the sheet it appears on rather than the table, since the hand that wrote it can only speak for its own page; `scan-back` Step 1 reads it back the same way.
+1. A legend handwritten anywhere on the page (e.g. "green = new concept") redefines that channel for the whole session. On a group format returning several sheets in several hands, it governs the sheet it appears on rather than the table, since the hand that wrote it can only speak for its own page. That narrowing is a group-format rule and does not reach a scribe: where someone else writes the page at the author's direction, a legend in the scribe's hand governs the session rather than only the page it sits on, because a scribe speaks for the author — and it still outranks the printed key at rung 2, exactly as a legend in the author's own hand would. `scan-back` Step 1 reads both cases back the same way.
 2. The printed ink key on the sheet (which reflects any customization the user has told the skill about).
 3. The defaults below.
 
@@ -155,3 +155,18 @@ Printing rules:
 - A page carrying the private marker prints no ink key: nothing on it is read back, so there is no return trip for a key to serve.
 - The protocol is optional per session; the black-only sheet is the primary design case, stated at the top of this section.
 - If the user states a custom legend in conversation, adopt it for all future sheets and offer once to remember it.
+
+## 10. Document metadata
+
+Three settings on the PDF file itself. Nothing here prints: no ink, no dimension, no change to any page. They exist so the file announces itself correctly to a person who is not looking at it, and so a screen reader is told what it is holding and what language to pronounce it in.
+
+Defaults are not acceptable output. Left alone, reportlab ships `/Title (untitled)` and no `/Lang` at all; a sheet that reaches a reader as "untitled" in an unspecified language has failed before its first word. Set all three, every time, on every sheet and every kit.
+
+- **Language.** The document catalog carries `/Lang`, set to a BCP 47 tag naming the language the sheet's printed text is actually written in — not the machine's locale, not a fixed constant. English sheets are `en-US`; a sheet whose provocations are written in Spanish is `es`. In reportlab this is a canvas constructor keyword: `canvas.Canvas(path, lang="en-US")`.
+- **Title.** The Info dictionary's `/Title` is the sheet's printed title, verbatim — item 2 of the mandatory header in §4 — so the string a reader announces and the string a reader sees are the same string. A multi-page kit takes its title once: the document has one title, not one per page. In reportlab: `c.setTitle(...)`.
+  - **One exception: the serial disclosure kit.** Its title is the neutral constant `Paper Session` followed by an em dash and the date in `YYYY-MM-DD` — `Paper Session — 2026-08-28` — and never the kit's printed title, its intent line, or the format name. Its sittings carry the private marker of §9 and are written to be seen by no one, but a document title travels with the file into file managers, print queues, and cloud previews the author never chose. The format name is the worse disclosure of the two: "serial disclosure kit" in a shared print queue announces that this person is writing about professional setbacks, which is sharper than most intent lines would be. The constant names nothing a person can act on.
+- **Title display.** The catalog carries `/ViewerPreferences << /DisplayDocTitle true >>`. Without it a reader announces the filename instead — whatever the generator or the download path happened to call the file — and the title above does nothing. In reportlab: `c.setViewerPreference('DisplayDocTitle', 'true')`, where the value is the string `'true'`.
+
+`verify_layout.py` checks none of this. It is deliberately narrow (§8) and does not check the design system, so metadata is set correctly at generation rather than caught afterwards.
+
+**Metadata is never a continuity carrier.** Nothing in either skill may read session state back out of a returned file — not the title, not the creation date, not an author field, on any return path. This is a rule and not a physical limit, and the difference matters: a photographed page carries no metadata at all, but a tablet return is the original PDF with its Info dictionary intact, so on that one path there genuinely is a title sitting there to be read. Do not read it. The printed header carries everything the return trip needs (§4), which is the same reason sheets print no QR code, no session ID, and no machine-readable context block; a continuity rule that holds only for tablet users is a rule that fails on the day it matters. `scan-back` Step 1 states the same rule from the other side.

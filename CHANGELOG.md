@@ -9,6 +9,57 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **The loop works without a printer, and without reading the page.** Say you
+  can't print — or that you can't read the printed sheet — and the same
+  session arrives as a short card in linear text: the prompts and the
+  structure, never the machine's lists, which stay in the chat so a
+  hand-copied handle never lands on a page where you're supposed to be
+  generating. One path serves both, because the card was never a printing
+  workaround; it is the session said out loud, and what you do with it is
+  yours — copy it into a notebook, type it, put it on a braille slate, hand it
+  to a scribe. Light sessions get offered in conversation instead. `scan-back`
+  reads a page with no printed layer: your copied scaffold is structure, not
+  answers, and where every stroke is in one hand the marks carry the intent
+  that ink used to. Neither question is ever asked of you, and nothing names
+  what you're not getting — but ask for the PDF anyway, for a sighted
+  colleague or for a scribe to work from, and you get it without comment.
+  Design and rationale in
+  [`research/0002`](research/0002-no-printer-notebook-brief.md) and
+  [`research/0005`](research/0005-non-visual-return.md).
+- **The return doesn't have to be in your handwriting.** Dictate it in the
+  chat, type it, or have someone else write the pages at your direction:
+  `scan-back` reads all three with exactly the authority your own hand
+  carries. A dictated return gets received, not interviewed — the questions
+  were answered off-screen, and asking them again one at a time in the chat
+  throws away the half of the loop that was the point. The mark vocabulary
+  arrives in the wording, where it was primary anyway: "cut that" is a strike,
+  "explain that one" is a `?`. A scribe is never read as a second person at
+  the table, their hand is never pooled as a contribution, and nothing ever
+  asks who held the pen. What this is not is stated as plainly as what it is:
+  most of what the evidence brief measures depends on someone looking at a
+  page, and `references/evidence.md` names the clusters that stop applying,
+  one by one.
+- **Chat AI with no skills runtime can run the forward half by paste.**
+  ChatGPT, Gemini, Copilot chat, Perplexity, Le Chat, DeepSeek, Grok, Poe —
+  none of them read a `SKILL.md` folder, so there is nothing to install and
+  one file to paste: `paper-session-paste.md`, built from the same source as
+  the bundles. What you get is the dictated card, never a PDF, and no verify
+  gate, because nothing is rendered. Said plainly rather than buried: a pasted
+  protocol is user text with no standing against the host's own system prompt,
+  so a model tuned to be maximally helpful can still pre-fill a zone or
+  volunteer a duration the rules forbid, and how often, on which product, is
+  unmeasured. The return half travels further — `scan-back` is one file that
+  pastes into any chat that takes photographs. Design and rationale in
+  [`research/0003`](research/0003-paste-channel.md).
+- **A notebook page can come back cold.** Copied from a card another AI
+  dictated, copied in a chat that is gone, or built straight from the protocol
+  with no AI in the forward half at all: with no card to check it against,
+  `scan-back` reads the page as its own structure — CAPS lines and repeated
+  phrases are scaffold, an `I PROPOSE` caption and anything in quotation marks
+  are the machine's words in your hand, and what fills the space is yours. It
+  never works out which sheet the page "must have been" and reads the page
+  against that, never reports a zone as missing, and never asks you to produce
+  a card that was never in the chat.
 - **Brainwriting rounds**, the eighth named format and the first built for a
   table rather than one person. Three to six people, a sheet each, three ideas
   per round, then pass left — no timer, because the passing is triggered by
@@ -30,16 +81,33 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   labeled this project's own untested hypothesis. Offered for work friction
   and professional setbacks only, never as therapy, with the exclusions named
   and the expected short-term mood dip disclosed instead of hidden.
-- **The loop works without a printer.** Say you can't print and the same
-  session arrives as a short card to copy into any notebook: the prompts and
-  the structure, never the machine's lists — those stay in the chat, and a
-  hand-copied handle never lands on a page where you're supposed to be
-  generating. Light sessions get offered in conversation instead. `scan-back`
-  reads a page with no printed layer: your copied scaffold is structure, not
-  answers, and with every stroke in one hand the marks carry the intent that
-  ink used to. The skill never asks whether you have a printer, and never
-  mentions what you're not getting. Design and rationale in
-  [`research/0002`](research/0002-no-printer-notebook-brief.md).
+
+### Changed
+- **The sheet builds wherever the skill is installed.** Generating a PDF used
+  to lean on a reportlab guide that exists only inside Claude's own
+  environment; the mechanics are now written into `SKILL.md` itself, the two
+  Python packages ship as a `requirements.txt` inside the bundle, and the
+  finished file lands wherever your environment hands files over rather than
+  in a directory that may not exist. On agents outside Claude this is the
+  difference between a sheet and an error. The verify gate did not move: a
+  missing dependency is a reason to install it, never a reason to skip it.
+- **The return trip reads the page, never the file.** A tablet return is the
+  original PDF with its title, author, and creation date still in it.
+  `scan-back` does not look at them. Continuity that works only for tablet
+  users is continuity that fails on the day it matters, and the majority path
+  — a photograph — carries no metadata at all.
+
+### Fixed
+- **Every sheet this project has ever produced printed flat.** The three
+  bundled IBM Plex Sans faces — Regular, SemiBold, and Bold — were three
+  copies of one variable font, each reporting weight 400, so sheet titles, the
+  I PROPOSE / YOU DECIDE captions, and every tracked infrastructure label set
+  at Regular no matter what `design.md` asked for. They now carry the 400,
+  600, and 700 the spec always specified, and `build.sh` refuses a face that
+  does not carry the weight its name promises. Nothing in the design system
+  changed; sheets finally look the way it describes. The specimen images in
+  the README are regenerated against the real weights. Investigation and
+  measurements in [`research/0006`](research/0006-static-sans-weights.md).
 
 ## [0.2.0] — 2026-08-12
 

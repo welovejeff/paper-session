@@ -1,0 +1,255 @@
+<!--page
+title: No printer
+slug: no-printer
+description: The dictated path. The session is read out to you as a short card you copy into whatever notebook you already own — and the same path serves anyone who cannot read a printed sheet.
+nav_label: No printer
+nav_order: 20
+-->
+<!--
+  Nothing on this page states a rule of its own. Every rule about what a
+  dictated card carries is rendered from paper-session/references/prompt-craft.md
+  §10 and page-patterns.md §Notebook translation; the paste route and its
+  load-bearing sentence come from README §Install; what the return trip does
+  with an unprinted page comes from scan-back/SKILL.md. The site's own voice
+  here does orientation only.
+-->
+
+<section class="band air-1" aria-labelledby="np-title">
+  <div class="wrap">
+    <p class="label">The dictated path</p>
+    <h1 class="provocation provocation--wide" id="np-title">A notebook is what this whole system has been trying to imitate.</h1>
+    <p class="intent">A mostly-empty page where your pen is the highest-contrast
+    thing on it, and nothing printed competes with what you write. If you have
+    a notebook and no printer, you already own the good part. What you are
+    missing is the session, and the session can be read out to you.</p>
+  </div>
+</section>
+
+<section class="band air-1" aria-labelledby="np-forks">
+  <div class="wrap">
+    <h2 class="question" id="np-forks">Two things this page is not for.</h2>
+    <ul class="routes">
+      <li class="route">
+        <h3>You have a tablet and a stylus.</h3>
+        <p>Then this is not a printing problem. Take the PDF and annotate it
+        directly, hue and all — the return half already reads a stylus layer
+        the same way it reads ink on paper, and nothing about the sheet
+        changes.</p>
+        <a class="route__jump" href="{{ base }}get-a-sheet/">A sheet to annotate &rarr;</a>
+      </li>
+      <li class="route">
+        <h3>It is the evening and you want one small thing.</h3>
+        <p>A Light session does not need a card at all. The gut calls get asked
+        in the chat, without ceremony and without guilt, and you get a
+        one-screen card only if you ask for one.</p>
+        <a class="route__jump" href="{{ base }}first-session/">The lines to type &rarr;</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="np-say">
+  <div class="wrap measure">
+    <p class="label">You have to be the one to say it</p>
+    <h2 class="question" id="np-say">The skill never asks whether you can print, and never asks whether you can read the sheet.</h2>
+    <p>Both questions are banned outright, in the reference the skill loads
+    before it designs anything. So the dictated path only ever answers
+    something you said first — which means nothing happens until you say it.
+    Add this to whatever you were already asking for, or send it on its own
+    after a PDF has already turned up.</p>
+
+    <p class="say" id="say-no-printer">I can&rsquo;t print anything today. Dictate this as a
+    card I can copy into the notebook I already have.</p>
+    <p class="say__actions">
+      <button type="button" class="say__copy" data-copy="say-no-printer" hidden>Copy<span class="sr"> the no-printer line</span></button>
+      <span class="say__hint">Or select the sentence and copy it.</span>
+    </p>
+
+    <div class="note">
+      <span class="note__key">Scope</span>
+      <p>One sentence covers both reasons because what arrives is the same
+      thing either way: the session written out in plain lines, which is what a
+      notebook wants and also what a screen reader, a slate or a scribe wants.
+      What you then do with it is yours — a notebook, a braille slate, a typed
+      file, a voice memo, somebody writing at your direction.</p>
+      <p>Asking for the PDF later is fine and is answered without comment. It
+      is never offered unasked, because offering it would name what you are not
+      getting.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="np-paste">
+  <div class="wrap">
+    <p class="label">If nothing on your side reads skills</p>
+    <h2 class="question" id="np-paste">The forward half still travels as text you paste.</h2>
+    <p class="aside measure">Below is the repository&rsquo;s own account of that
+    route, rendered from the README when this page was built. The project keeps
+    one copy of these directions and this page is not it.</p>
+
+    {% if repo_paste_route_html %}
+    <div class="machine measure">
+      <span class="caption">Verbatim &middot; README &sect;Install</span>
+      {{ repo_paste_route_html }}
+      {{ repo_paste_sentence_html }}
+      {{ repo_paste_honesty_html }}
+    </div>
+    {% else %}
+    <p class="measure">The paste route is documented in
+    <a href="{{ base }}install/">the install directions</a>, which are read
+    straight out of the repository.</p>
+    {% endif %}
+
+    {% if repo_paste_sentence %}
+    <p class="say after-lead" id="say-paste">{{ repo_paste_sentence }}</p>
+    <p class="say__actions">
+      <button type="button" class="say__copy" data-copy="say-paste" hidden>Copy<span class="sr"> the paste-channel sentence</span></button>
+      <span class="say__hint">Paste the file first, then this.</span>
+    </p>
+    {% endif %}
+
+    <div class="note note--caution measure">
+      <span class="note__key">Read this before you rely on it</span>
+      <p>A pasted protocol is ordinary user text sitting underneath whatever the
+      product has already told the model. Every rule in it is a request, so a
+      host tuned to be maximally helpful can still pre-fill a zone the rules say
+      to leave empty, or volunteer a duration the rules ban. How often, and on
+      which product, is unmeasured — the ledger says so in those words rather
+      than rounding it up.</p>
+      <p><a href="{{ base }}install/">Where the loop stands, agent by agent</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="np-card">
+  <div class="wrap">
+    <p class="label">What arrives</p>
+    <h2 class="question" id="np-card">A card in two parts, and only one of them is copied out.</h2>
+    <div class="prose">
+      <p>The split is the whole format. One part is transcribed by hand and is
+      the only thing that is; the other is read once, on screen, where it costs
+      no writing. Structure, house rules and the pen legend live in the second
+      part for exactly that reason.</p>
+      <p>Copy load is stated in words, never in minutes. No card carries a
+      duration, a countdown or a suggested sitting length, because the rule
+      against putting a clock on a page holds off the page as well.</p>
+    </div>
+
+    {% if repo_card_format_html %}
+    <div class="machine machine--wide after-lead">
+      <span class="caption">Verbatim &middot; prompt-craft.md &sect;10</span>
+      {{ repo_card_format_html }}
+      {% if repo_card_budget_html %}{{ repo_card_budget_html }}{% endif %}
+    </div>
+    {% endif %}
+
+    {% if repo_dictation_html %}
+    <details class="disclosure after-lead">
+      <summary>The whole rule, as the skill reads it</summary>
+      <div class="machine machine--wide">
+        <span class="caption">Verbatim &middot; prompt-craft.md &sect;10 Dictating instead of printing</span>
+        {{ repo_dictation_html }}
+      </div>
+    </details>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="np-crosses">
+  <div class="wrap">
+    <p class="label">Not everything crosses</p>
+    <h2 class="question" id="np-crosses">A pattern that needs a printed page is not dictated badly. It is not dictated.</h2>
+    <p class="aside measure">Which is which is decided before anything is
+    designed, not discovered halfway through. The pattern library keeps that
+    gate in writing.</p>
+
+    {% if repo_notebook_translation_html %}
+    <div class="machine machine--wide">
+      <span class="caption">Verbatim &middot; page-patterns.md &sect;Notebook translation</span>
+      {{ repo_notebook_translation_html }}
+    </div>
+    {% else %}
+    <p class="measure">The notebook gate is specified in
+    <a href="{{ repo_url }}/blob/main/paper-session/references/page-patterns.md">page-patterns.md</a>,
+    under <em>Notebook translation</em>.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="np-read">
+  <div class="wrap">
+    <p class="label">The other reason to take this path</p>
+    <h2 class="question" id="np-read">Reading the printed page is a requirement no compatibility row states.</h2>
+    <div class="prose">
+      <p>The same card serves someone who cannot read a printed sheet, and the
+      return trip is built to match it. What that costs, and what it does not,
+      is stated in the repository rather than summarised here — because a
+      summary is exactly where a claim like this gets rounded up.</p>
+      <p>It is not the same session, and nothing on this site is allowed to
+      imply that it is.</p>
+    </div>
+
+    {% if repo_accessible_path_html %}
+    <div class="machine machine--wide after-lead">
+      <span class="caption">Verbatim &middot; README &sect;Install</span>
+      {{ repo_accessible_path_html }}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="np-untested">
+  <div class="wrap">
+    <p class="label">Where the evidence stops</p>
+    <h2 class="question" id="np-untested">The brief files this path under what none of it tests.</h2>
+    <div class="prose">
+      <p>Every cluster behind the printed sheet was measured on someone looking
+      at a page. The brief keeps a heading for the unprinted page, adds no
+      sources under it, and records cluster by cluster what stops applying.
+      That heading, in full, is below.</p>
+    </div>
+
+    {% if repo_evidence_unprinted_html %}
+    <div class="machine machine--wide after-lead">
+      <span class="caption">evidence.md &middot; The unprinted page (what none of this tests)</span>
+      {{ repo_evidence_unprinted_html }}
+    </div>
+    {% endif %}
+    <p class="aside after-note"><a href="{{ evidence_url }}">The rest of what the
+    research does not support</a>.</p>
+  </div>
+</section>
+
+<section class="band air-4" aria-labelledby="np-back">
+  <div class="wrap measure">
+    <p class="label">The page still comes back</p>
+    <h2 class="question" id="np-back">A notebook spread is a valid return, read as carefully as a scan of a printed sheet.</h2>
+    <div class="prose">
+      <p>Photograph it and hand it over. With no printed layer there is no
+      printed ink key to consult, so your marks resolve against a legend you
+      wrote on the page and otherwise against the defaults — one gap in the
+      cascade, and nothing else changes.</p>
+    </div>
+
+    {% if repo_scanback_unprinted_html %}
+    <div class="machine machine--wide after-lead">
+      <span class="caption">Verbatim &middot; scan-back/SKILL.md &sect;Step 1</span>
+      {{ repo_scanback_unprinted_html }}
+    </div>
+    {% endif %}
+
+    <p class="btn-row after-lead">
+      <a class="btn btn--primary" href="{{ base }}scan-back/">The return trip</a>
+      <a class="btn" href="{{ base }}first-session/">The line to type</a>
+      <a class="btn" href="{{ base }}install/">Install both halves</a>
+    </p>
+
+    <div class="open-territory">
+      <p class="label label--strong">Open territory</p>
+      <div class="open-territory__rule" role="presentation"></div>
+      <div class="open-territory__field"></div>
+    </div>
+  </div>
+</section>
+
+<p class="sr" role="status" aria-live="polite" id="copy-status"></p>

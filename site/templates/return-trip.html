@@ -1,0 +1,259 @@
+<!--page
+title: Scan back
+slug: scan-back
+description: You have paper with your handwriting on it. One file, pasted into any AI, reads it back and picks the work up where you left it.
+nav_label: Scan back
+nav_order: 30
+-->
+<!--
+  NOTE FOR WHOEVER EDITS THIS FILE  (no template syntax in this comment on
+  purpose: the templater runs over comments too, and an unknown key here would
+  fail the build.)
+
+  The return-trip page. It lives at templates/return-trip.html and claims the
+  planned `scan-back` slug via the front matter above, because /scan-back/ is
+  the URL the landing page and the nav already point at ("I already have
+  paper"). One template, one slug; do not also add templates/scan-back.html.
+
+  Every word of the protocol on this page comes out of scan-back/SKILL.md at
+  build time through the repo_scanback_raw key. Nothing here restates it. The
+  copy button copies that same node's textContent, so what lands on the
+  clipboard is the file's own bytes and never the rendered page.
+
+  TWO PENDING ASSETS
+  ------------------
+  The worked example needs a real photograph and a real reply, and neither
+  exists yet. Both are now wired: build.py sets example_present and
+  example_photo_url from site/static/return-example.jpg, and
+  repo_example_reply_html from docs/worked-example.md. Drop the two files in
+  and the placeholders below are replaced by the real thing on the next build.
+  No illustration, no generated image, no invented transcript.
+-->
+
+<section class="band air-1" aria-labelledby="rt-title">
+  <div class="wrap">
+    <p class="label">The return trip</p>
+    <h1 class="provocation provocation--wide" id="rt-title">You did the thinking on paper. Hand it back.</h1>
+    <p class="intent">This page is one file. Paste it into whatever AI you
+    already use, photograph the page you filled in, and send the photograph
+    with no message attached. It works whether or not the page came out of this
+    project — any paper with your handwriting on it will do.</p>
+
+    <p class="btn-row">
+      <button type="button" class="btn btn--primary" data-copy-file-button hidden>Copy the whole file</button>
+      <a class="btn" href="{{ repo_scanback_raw_url }}">Raw file on GitHub</a>
+    </p>
+    <p class="status" data-copy-file-status role="status" aria-live="polite"></p>
+
+    <p class="aside">One file, about {{ repo_scanback_words_approx }} words,
+    with nothing behind it: no scripts, no fonts, no Python, no printer and no
+    Claude. What the button copies is the file's body: the YAML front matter at
+    the top is metadata for a skills runtime and a chat has no use for it, so
+    the complete file sits behind <em>Raw file on GitHub</em>. If there is
+    no copy button, JavaScript is switched off: the file below is open and
+    selectable, so select it and copy it yourself.</p>
+
+    <div class="machine">
+      <span class="caption">Verbatim · scan-back/SKILL.md</span>
+      <details class="disclosure" data-copy-file-source open>
+        <summary>The whole file · {{ repo_scanback_words_approx }} words</summary>
+        <pre class="code filebox" data-copy-file tabindex="0">{{ repo_scanback_raw }}</pre>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="band air-1" aria-labelledby="rt-send">
+  <div class="wrap measure">
+    <p class="label">Then</p>
+    <h2 class="question" id="rt-send">Photograph the pages and send them with nothing else attached.</h2>
+    <div class="prose">
+      <p>Paste the file into the chat your photographs are going to land in, at
+      the moment they land — not in advance. Handed over early it leaves the
+      assistant holding transcription instructions for pages that do not exist
+      yet, and what you get is a narration of a return trip that has not
+      happened.</p>
+      <p>Then send the pictures. You do not need to write anything alongside
+      them: an upload of handwritten pages <em>is</em> the instruction. Uneven
+      light, a slight rotation, pages out of order inside one PDF, a page
+      photographed twice — all of that is expected and handled without comment.
+      A PDF annotated with a stylus on a tablet reads the same way, hue and
+      all; paper stays the recommendation only because off-screen was the
+      point.</p>
+      <p>What comes back first is a short reflect-back — the decisions, the
+      re-rankings, the thing you wrote sideways in the margin. Read that part
+      against the page in your hand. Then the work resumes, and you should
+      expect at most two or three questions, asked once and together, only
+      where the answer changes what happens next.</p>
+    </div>
+    {% if repo_return_half_html %}
+    <div class="machine machine--wide after-lead">
+      <span class="caption">Verbatim &middot; README &sect;Install</span>
+      {{ repo_return_half_html }}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="rt-any">
+  <div class="wrap">
+    <p class="label">What counts as a page</p>
+    <h2 class="question" id="rt-any">Any paper with your handwriting on it.</h2>
+    <div class="prose">
+      <p>A printed sheet from <code>paper-session</code> is the case the file was
+      written around; it is not the requirement. A legal pad, a notebook spread
+      photographed as a spread, the back of a printed agenda, a page you copied
+      out by hand from a card some other assistant dictated to you — all of it
+      reads. Where there is no printed layer the file says so and adjusts:
+      with no printed ink key to consult, your marks resolve against a legend
+      you wrote on the page, and otherwise against the defaults.</p>
+      <p>It does not have to be your own handwriting either. Dictate the
+      answers into the chat, type them out, or have somebody else write them
+      down at your direction: all three carry exactly the authority your own
+      hand carries, and none of them turn the return into an interview.</p>
+      <p>The marks are what carry intent. Ink colour only amplifies what a mark
+      already says, which is why a page filled in with one black ballpoint and
+      no marks at all is the primary case rather than the fallback. If you have
+      the pens, this is the whole vocabulary.</p>
+    </div>
+    {% if repo_mark_table_html %}
+    <div class="machine">
+      <span class="caption">Verbatim · README §The pen protocol</span>
+      {{ repo_mark_table_html }}
+      {% if repo_ink_table_html %}{{ repo_ink_table_html }}{% endif %}
+    </div>
+    {% else %}
+    <p class="aside">The mark and ink tables live in the repository README, under
+    <em>The pen protocol</em>, and are read from there rather than restated
+    here. This build could not find that section.</p>
+    {% endif %}
+    <p class="aside">Write “green = new concept” anywhere on the page and that
+    legend governs the session. A handwritten legend outranks a printed ink key,
+    which outranks the defaults.</p>
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="rt-example">
+  <div class="wrap">
+    <p class="label">A worked example</p>
+    <h2 class="question" id="rt-example">One page as it was actually photographed, and the reply it actually produced.</h2>
+    {% if example_present %}
+    <div class="placeholders placeholders--pair">
+      <figure class="sheet">
+        <img src="{{ example_photo_url }}" alt="A completed paper-session page photographed by hand: crossings-out, a circled item, and a note running up the margin.">
+        <figcaption><span class="label">The page, as photographed</span></figcaption>
+      </figure>
+      {% if repo_example_reply_html %}
+      <div class="machine">
+        <span class="caption">Verbatim &middot; docs/worked-example.md</span>
+        {{ repo_example_reply_html }}
+      </div>
+      {% else %}
+      <div class="placeholder">
+        <span class="placeholder__key">Placeholder &mdash; the reply</span>
+        <p>The assistant's first response to that photograph, pasted unedited:
+        the reflect-back, whatever it asked, and the next step it took. Verbatim
+        including anything it read wrong &mdash; a worked example that has been
+        tidied up is an advertisement, not evidence.</p>
+        <p>Commit it as <code>docs/worked-example.md</code> so it is read from
+        the repository at build time like everything else on this site.</p>
+      </div>
+      {% endif %}
+    </div>
+    {% else %}
+    <p class="aside">Not shot yet. The two slots below are real and empty on
+    purpose: this page will show a genuine return or nothing at all. No
+    illustration and no generated image goes in either one.</p>
+    <ul class="placeholders placeholders--pair">
+      <li class="placeholder">
+        <span class="placeholder__key">Placeholder &mdash; photograph</span>
+        <p>A phone shot of a completed page: handheld, at a slight angle, on
+        whatever surface it was filled in on. Two or three inks, at least one
+        strike, one circled item, and a margin note running up the side. Not a
+        flatbed scan, not a flat-lay, no screen in the frame.</p>
+        <p>Save it as <code>site/static/return-example.jpg</code> and rebuild.</p>
+      </li>
+      <li class="placeholder">
+        <span class="placeholder__key">Placeholder &mdash; the reply</span>
+        <p>The assistant's first response to that photograph, pasted unedited:
+        the reflect-back, whatever it asked, and the next step it took. Verbatim
+        including anything it read wrong &mdash; a worked example that has been
+        tidied up is an advertisement, not evidence.</p>
+        <p>Commit it as <code>docs/worked-example.md</code> so it is read from
+        the repository at build time like everything else on this site.</p>
+      </li>
+    </ul>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="rt-true">
+  <div class="wrap">
+    <p class="label">Before you rely on it</p>
+    <h2 class="question" id="rt-true">Three things that are true about a pasted protocol, said here rather than found out later.</h2>
+    <ol class="ruled-list">
+      <li class="ruled-list__item">
+        <h3>A pasted file has no authority over the host's system prompt.</h3>
+        <p>It arrives as ordinary user text, underneath whatever the product has
+        already told the model. Every rule in it is a request. A model tuned to
+        be maximally helpful can still paraphrase your handwriting instead of
+        transcribing it, reopen a judgment you settled on paper, or ask you to
+        re-explain pages you have already sent — three things the file
+        explicitly forbids. How often, and on which product, is unmeasured.
+        When it happens, say so in the chat: you are the enforcement.</p>
+      </li>
+      <li class="ruled-list__item">
+        <h3>Transcription errors arrive as fluent substitutions, not as visible garbage.</h3>
+        <p>A misread word comes back as a different, entirely plausible word.
+        Nothing looks broken, and that is the problem — there is no ragged text
+        to catch your eye and no confidence score to distrust. It is the reason
+        the reply opens with a reflect-back, and the reason that paragraph is
+        the one part of the response worth reading line by line against the page
+        you are holding. That is the only moment a wrong reading is still
+        cheap.</p>
+      </li>
+      <li class="ruled-list__item">
+        <h3>Returning on a different surface starts the assistant cold.</h3>
+        <p>If one AI designed the pages and another reads them back, the second
+        has no session to resume. It runs the orphan path: reconstruct from what
+        is printed on the page, state plainly what the page cannot tell it, and
+        spend its one re-anchoring question — spent on continuity rather than on
+        your work. The authority rule that makes this whole loop worth doing,
+        your handwriting outranking what the AI proposed, also has nothing to
+        override in that chat, because no proposal was ever made there. Nothing
+        breaks. You get less than a same-chat return, and it is worth knowing
+        which of the two you are doing.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="rt-next">
+  <div class="wrap measure">
+    <p class="label">Next time</p>
+    <h2 class="question" id="rt-next">The forward half is what makes a page worth photographing.</h2>
+    <div class="prose">
+      <p>Reading handwriting is the half a machine is already good at. What
+      decides whether any of this was worth doing is what got printed: a page
+      that hands you the one question that was genuinely yours, and then leaves
+      the space under it empty.</p>
+    </div>
+    <p class="btn-row">
+      <a class="btn btn--primary" href="{{ base }}get-a-sheet/">Get a sheet</a>
+      <a class="btn" href="{{ base }}no-printer/">No printer</a>
+      <a class="btn" href="{{ base }}install/">Install both halves</a>
+    </p>
+    {% include "_print-note.html" %}
+  </div>
+</section>
+
+<section class="band air-4">
+  <div class="wrap">
+    <div class="open-territory">
+      <p class="label label--strong">Open territory</p>
+      <div class="open-territory__rule" role="presentation"></div>
+      <div class="open-territory__field"></div>
+    </div>
+  </div>
+</section>
+

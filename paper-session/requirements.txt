@@ -1,0 +1,10 @@
+# The skill's own dependencies, inside the bundle. The repository root carries
+# a copy that also covers docs/ tooling; this one travels with an install that
+# never cloned the repo, which is every chat-app upload and every CLI install.
+
+# Generating sheets
+reportlab>=4.0
+
+# scripts/verify_layout.py — the mandatory pre-flight check. Step 5 does not
+# run without it, and it is never the step that gets skipped.
+pdfplumber>=0.11
