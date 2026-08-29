@@ -1639,11 +1639,18 @@ def write_sheet_spec(dist: Path) -> None:
 # --------------------------------------------------------------------------
 
 # Chromium candidates, in preference order.
+#
+# google-chrome first, deliberately. On GitHub's ubuntu runners /usr/bin/chromium
+# is the snap build, and snap confinement cannot reach a --user-data-dir or a
+# --print-to-pdf target outside $HOME. It does not refuse; it blocks, so the
+# failure arrives as a 120s timeout with no diagnostic. Chrome is unconfined and
+# preinstalled there. Locally, where chromium is a normal package, either works —
+# and the gate writes its temp files inside the workspace now regardless.
 CHROMIUM_NAMES = (
-    "chromium",
-    "chromium-browser",
     "google-chrome",
     "google-chrome-stable",
+    "chromium",
+    "chromium-browser",
 )
 
 VERIFIER = ROOT / "paper-session" / "scripts" / "verify_layout.py"
@@ -1675,7 +1682,7 @@ def print_to_pdf(browser: str, page: Path, out: Path) -> None:
     on a webfont CDN answering — the faces the sheet uses are on disk beside it,
     and a gate whose result changes with the network is not a gate.
     """
-    with tempfile.TemporaryDirectory(prefix="ps-chrome-") as profile:
+    with tempfile.TemporaryDirectory(prefix="ps-chrome-", dir=out.parent) as profile:
         cmd = [
             browser,
             "--headless=new",
@@ -1761,7 +1768,7 @@ def verify_sheets(dist: Path, pages: list[dict[str, str]], strict: bool) -> None
     want_w = float(spec["page"]["page_w"])
     want_h = float(spec["page"]["page_h"])
 
-    with tempfile.TemporaryDirectory(prefix="ps-gate-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="ps-gate-", dir=dist.parent) as tmp:
         for page in declared:
             output = page.get("output") or output_path_for(page["slug"])
             built = dist / output
