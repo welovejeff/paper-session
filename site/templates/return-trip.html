@@ -45,17 +45,14 @@ nav_order: 30
     </p>
     <p class="status" data-copy-file-status role="status" aria-live="polite"></p>
 
-    <p class="aside">One file, about {{ repo_scanback_words_approx }} words,
-    with nothing behind it: no scripts, no fonts, no Python, no printer and no
-    Claude. What the button copies is the file's body: the YAML front matter at
-    the top is metadata for a skills runtime and a chat has no use for it, so
-    the complete file sits behind <em>Raw file on GitHub</em>. If there is
-    no copy button, JavaScript is switched off: the file below is open and
-    selectable, so select it and copy it yourself.</p>
+    <p class="aside">One file, about {{ repo_scanback_words_approx }} words. No scripts, no fonts,
+    no Python, no printer, no Claude. The button copies the body; the front matter is metadata for
+    a skills runtime, and the complete file is behind <em>Raw file on GitHub</em>. With JavaScript
+    off there is no button &mdash; open the file below and copy it yourself.</p>
 
     <div class="machine">
       <span class="caption">Verbatim · scan-back/SKILL.md</span>
-      <details class="disclosure" data-copy-file-source open>
+      <details class="disclosure" data-copy-file-source>
         <summary>The whole file · {{ repo_scanback_words_approx }} words</summary>
         <pre class="code filebox" data-copy-file tabindex="0">{{ repo_scanback_raw }}</pre>
       </details>
@@ -68,23 +65,11 @@ nav_order: 30
     <p class="label">Then</p>
     <h2 class="question" id="rt-send">Photograph the pages and send them with nothing else attached.</h2>
     <div class="prose">
-      <p>Paste the file into the chat your photographs are going to land in, at
-      the moment they land — not in advance. Handed over early it leaves the
-      assistant holding transcription instructions for pages that do not exist
-      yet, and what you get is a narration of a return trip that has not
-      happened.</p>
-      <p>Then send the pictures. You do not need to write anything alongside
-      them: an upload of handwritten pages <em>is</em> the instruction. Uneven
-      light, a slight rotation, pages out of order inside one PDF, a page
-      photographed twice — all of that is expected and handled without comment.
-      A PDF annotated with a stylus on a tablet reads the same way, hue and
-      all; paper stays the recommendation only because off-screen was the
-      point.</p>
-      <p>What comes back first is a short reflect-back — the decisions, the
-      re-rankings, the thing you wrote sideways in the margin. Read that part
-      against the page in your hand. Then the work resumes, and you should
-      expect at most two or three questions, asked once and together, only
-      where the answer changes what happens next.</p>
+      <p>Paste the file into the chat the photographs are going to land in, at the moment they
+      land. Handed over early it leaves the assistant holding transcription instructions for pages
+      that do not exist yet.</p>
+      <p>An upload of handwritten pages is the instruction. Bad light, a rotation, pages out of
+      order, a page shot twice &mdash; all expected, none worth mentioning.</p>
     </div>
     {% if repo_return_half_html %}
     <div class="machine machine--wide after-lead">
@@ -100,36 +85,23 @@ nav_order: 30
     <p class="label">What counts as a page</p>
     <h2 class="question" id="rt-any">Any paper with your handwriting on it.</h2>
     <div class="prose">
-      <p>A printed sheet from <code>paper-session</code> is the case the file was
-      written around; it is not the requirement. A legal pad, a notebook spread
-      photographed as a spread, the back of a printed agenda, a page you copied
-      out by hand from a card some other assistant dictated to you — all of it
-      reads. Where there is no printed layer the file says so and adjusts:
-      with no printed ink key to consult, your marks resolve against a legend
-      you wrote on the page, and otherwise against the defaults.</p>
-      <p>It does not have to be your own handwriting either. Dictate the
-      answers into the chat, type them out, or have somebody else write them
-      down at your direction: all three carry exactly the authority your own
-      hand carries, and none of them turn the return into an interview.</p>
-      <p>The marks are what carry intent. Ink colour only amplifies what a mark
-      already says, which is why a page filled in with one black ballpoint and
-      no marks at all is the primary case rather than the fallback. If you have
-      the pens, this is the whole vocabulary.</p>
+      <p>A printed sheet is the case the file was written around, not the requirement. A legal pad,
+      a notebook spread, the back of an agenda. It does not have to be your handwriting either:
+      dictated, typed, or written down by someone else at your direction all carry the authority
+      your own hand carries.</p>
+      <p>Marks carry the intent and ink only amplifies them, so one black ballpoint is the primary
+      case rather than the fallback.</p>
     </div>
     {% if repo_mark_table_html %}
     <div class="machine">
-      <span class="caption">Verbatim · README §The pen protocol</span>
+      <span class="caption">Verbatim &middot; README &sect;The pen protocol</span>
       {{ repo_mark_table_html }}
       {% if repo_ink_table_html %}{{ repo_ink_table_html }}{% endif %}
     </div>
-    {% else %}
-    <p class="aside">The mark and ink tables live in the repository README, under
-    <em>The pen protocol</em>, and are read from there rather than restated
-    here. This build could not find that section.</p>
     {% endif %}
-    <p class="aside">Write “green = new concept” anywhere on the page and that
-    legend governs the session. A handwritten legend outranks a printed ink key,
-    which outranks the defaults.</p>
+    <p class="aside">Write &ldquo;green = new concept&rdquo; anywhere on the page and that legend
+    governs the session. A handwritten legend outranks a printed ink key, which outranks the
+    defaults.</p>
   </div>
 </section>
 

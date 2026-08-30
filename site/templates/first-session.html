@@ -1,8 +1,6 @@
 <!--page
 title: First session
 description: Twelve opening lines you can copy, each written as a precondition you actually have rather than a command, so the format that fits is the one the skill prints.
-nav_label: First session
-nav_order: 45
 -->
 
 <section class="band air-1">
@@ -15,33 +13,15 @@ nav_order: 45
   </div>
 </section>
 
-<section class="band air-1" aria-labelledby="why-preconditions">
+<section class="band air-1">
   <div class="wrap measure">
-    <h2 class="question" id="why-preconditions">Why a precondition and not a command?</h2>
-    <p>Because several of the named session formats will not print without one, and the honest way
-    to satisfy a gate is to state the thing yourself rather than be interviewed about it. An
-    after-action review needs a plan you recorded before you started and a log of what actually
-    happened. A weekly review needs an inventory of open loops your assistant can genuinely see.
-    Brainwriting rounds need three to six people in one room. Say the condition in your own words
-    and the gate is answered in the same breath as the request.</p>
-    <p>The reverse also holds, and it is a feature: if the condition isn&rsquo;t true, the format
-    should decline. A sheet that prints anyway &mdash; a reference class it invented, an inventory
-    of loops it guessed at &mdash; is worse than no sheet.</p>
-
-    <p class="label label--spaced">The three the repo already documents</p>
+    <p class="label">The three the repo already documents</p>
     {% if repo_prompts_html %}
     <div class="machine">
       <span class="caption">Verbatim &middot; README &sect;Using it</span>
       {{ repo_prompts_html }}
     </div>
-    <p class="aside">Those three always work, and mostly you won&rsquo;t need any of them: the skill is
-    written to offer itself when the work turns into judgment work. The twelve below are for the
-    times you want to aim it.</p>
-    {% else %}
-    <p class="aside">The repository&rsquo;s own example prompts are being edited and are not in this
-    build. The twelve below stand on their own.</p>
     {% endif %}
-
     {% include "_print-note.html" %}
   </div>
 </section>
@@ -427,40 +407,24 @@ nav_order: 45
 
 <section class="band air-3" aria-labelledby="cant-print">
   <div class="wrap measure">
-    <p class="label">One more sentence, and it is not a session</p>
-    <h2 class="question" id="cant-print">If you can&rsquo;t print, you have to be the one to say so.</h2>
-    <p>The skill never asks whether you have a printer and never asks whether you can read the
-    sheet. Both questions are banned outright, so the card path only ever answers something you
-    said first. Add this to any line above, or send it on its own after a PDF has already
-    appeared.</p>
+    <h2 class="question" id="cant-print">If you can&rsquo;t print, say so.</h2>
+    <p>Add it to any line above, or send it on its own after a PDF has already appeared. Nothing
+    asks you first; the card path only answers something you said.</p>
     <p class="say" id="say-13">I can&rsquo;t print anything today. Dictate this as a card I can copy
     into the notebook I already have.</p>
     <p class="say__actions">
       <button type="button" class="say__copy" data-copy="say-13" hidden>Copy<span class="sr"> the no-printer line</span></button>
       <span class="say__hint">Or select the sentence and copy it.</span>
     </p>
-    <div class="note">
-      <span class="note__key">Scope</span>
-      <p>You get the prompts and the structure, never the machine&rsquo;s lists. Some patterns cross
-      to a notebook intact, some cross only as numbered handles, and some do not cross at all. The
-      full account is on <a href="{{ base }}no-printer/">the no-printer path</a>.</p>
-    </div>
+    <p class="aside after-lead">What survives the crossing to a notebook, and what does not, is on
+    <a href="{{ base }}no-printer/">the no-printer path</a>.</p>
   </div>
 </section>
 
-<section class="band air-3" aria-labelledby="then-stops">
+<section class="band air-3">
   <div class="wrap measure">
-    <h2 class="question" id="then-stops">Then it stops.</h2>
-    {% if repo_stop_line %}
-    <p>Whichever line you typed, the session ends when the file lands. It will not keep working the
-    problem, and it will not quietly produce the answers the sheet is asking you for. The closing
-    message is three words: <em>{{ repo_stop_line }}</em></p>
-    {% else %}
-    <p>Whichever line you typed, the session ends when the file lands. It will not keep working the
-    problem, and it will not quietly produce the answers the sheet is asking you for.</p>
-    {% endif %}
     <p class="btn-row">
-      <a class="btn btn--primary" href="{{ base }}get-a-sheet/">Get a sheet first</a>
+      <a class="btn btn--primary" href="{{ base }}get-a-sheet/">Get a sheet</a>
       <a class="btn" href="{{ base }}scan-back/">The return trip</a>
       <a class="btn" href="{{ base }}install/">Install</a>
     </p>
