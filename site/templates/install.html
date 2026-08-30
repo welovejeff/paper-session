@@ -1,79 +1,96 @@
 <!--page
 title: Install
-description: Both skills, both tracks, and an honest account of where the loop stands agent by agent.
+description: Both halves, in whatever you already use, plus a plain account of which agents have actually carried a page all the way round.
 nav_label: Install
 nav_order: 40
 -->
 
 <section class="band air-1" aria-labelledby="install-heading">
   <div class="wrap">
-    <p class="label">Both halves, both tracks</p>
+    <p class="label">Both halves</p>
     <h1 class="page-title" id="install-heading">Install</h1>
-    {% if repo_footer_line %}
-    <p class="intent">Take both or neither. Every sheet the forward half
-    prints closes with <span class="page-foot">{{ repo_footer_line }}</span>
-    and the return half is what honours that, so one without the other leaves
-    a finished page with nowhere to go.</p>
-    {% else %}
-    <p class="intent">Take both or neither. The forward half prints a page
-    that promises the return half by name, so one without the other leaves a
-    finished page with nowhere to go.</p>
-    {% endif %}
+    <p class="intent">Here is what having this installed is actually like. You
+    are in the middle of something, the work turns into a judgment only you can
+    make, and your assistant offers you a page instead of another four
+    paragraphs. You print it and take it to a kitchen table. Later you
+    photograph what you wrote, and the work resumes from your handwriting.</p>
+
+    <div class="prose measure">
+      {% if repo_footer_line %}
+      <p>Take both halves or neither. Every sheet the forward half prints
+      closes with <span class="page-foot">{{ repo_footer_line }}</span>, and the
+      return half is the thing that honours that. Installing one and not the
+      other leaves you holding a finished page with nowhere to send it.</p>
+      {% else %}
+      <p>Take both halves or neither. The forward half prints a page that
+      promises the return half by name, so installing one and not the other
+      leaves you holding a finished page with nowhere to send it.</p>
+      {% endif %}
+    </div>
   </div>
 </section>
 
 <section class="band air-1" aria-labelledby="which-heading">
   <div class="wrap">
-    <h2 class="question" id="which-heading">Which of these are you?</h2>
-    <p class="aside measure">One of these sentences is true of you, and that
-    is the whole decision. These cards are only a way in: the directions
-    themselves are further down this page, in a single block, exactly as the
-    repository states them, and that block is the complete and current list
-    whether or not a card here describes your case.</p>
+    <h2 class="question" id="which-heading">Find the setup that sounds like yours.</h2>
+    <p class="aside measure">One of these four is true of you, and that is the
+    whole decision. The cards are only a way in. The directions themselves are
+    further down this page in a single block, in the repository&rsquo;s own
+    words, and that block is complete and current whether or not a card here
+    describes your case.</p>
 
     <ul class="routes">
       <li class="route">
-        <h3>Your AI is an app or a browser tab.</h3>
+        <h3>You use AI in a browser tab or an app.</h3>
         <p>There is somewhere to attach a file and no terminal to type into.
-        Both halves ship as packaged bundles for exactly this. It is the
-        shortest way in and it is not the lesser one; the ledger below says
-        where it stands, in the same words it uses for everything else.</p>
+        Both halves ship as packaged bundles for exactly this, so the install is
+        two downloads and an upload. The ledger below calls this path supported,
+        and means it: a phone photographing the finished pages is the return
+        trip this was built around.</p>
         <a class="route__jump" href="#directions">The directions &darr;</a>
       </li>
 
       <li class="route">
         <h3>Your AI runs in a terminal or your editor.</h3>
         <p>You have a shell, and Node with it. One installer knows this
-        repository, finds both skills in it, and knows where your particular
-        agent keeps them — including the ones nobody here has tested.</p>
+        repository, finds both skills inside it, and knows where your particular
+        agent keeps them, including agents nobody here has tested. If you would
+        rather look before you install, it will list what it is about to give
+        you.</p>
         <a class="route__jump" href="#directions">The directions &darr;</a>
       </li>
 
       <li class="route">
         <h3>A terminal, but no Node.</h3>
-        <p>The bundles are not a special format. Whatever unpacks an archive
-        on your machine is enough, and the destination is a folder your agent
-        already reads.</p>
+        <p>Then you are not missing anything. The bundles are not a special
+        format, whatever unpacks an archive on your machine is enough, and the
+        destination is a folder your agent already reads.</p>
         <a class="route__jump" href="#directions">The directions &darr;</a>
       </li>
 
       <li class="route">
         <h3>Your AI cannot take skills at all.</h3>
-        <p>Nothing installs, because nothing reads a skills folder. The
-        forward half travels as text you paste, and what comes back is a card
-        you copy into a notebook by hand — never a PDF, and nothing verified,
-        because nothing is rendered.</p>
+        <p>Nothing installs, because nothing reads a skills folder. The forward
+        half travels as text you paste, and what comes back is a card you copy
+        into a notebook by hand. Never a PDF, and nothing checked, because
+        nothing is rendered. Better to know that now than halfway through.</p>
         <a class="route__jump" href="{{ base }}no-printer/">The no-printer path &rarr;</a>
       </li>
     </ul>
 
     <div class="prose measure">
-      <p>Whichever of them you are, Python enters the picture twice:
-      something has to draw the page, and something has to check the drawing
-      before you ever see it. Whether either of those lands on you to install
-      by hand depends on where your agent runs Python, not on which route you
-      took. The directions below say what they are and why; the ledger below
-      that says which of them you need, agent by agent.</p>
+      <p>Python comes into it twice, and which of those two lands on you
+      depends on where your agent runs Python rather than on which card you just
+      read. One library draws the page. The other reads the finished PDF back
+      and checks that no line of type has wandered off the paper or landed on
+      top of another line, which is a check the project does not let a sheet
+      skip. You are going to sit with that page for a while, and a collided
+      label is exactly the kind of small wrongness that makes a person put the
+      pen down.</p>
+      <p>On a chat surface neither is your problem, because the skill runs its
+      own Python where it lives. Everywhere else, the directions below name the
+      two packages and where to point pip, and the ledger after that tells you,
+      agent by agent, whether they apply to you.</p>
     </div>
   </div>
 </section>
@@ -81,13 +98,13 @@ nav_order: 40
 <section class="band air-2" id="directions" aria-labelledby="directions-heading">
   <div class="wrap">
     <p class="label">The directions</p>
-    <h2 class="question" id="directions-heading">Not written for this website.</h2>
-    <p class="aside measure">Mono means one thing here: these are not our
-    words. The block below is the repository&rsquo;s own install section, read
-    out of the file when this page was generated. The project keeps exactly
-    one copy of these commands and this page is not it — which is the only
-    arrangement under which a website stays true to a repository that keeps
-    moving.</p>
+    <h2 class="question" id="directions-heading">These are the repository&rsquo;s words, not ours.</h2>
+    <p class="aside measure">Mono means one thing on this site: you are reading
+    something quoted straight out of the project. The block below is the
+    repository&rsquo;s own install section, read out of the file when this page
+    was generated. There is exactly one copy of these commands in the project
+    and this page is not it, which is why the directions cannot quietly go stale
+    while the repository keeps moving.</p>
 
     <div class="machine measure">
       <span class="caption">Verbatim &middot; README &sect;Install</span>
@@ -106,23 +123,24 @@ nav_order: 40
     {% endif %}
 
     <div class="prose measure">
-      <p>No row is graded up. A verdict that stops short of end to end is set
-      in the same type, boxed the same way, as one that does not — because
-      which agents have carried a page all the way round is the most useful
-      thing this project can tell you, and the honest list is short.</p>
-      <p>A row that says the loop is untested is a finding, not an apology.
-      It marks the place where someone running a real session on that agent
-      would tell us something nobody knows yet, and closing one takes one
-      person and one report.</p>
+      <p>A table like this is usually a grid of ticks. This one has rows saying
+      the loop is untested, set in the same type and boxed the same way as the
+      rows that worked, because the alternative is that you find out on your own
+      afternoon with your own printer. Every verdict reports what someone has
+      actually done on that agent, never what ought to work. Where nobody has
+      carried a page all the way round yet, the row says so in those words.</p>
+      <p>An untested row is a finding rather than an apology. It marks a place
+      where one person running one real session would tell us something nobody
+      currently knows, and it takes exactly that to close: one person, one
+      report.</p>
     </div>
 
     <p class="verdict-key">
       <span class="verdict">Verdict</span>
-      <span>Each row&rsquo;s status is boxed like this, in the ledger&rsquo;s
-      own words. The box is the entire encoding: nothing here is
-      colour-coded, and nothing is amber. A traffic light would read a true
-      finding as a warning, and colour alone carries no meaning anywhere on
-      this site.</span>
+      <span>Each row&rsquo;s status is boxed like this, in the ledger&rsquo;s own
+      words. The box is the whole encoding. Nothing here is colour-coded and
+      nothing is amber, because a traffic light would turn an honest finding into
+      a warning, and colour alone carries no meaning anywhere on this site.</span>
     </p>
 
     <div class="ledger-table">
@@ -135,18 +153,29 @@ nav_order: 40
       {{ repo_install_note_html }}
     </div>
     {% endif %}
+
+    <div class="prose measure">
+      <p>The ledger covers what has been run. What the method itself can and
+      cannot claim, including the parts of the evidence that argue against this
+      design, is <a href="{{ evidence_url }}">on the limits page</a>.</p>
+    </div>
   </div>
 </section>
 
 <section class="band air-4" aria-labelledby="next-heading">
   <div class="wrap">
     <p class="label">Once it is in</p>
-    <h2 class="question" id="next-heading">Mostly you will not invoke it. It offers when the work turns into judgment work.</h2>
+    <h2 class="question" id="next-heading">You will mostly forget it is there. It speaks up when the work turns into a judgment.</h2>
 
     <div class="prose measure">
-      <p>And you do not have to install anything to find out whether you want
-      it. A specimen the skill generated and put through its own layout
-      verifier prints from a browser, with no account and nothing to agree
+      <p>If you would rather start it yourself the first time rather than wait
+      to be offered, there are
+      <a href="{{ base }}first-session/">twelve sentences you can copy</a>, one
+      per situation, each saying what it prints and where it is the wrong
+      choice.</p>
+      <p>And you do not have to install a thing to find out whether you want it.
+      A specimen the skill generated, and put through its own layout verifier,
+      prints from your browser right now, with no account and nothing to agree
       to.</p>
     </div>
 

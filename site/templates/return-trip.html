@@ -1,7 +1,7 @@
 <!--page
 title: Scan back
 slug: scan-back
-description: You have paper with your handwriting on it. One file, pasted into any AI, reads it back and picks the work up where you left it.
+description: You have a page with your handwriting on it. One file, pasted into any AI, reads it back and carries the work on from what you decided.
 nav_label: Scan back
 nav_order: 30
 -->
@@ -33,11 +33,17 @@ nav_order: 30
 <section class="band air-1" aria-labelledby="rt-title">
   <div class="wrap">
     <p class="label">The return trip</p>
-    <h1 class="provocation provocation--wide" id="rt-title">You did the thinking on paper. Hand it back.</h1>
-    <p class="intent">This page is one file. Paste it into whatever AI you
-    already use, photograph the page you filled in, and send the photograph
-    with no message attached. It works whether or not the page came out of this
-    project — any paper with your handwriting on it will do.</p>
+    <h1 class="provocation provocation--wide" id="rt-title">You have a page with your handwriting on it. The work carries on from there.</h1>
+    <p class="intent">Photograph the page, send the photograph, and what happens next is built on
+    what you decided &mdash; the order you renumbered, the option you struck out, the thing you
+    wrote sideways in the margin. Where your hand disagrees with what the AI proposed before you
+    walked away, your hand wins, and nothing argues the point back at you.</p>
+
+    <div class="prose">
+      <p>One file is what gets an AI to treat a photograph of your handwriting that way. It is
+      plain text with nothing behind it: no install, no account, no Python, no printer, and no
+      particular AI.</p>
+    </div>
 
     <p class="btn-row">
       <button type="button" class="btn btn--primary" data-copy-file-button hidden>Copy the whole file</button>
@@ -45,10 +51,10 @@ nav_order: 30
     </p>
     <p class="status" data-copy-file-status role="status" aria-live="polite"></p>
 
-    <p class="aside">One file, about {{ repo_scanback_words_approx }} words. No scripts, no fonts,
-    no Python, no printer, no Claude. The button copies the body; the front matter is metadata for
-    a skills runtime, and the complete file is behind <em>Raw file on GitHub</em>. With JavaScript
-    off there is no button &mdash; open the file below and copy it yourself.</p>
+    <p class="aside">About {{ repo_scanback_words_approx }} words, and it is open below, so you can
+    read it before you trust it. The button copies the body; the front matter is
+    metadata for a skills runtime, and the complete file sits behind <em>Raw file on GitHub</em>.
+    With JavaScript off there is no button: open the file below and copy it yourself.</p>
 
     <div class="machine">
       <span class="caption">Verbatim · scan-back/SKILL.md</span>
@@ -62,14 +68,17 @@ nav_order: 30
 
 <section class="band air-1" aria-labelledby="rt-send">
   <div class="wrap measure">
-    <p class="label">Then</p>
-    <h2 class="question" id="rt-send">Photograph the pages and send them with nothing else attached.</h2>
+    <p class="label">Sending the pages</p>
+    <h2 class="question" id="rt-send">You don&rsquo;t have to write a prompt. The photographs are the message.</h2>
     <div class="prose">
-      <p>Paste the file into the chat the photographs are going to land in, at the moment they
-      land. Handed over early it leaves the assistant holding transcription instructions for pages
-      that do not exist yet.</p>
-      <p>An upload of handwritten pages is the instruction. Bad light, a rotation, pages out of
-      order, a page shot twice &mdash; all expected, none worth mentioning.</p>
+      <p>Send them with nothing typed alongside. An upload of handwritten pages is itself the
+      instruction, and a summary typed to go with it only invites the AI to work from the
+      summary instead of from your page.</p>
+      <p>Bad light, a rotation, pages out of order, one page shot twice &mdash; all expected, none
+      worth mentioning or apologising for.</p>
+      <p>Timing is the one thing worth getting right. Paste the file into the chat the photographs
+      are going to land in, at the moment they land. Handed over early it leaves the assistant
+      holding transcription instructions for pages that do not exist yet.</p>
     </div>
     {% if repo_return_half_html %}
     <div class="machine machine--wide after-lead">
@@ -83,14 +92,18 @@ nav_order: 30
 <section class="band air-2" aria-labelledby="rt-any">
   <div class="wrap">
     <p class="label">What counts as a page</p>
-    <h2 class="question" id="rt-any">Any paper with your handwriting on it.</h2>
+    <h2 class="question" id="rt-any">It does not have to be a sheet this project printed.</h2>
     <div class="prose">
-      <p>A printed sheet is the case the file was written around, not the requirement. A legal pad,
-      a notebook spread, the back of an agenda. It does not have to be your handwriting either:
-      dictated, typed, or written down by someone else at your direction all carry the authority
+      <p>A legal pad. A notebook spread. The back of a meeting agenda. The page you had already
+      filled in before you found any of this. A printed sheet is the case the file was written
+      around, not a requirement it enforces.</p>
+      <p>It does not have to be your own handwriting either. Dictated into the chat, typed into a
+      message, or written down by someone else while you talked all carry exactly the authority
       your own hand carries.</p>
-      <p>Marks carry the intent and ink only amplifies them, so one black ballpoint is the primary
-      case rather than the fallback.</p>
+      <p>One black ballpoint is enough for the whole thing. A line through something means you
+      killed it, in any colour; a question mark beside it means come back to me on this one. Four
+      pens add a second channel for people who happen to own four pens, and their absence takes
+      nothing away.</p>
     </div>
     {% if repo_mark_table_html %}
     <div class="machine">
@@ -99,9 +112,9 @@ nav_order: 30
       {% if repo_ink_table_html %}{{ repo_ink_table_html }}{% endif %}
     </div>
     {% endif %}
-    <p class="aside">Write &ldquo;green = new concept&rdquo; anywhere on the page and that legend
-    governs the session. A handwritten legend outranks a printed ink key, which outranks the
-    defaults.</p>
+    <p class="aside">If green should mean something else to you, write &ldquo;green = new
+    concept&rdquo; anywhere on the page and that is what it means for the rest of the session.
+    What you wrote by hand outranks the key printed on the sheet, which outranks the defaults.</p>
   </div>
 </section>
 
@@ -133,9 +146,9 @@ nav_order: 30
       {% endif %}
     </div>
     {% else %}
-    <p class="aside">Not shot yet. The two slots below are real and empty on
-    purpose: this page will show a genuine return or nothing at all. No
-    illustration and no generated image goes in either one.</p>
+    <p class="aside">Neither one exists yet, so the two slots below are real and empty. When they
+    fill, it will be a photograph somebody actually took and a reply pasted in with its mistakes
+    left in. No illustration and no generated image goes in either one.</p>
     <ul class="placeholders placeholders--pair">
       <li class="placeholder">
         <span class="placeholder__key">Placeholder &mdash; photograph</span>
@@ -203,7 +216,7 @@ nav_order: 30
 <section class="band air-3" aria-labelledby="rt-next">
   <div class="wrap measure">
     <p class="label">Next time</p>
-    <h2 class="question" id="rt-next">The forward half is what makes a page worth photographing.</h2>
+    <h2 class="question" id="rt-next">Next time, let it print the page as well.</h2>
     <div class="prose">
       <p>Reading handwriting is the half a machine is already good at. What
       decides whether any of this was worth doing is what got printed: a page

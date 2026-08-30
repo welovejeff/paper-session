@@ -1,7 +1,7 @@
 <!--page
 title: Get a sheet
 slug: get-a-sheet
-description: A sheet at US Letter size, in the page. Print it and go think.
+description: A real sheet at full size, in the page. Print it and settle the thing you have been circling, in pen.
 nav_label: Get a sheet
 nav_order: 10
 body_class: ps-sheet-page
@@ -21,10 +21,23 @@ sheet_pages: 1
 
      State 01: the sheet knows nothing about the visitor, so it proposes
      nothing. There is no I PROPOSE column, no example answer, and no claim
-     about paper-session anywhere on the paper. -->
+     about paper-session anywhere on the paper.
+
+     Everything the page says to a person is marked .screen-only, because this
+     page has to print as exactly one sheet or the gate fails. -->
 
 <section class="band air-1">
   <div class="wrap">
+
+    <div class="screen-only measure">
+      <p class="label">The artifact</p>
+      <p class="intent">This is a real sheet rather than a picture of one,
+      sitting in the page at US&nbsp;Letter size. The button below puts it on
+      paper at full size.</p>
+      <p>Print it, take it somewhere your laptop is not, and answer the one
+      question on it in pen. What you come back with is the decision you have
+      been circling for a week, finally made.</p>
+    </div>
 
     <div class="ps-sheet-hold">
       <span class="cm1" aria-hidden="true"></span><span class="cm2" aria-hidden="true"></span>
@@ -74,11 +87,34 @@ sheet_pages: 1
       </article>
     </div>
 
-    <!-- Print is a verb. The control ships hidden and site.js reveals it, so a
-         browser that cannot be asked to print never shows a dead button; Ctrl+P
-         does the same job with JavaScript off. -->
-    <button class="btn" type="button" data-print hidden>Print this sheet</button>
+    <div class="screen-only measure">
+      <p class="label">Why so much of it is empty</p>
+      <p>Most of that page is room for your pen, and the emptiness is the part
+      that costs something to leave alone. The sheet hands you nothing to react
+      to: no example answers, no starter list. An idea printed for you has a way
+      of becoming the idea you spend the rest of the page arguing with, and
+      arguing feels enough like thinking that you never notice the swap.</p>
+      <p>A sheet your assistant builds mid&#8209;task carries your own work in
+      the header. This one asks the question that still works on someone it has
+      never met.</p>
+
+      <p>One thing worth catching in the print dialog, since it decides whether
+      the sheet lands on the paper at the size it was drawn at:</p>
+    </div>
 
     {% include "_print-note.html" %}
+
+    <!-- The control ships hidden and site.js reveals it, so a browser that
+         cannot be asked to print never shows a dead button; Ctrl+P does the
+         same job with JavaScript off. -->
+    <button class="btn" type="button" data-print hidden>Print this sheet</button>
+
+    <div class="screen-only measure">
+      <p>Once there is handwriting on it, photograph it and hand it back:
+      <a href="{{ base }}scan-back/">scan it back</a> and the work resumes from
+      what you wrote. For sheets built out of your own work rather than this
+      one, <a href="{{ base }}install/">install the pair</a>.</p>
+    </div>
+
   </div>
 </section>

@@ -2281,6 +2281,19 @@ body.door .door-band--index {
   margin-top: 0.12em;
 }
 
+/* The premise, then what it actually does. Two steps down in scale from the
+   ask, and the second one plainer than the first: the provocation earns the
+   reader's attention, the sentence after it has to be worth the trade. */
+.door-intent {
+  margin: var(--s4) 0 0;
+  max-width: 52ch;
+}
+.door-does {
+  margin: var(--s3) 0 0;
+  max-width: 52ch;
+  color: var(--ink);
+}
+
 .door-verbatim {
   margin: var(--s4) 0 0;
   max-width: 34ch;
