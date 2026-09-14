@@ -66,6 +66,8 @@ Hakemulder et al. (2024) extend this into the shallowing hypothesis: **more freq
 
 That is precisely the design of a paper session. Not a vacation, not an intrusion. An interruption that leaves the problem live.
 
+**The short-form video base rate.** Nguyen et al., [Feeds, feelings, and focus](https://doi.org/10.1037/bul0000498) (Psychological Bulletin, 2025): systematic review and meta-analysis, 71 studies, 98,299 participants — short-form video use is associated with poorer cognition, with the strongest links for **attention and inhibitory control**. Chiossi et al. ([CHI 2023](https://doi.org/10.1145/3544548.3580778)) found short-form viewing degraded prospective memory via context switching; Luo et al. ([Behavioral Sciences, 2025](https://doi.org/10.3390/bs15081070)) found reduced cue-based preparation after exposure. These are the attention outcomes; the evidence is thinner for learning depth and reasoning, which is where the honest boundary sits.
+
 ---
 
 ## Cluster 5: What makes this urgent now (the agentic-era case)
@@ -83,6 +85,18 @@ Pair that with Clinton's calibration finding and you have one argument twice: **
 **And the case for structure specifically.** Gerlich, [From Offloading to Engagement](https://consensus.app/papers/details/43104c88c78e5f778db06ec3c5f5c7c2/?utm_source=claude_desktop) (Data, 2025, n = 150 across three countries): **unguided AI use fostered cognitive offloading without improving reasoning quality, whereas structured prompting significantly reduced offloading and enhanced both critical reasoning and reflective engagement.** Vendrell et al. (2026) build a design framework on the same premise, with two principles that read like they were written for this project: **preserve cognitive friction**, and **sequence AI-mediated with AI-free phases.**
 
 That last phrase is the academic name for the paper loop.
+
+**2026 update: the fatigue mechanism, over-offloading, and the first neural data.**
+
+Tian & Zhang, [Learners' AI dependence and critical thinking](https://doi.org/10.1016/j.actpsy.2025.105725) (Acta Psychologica, 2025): AI dependence is associated with lower critical thinking, and the path runs through **cognitive fatigue** — dependence tires the mind, and the tired mind thinks less critically. AI literacy buffered the effect. This names the mechanism behind Gerlich's correlation above.
+
+Wang, [Cognitive offloading through digital tools and its relationship with critical thinking, task persistence, and learning depth](https://doi.org/10.3389/fpsyg.2026.1781101) (Frontiers in Psychology, 2026): offloading through digital tools is associated with lower critical thinking, task persistence, and learning depth. **Honest counterweight, and it matters:** in some educational settings the same literature finds offloading supporting self-efficacy and persistence. The variable is not offloading-or-not; it is whether the offloading is designed. Undesigned offloading hollows out; structured offloading can scaffold. That is the entire paper-session thesis in one sentence — and it is why "AI should do the difficult things" is the wrong design brief.
+
+Guo & Ye, [Meta-cognitive insights into cognitive offloading](https://doi.org/10.1057/s41599-026-06621-5) (Humanities and Social Sciences Communications, 2026): people frequently **over-offload**, trusting tools more than is optimal even when incentives discourage it. Metacognition does not self-correct; the tool has to be designed to withhold. This is the empirical backing for the README's "when in doubt, withhold" rule.
+
+Kosmyna et al., [Your Brain on ChatGPT: Accumulation of Cognitive Debt when Using an AI Assistant for Essay Writing Task](https://arxiv.org/abs/2506.08872) (arXiv preprint, June 2025): 54 participants across three groups (LLM, search engine, brain-only), EEG recorded during essay writing. LLM users showed the weakest neural connectivity; when later asked to write without the tool, they showed under-engagement; they reported the lowest ownership of their essays and struggled to quote their own work. **Limitations stated plainly:** preprint, not peer-reviewed at time of writing; small sample; one task. Suggestive, not settled — but it is the only study in this brief that measures the brain during AI-assisted versus unassisted work, and the ownership finding is the one that should worry you: people don't just think less, they feel less authorship over what remains.
+
+**How to hold this:** the correlational base keeps growing and the mechanisms are getting named — fatigue, over-offloading, reduced ownership. None of it is causal proof that AI tools make people less capable in general. All of it points the same direction: the default configuration of these tools trains reliance, and reliance is the thing that degrades.
 
 ---
 
@@ -109,6 +123,7 @@ Stated that way, the two modes aren't a UX convenience. They're two different st
 4. **Screen inferiority is a default-mode effect**, absent when stakes already force depth. A tablet closes part of the gap.
 5. **Most of this is undergraduates in labs.** The walking meta-analysis notes most participants were post-secondary students. Ecological validity is a standing limitation the researchers themselves flag.
 6. **Nearly all of it is correlational on the AI side.** Gerlich's headline finding is a correlation; heavy AI users may differ in ways that predict both.
+7. **The "dopamine shortcut" framing is mechanistically sloppy.** The dopamine literature shows dopamine allocating effort toward salient rewards, not driving low-effort choices (Michely et al. 2020; Walton & Bouret 2018). The supported mechanisms for AI overuse are effort recalibration, friction reduction, and over-offloading — argue those, not dopamine hits.
 
 ---
 
@@ -195,6 +210,14 @@ Previously all I had was "selection performs at chance." The fixes are counterin
 **The finding that matters most for adoption.** Kirk-Johnson et al., [Perceiving effort as poor learning](https://consensus.app/papers/details/935d3d7c141f5bd4ad109cf882d2b62f/?utm_source=claude_desktop) (Cognitive Psychology, 2019, 125 citations): across three studies, participants who perceived a strategy as more effortful rated it as **less effective** and were **less likely to choose it**, while choosing the more effortful strategy was associated with **better long-term retention**. De Bruin et al. (2023) build a whole framework around this resistance.
 
 This is the third appearance of the same pattern in this brief. On screen, comprehension drops and confidence holds. With AI assistance, idea quality and diversity drop and self-assessed creativity holds. And now: effortful methods work better and *feel* worse. The paper session will feel less productive than the screen even on the days it is most productive. That is a design problem for the artifact and a rhetorical problem for the thesis, and it is the same problem twice.
+
+**2026 update: effort recalibration, and a correction to the pop-neuroscience version of this argument.**
+
+Wiradhany, Parry & Aru, [An effort recalibration framework for digital media use and cognition](https://doi.org/10.1038/s41562-026-02500-w) (Nature Human Behaviour, 2026): digital media use doesn't just offer low-effort options; it **recalibrates the perceived cost of effort itself**, so effortful strategies feel more costly than they are. This extends Kirk-Johnson et al. (2019) from a learning-strategy quirk to a property of the media environment. Shin & Murphy, [Frequent Media Use, Media Multitasking, and Perceived Cost of Cognitive Effort](https://doi.org/10.1089/cyber.2024.0492) (2025): it is media multitasking, more than total media use, that tracks higher perceived cognitive effort.
+
+**The dopamine correction.** The loose talk about "dopamine hits" driving low-effort choices does not survive the literature. Dopamine's documented role is energizing **reward-directed action and effort allocation** — boosting it increases willingness to choose *high-effort, high-reward* options (Michely et al., [The role of dopamine in dynamic effort-reward integration](https://doi.org/10.1038/s41386-020-0669-0), Neuropsychopharmacology, 2020; Walton & Bouret, [What is the Relationship Between Dopamine and Effort?](https://doi.org/10.1016/j.tins.2018.10.001), Trends in Neurosciences, 2018). Touponse et al., [Cholinergic modulation of dopamine release drives effortful behavior](https://doi.org/10.1038/s41586-025-10046-6) (Nature, 2026): effort can *amplify* dopamine responses to reward, and organisms sometimes prefer rewards that were harder to obtain. **Argue this, not the shortcut story:** difficulty is not the enemy of the reward system; well-designed difficulty is what the reward system is for. The worksheet's friction is dopaminergically literate in a way the "dopamine detox" discourse is not.
+
+**Design inference, flagged as one:** if the environment recalibrates effort upward, the worksheet's difficulty has to be *bounded and legible* — the user must be able to see the whole cost before starting. An unbounded hard task in a recalibrated environment reads as "not worth it" and gets abandoned. The Deep/Light distinction is doing this work: Light mode caps the effort at one pen gesture per item, which keeps the perceived cost inside the recalibrated budget. No study tests that claim directly; it is assembled from the clusters above, like everything else in this file.
 
 ## Cluster 11: The return trip (ballot design, forms science, and machine reading)
 
