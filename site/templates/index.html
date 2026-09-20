@@ -4,6 +4,15 @@ slug: index
 description: Great ideas never came from staring at a chat window. Print a sheet, grab a pen, and start thinking for yourself.
 body_class: door
 -->
+{% if hero_present %}
+<figure class="hero">
+  <img src="{{ hero_url }}" alt="Session Arc sheets filled in by hand on a wooden bench: a re-sequenced course plan with a circled item, a struck-through line, and margin notes." width="1179" height="786">
+</figure>
+{% else %}
+<div class="hero hero--placeholder" role="img" aria-label="Placeholder: the hero photograph of a completed sheet goes here.">
+  <span>Placeholder &middot; hero photograph &middot; site/static/hero.jpg</span>
+</div>
+{% endif %}
 <section class="band air-1 door-band door-band--lead" aria-labelledby="door-ask">
   <div class="wrap door-grid">
     <p class="label door-rail">The idea</p>
