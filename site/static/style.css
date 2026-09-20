@@ -2227,11 +2227,12 @@ body.door {
   --door-rail: 12.5rem;
 }
 
-/* The hero: a full-bleed 3:2 photograph of a real completed sheet, opening
-   the landing page. The slot keeps its ratio at every width, so the figure
-   grows on a narrow screen instead of clipping. Until site/static/hero.jpg
-   exists the build renders the placeholder below, dashed and red, occupying
-   the same slot. */
+/* The hero: a 3:2 photograph of a real completed sheet, opening
+   the landing page at the column width of the rest of the content.
+   The slot keeps its ratio at every width, so the figure grows on a
+   narrow screen instead of clipping. Until site/static/hero.jpg
+   exists the build renders the placeholder below, dashed and red,
+   occupying the same slot. */
 .hero {
   margin: 0;
 }

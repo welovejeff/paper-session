@@ -5,12 +5,16 @@ description: Great ideas never came from staring at a chat window. Print a sheet
 body_class: door
 -->
 {% if hero_present %}
+<div class="wrap">
 <figure class="hero">
   <img src="{{ hero_url }}" alt="Session Arc sheets filled in by hand on a wooden bench: a re-sequenced course plan with a circled item, a struck-through line, and margin notes." width="1179" height="786">
 </figure>
+</div>
 {% else %}
+<div class="wrap">
 <div class="hero hero--placeholder" role="img" aria-label="Placeholder: the hero photograph of a completed sheet goes here.">
   <span>Placeholder &middot; hero photograph &middot; site/static/hero.jpg</span>
+</div>
 </div>
 {% endif %}
 <section class="band air-1 door-band door-band--lead" aria-labelledby="door-ask">
