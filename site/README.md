@@ -116,7 +116,8 @@ Page and site:
 
 `base` · `home_url` · `page_slug` · `is_home` · `nav` · `title` · `description` ·
 `body_class` · `repo_url` · `raw_url` · `specimen_url` · `hero_url` ·
-`hero_present` · `hero_file` · `specimen_available` · `sheet_count`
+`hero_present` · `hero_file` · `specimen_available` · `sheet_count` ·
+`copy_instructions` · `copy_instructions_present`
 (plus every key from your own front matter). `_base.html` additionally gets
 `content`.
 

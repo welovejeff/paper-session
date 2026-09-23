@@ -36,6 +36,7 @@
       {% if is_home %}{% else %}<nav class="nav" aria-label="Sections">
         {{ nav }}
       </nav>{% endif %}
+      {% if copy_instructions_present %}<button type="button" class="copy-ai" data-copy-ai hidden>Copy instructions for your AI</button>{% endif %}
     </div>
   </div>
   <div class="wrap"><div class="datum" role="presentation"></div></div>
@@ -61,5 +62,6 @@
 </footer>
 
 <script src="{{ base }}site.js" defer></script>
+{% if copy_instructions_present %}<script type="text/plain" id="copy-instructions-text">{{ copy_instructions }}</script>{% endif %}
 </body>
 </html>

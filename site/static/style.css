@@ -615,6 +615,31 @@ td {
   border-color: var(--ink);
 }
 
+/* The header's one-click copy: same quiet treatment as the theme toggle,
+   because it is furniture, not a call to action. */
+.copy-ai {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+  background: none;
+  border: var(--rule-hair) solid var(--guide);
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.copy-ai:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.copy-ai[data-state="done"] {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
 /* Open territory: the closing 1.6pt rule and real, unstructured emptiness. */
 .open-territory {
   margin-block-start: var(--s7);

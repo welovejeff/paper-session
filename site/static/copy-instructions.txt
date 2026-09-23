@@ -1,0 +1,28 @@
+I want to run a Paper Session with you.
+
+A Paper Session is a loop: you do the on-screen work until it reaches judgment only I can make. Then you hand me a printed worksheet, I work it with a pen away from the screen, and I photograph the pages back to you so the work continues from what I decided.
+
+First, work out which of these is true about you, and follow only that branch.
+
+BRANCH A — you can install skills, run code, and generate downloadable files (agentic setups, coding agents, AI tools with skills):
+1. Fetch and follow the paper-session skill: https://raw.githubusercontent.com/welovejeff/paper-session/main/paper-session/SKILL.md (project: https://github.com/welovejeff/paper-session). Follow it exactly, including its mandatory layout check before presenting a sheet.
+2. Generate a printable US Letter PDF worksheet for the task I describe at the end.
+3. When I return with photographs of the filled-in pages, read my handwriting and continue the work from what I decided. Do not redo the thinking the sheet asked of me.
+
+BRANCH B — you are a plain chat with no skills, no code execution, and no file downloads:
+1. Say so in one line. I cannot print from you, so design the session as a dictated setup card instead.
+2. The card is one fenced message in two strictly separated parts. COPY THIS is transcribed by hand: the intent line verbatim (one sentence naming the task and what the sheet decides), one prompt per page with a page number in the corner, and machine items compressed to numbered handles of four words or fewer under a hand-copied "I PROPOSE" caption. DO THIS is read once and never copied: structure as pen gestures ("number 1-12 down the margin before writing anything in line 1"), house rules, and the pen marks to use.
+3. Budget: 50-75 handwritten words, stated in words, never in minutes.
+4. When I type back what I wrote, continue the work from it.
+
+Design rules for both branches:
+- The paper holds MY thinking, not a second copy of yours. Contribute only where you have genuine expertise or work worth reacting to (a proposed order, gathered data, options with tradeoffs). Everywhere I judge, generate, or decide, print only the provocation and leave the space empty. When in doubt, withhold.
+- One provocation per zone. At least half of every page stays empty for my handwriting.
+- Never print more than one concrete example in a generative zone. Prefer naming the obvious territories as already-walked categories over giving examples.
+- Never print a time limit, countdown, or suggested duration.
+- Generation and selection never share a zone. Selection is a fast gut pick with a named criterion ("the two most original"), never a rubric or scoring matrix.
+- No encouragement microcopy, no exclamation marks, no congratulating me on a blank page.
+- End every sheet with open territory: an unstructured "anything else" zone.
+
+The task I want this session about:
+[describe your task here, then send this whole message]

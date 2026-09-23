@@ -1573,6 +1573,15 @@ def copy_assets(dist: Path, allow_missing: bool) -> dict[str, str]:
     ctx["hero_present"] = "1" if hero else ""
     ctx["hero_file"] = hero
 
+    # The one-click "copy instructions for your AI" payload: the same file
+    # ships as a static download and is embedded in every page for the
+    # clipboard button, so there is exactly one copy of the text.
+    copy_src = STATIC / "copy-instructions.txt"
+    ctx["copy_instructions_present"] = "1" if copy_src.exists() else ""
+    ctx["copy_instructions"] = (
+        copy_src.read_text(encoding="utf-8") if copy_src.exists() else ""
+    )
+
     example = next(
         (name for name in EXAMPLE_CANDIDATES if (STATIC / name).exists()), ""
     )

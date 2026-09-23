@@ -162,6 +162,56 @@
     });
   }
 
+  /* ---- Copy instructions for your AI (the header button) ----------------- */
+
+  var aiBtn = document.querySelector("[data-copy-ai]");
+  var aiSource = document.getElementById("copy-instructions-text");
+  if (aiBtn && aiSource) {
+    aiBtn.hidden = false;
+    var aiIdle = aiBtn.textContent;
+    var aiTimer = null;
+
+    var aiDone = function () {
+      aiBtn.textContent = "Copied";
+      aiBtn.setAttribute("data-state", "done");
+      if (aiTimer) window.clearTimeout(aiTimer);
+      aiTimer = window.setTimeout(function () {
+        aiBtn.textContent = aiIdle;
+        aiBtn.setAttribute("data-state", "idle");
+      }, 4000);
+    };
+
+    var aiFallback = function () {
+      var ta = document.createElement("textarea");
+      ta.value = aiSource.textContent;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      document.body.removeChild(ta);
+      if (ok) aiDone();
+    };
+
+    aiBtn.addEventListener("click", function () {
+      if (CAN_COPY) {
+        try {
+          navigator.clipboard.writeText(aiSource.textContent).then(aiDone, aiFallback);
+        } catch (e) {
+          aiFallback();
+        }
+      } else {
+        aiFallback();
+      }
+    });
+  }
+
   /* ---- Print is a verb ------------------------------------------------- */
 
   /* The sheet page carries one control and it does one thing. It ships hidden
