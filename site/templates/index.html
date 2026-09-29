@@ -79,49 +79,42 @@ body_class: door
   <div class="wrap"><div class="door-sep" role="presentation"></div></div>
   <div class="wrap door-grid">
     <h2 class="label label--strong door-rail" id="door-index">Where you are</h2>
-    <!-- The six rows are the whole of this page's navigation, so they are the
+    <!-- The five rows are the whole of this page's navigation, so they are the
          nav landmark. There is no masthead nav here: a second router with its
-         own labels would halve the force of six rows and an end. -->
+         own labels would halve the force of five rows and an end. -->
     <nav class="door-body" aria-labelledby="door-index">
       <ol class="ruled-list door-rows">
         <li>
-          <a class="door-row" href="{{ base }}get-a-sheet/">
-            <span class="door-row__n">01</span>
-            <span class="door-row__stmt">I have a printer.</span>
-            <span class="door-row__dest">Get a sheet</span>
-          </a>
-        </li>
-        <li>
           <a class="door-row" href="{{ base }}no-printer/">
-            <span class="door-row__n">02</span>
+            <span class="door-row__n">01</span>
             <span class="door-row__stmt">No printer, or print doesn&rsquo;t work for me.</span>
             <span class="door-row__dest">The card path</span>
           </a>
         </li>
         <li>
           <a class="door-row" href="{{ base }}scan-back/">
-            <span class="door-row__n">03</span>
+            <span class="door-row__n">02</span>
             <span class="door-row__stmt">I already wrote on it.</span>
             <span class="door-row__dest">Scan it back</span>
           </a>
         </li>
         <li>
           <a class="door-row" href="{{ base }}install/">
-            <span class="door-row__n">04</span>
+            <span class="door-row__n">03</span>
             <span class="door-row__stmt">I want the full loop.</span>
             <span class="door-row__dest">Install</span>
           </a>
         </li>
         <li>
           <a class="door-row" href="{{ base }}no-printer/#np-paste">
-            <span class="door-row__n">05</span>
+            <span class="door-row__n">04</span>
             <span class="door-row__stmt">Nothing to install on my end.</span>
             <span class="door-row__dest">Paste one file</span>
           </a>
         </li>
         <li>
           <a class="door-row" href="{{ evidence_url }}">
-            <span class="door-row__n">06</span>
+            <span class="door-row__n">05</span>
             <span class="door-row__stmt">What can&rsquo;t it do?</span>
             <span class="door-row__dest">The limits</span>
           </a>

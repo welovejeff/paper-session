@@ -101,14 +101,6 @@ EXAMPLE_CANDIDATES = (
 # landing page's onramps.
 PLANNED_PAGES = [
     {
-        "slug": "get-a-sheet",
-        "title": "Get a sheet",
-        "nav_label": "Get a sheet",
-        "nav_order": "10",
-        "description": "Print a real specimen sheet. No account, no install, "
-        "nothing to sign up for.",
-    },
-    {
         "slug": "no-printer",
         "title": "No printer",
         "nav_label": "No printer",

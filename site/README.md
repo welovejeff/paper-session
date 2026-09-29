@@ -64,10 +64,10 @@ Every page template starts with a front-matter comment:
 
 ```html
 <!--page
-title: Get a sheet
-description: Print a real specimen sheet. No account, no install.
-nav_label: Get a sheet
-nav_order: 10
+title: No printer
+description: The dictated path: a card you copy into whatever notebook you already own.
+nav_label: No printer
+nav_order: 20
 -->
 <section class="band air-1">
   <div class="wrap measure">…</div>
@@ -242,19 +242,27 @@ disappears** — you do not need to touch `PLANNED_PAGES` unless you are adding 
 page nobody has planned, in which case add it there so others can link to you
 before you land.
 
-Currently planned: `get-a-sheet` (10), `no-printer` (20), `scan-back` (30),
-`install` (40), `evidence` (50). The order is the landing page's
+Currently planned: `no-printer` (20), `scan-back` (30), `install` (40),
+`evidence` (50). The order is the landing page's
 ascending-commitment order; keep nav and onramps in step.
 
-**All five are written, so the build currently emits no stubs.** Three of them
+**All four are written, so the build currently emits no stubs.** Two of them
 live under a filename that is not their slug, which is fine and deliberate —
 the front matter's `slug:` is what decides the URL:
 
 | Template | Slug and URL |
 |---|---|
-| `templates/sheets.html` | `get-a-sheet` → `/get-a-sheet/` |
 | `templates/return-trip.html` | `scan-back` → `/scan-back/` |
 | `templates/limitations.html` | `evidence` → `/evidence/` |
+
+`/get-a-sheet/` was removed on 2026-09-29. It printed a sheet that knew
+nothing about the visitor, so it proposed nothing: the weakest version of a
+paper session, sitting at the top of the site's funnel. The real sheet is built
+from your own work, so every route now leads there instead (install the pair,
+or paste one file). The print gate (a page whose front matter says
+`sheet: true` is printed with chromium and checked by `verify_layout.py`) and
+the sheet's CSS are still in `build.py` and `static/style.css`. No page
+declares `sheet: true` now, so the gate does not run.
 
 `collect_pages()` fails the build if two templates claim one slug, which is the
 intended behaviour: do not add `templates/scan-back.html` or

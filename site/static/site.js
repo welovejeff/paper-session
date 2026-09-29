@@ -5,7 +5,6 @@
  *   - the chips never appear
  *   - the theme follows prefers-color-scheme
  *   - every copy button stays hidden and its text stays plain and selectable
- *   - the print button stays hidden and Ctrl+P prints the sheet
  *   - the whole of scan-back/SKILL.md sits open on the page
  *   - the landing-page film plays from the browser's own controls
  * Everything below only ever removes noise for people who have JS on.
@@ -213,26 +212,6 @@
     });
   }
 
-  /* ---- Print is a verb ------------------------------------------------- */
-
-  /* The sheet page carries one control and it does one thing. It ships hidden
-     and is revealed only where a print can actually be asked for, the same way
-     the copy buttons are, so a browser that cannot print never shows a dead
-     button. Ctrl+P does the same job with JavaScript off, which is why the
-     page is the sheet rather than a preview of one. */
-
-  var printButtons = document.querySelectorAll("[data-print]");
-  if (printButtons.length && typeof window.print === "function") {
-    for (var p = 0; p < printButtons.length; p++) {
-      (function (button) {
-        button.hidden = false;
-        button.addEventListener("click", function () {
-          window.print();
-        });
-      })(printButtons[p]);
-    }
-  }
-
   /* ---- Theme toggle ---------------------------------------------------- */
 
   var toggle = document.querySelector("[data-theme-toggle]");
@@ -296,7 +275,6 @@
   chips.hidden = false;
   if (full) full.open = false;
 
-  var printHref = root.getAttribute("data-link-print") || "";
   var installHref = root.getAttribute("data-link-install") || "";
 
   function textNode(tag, className, text) {
@@ -351,13 +329,6 @@
 
     var links = document.createElement("p");
     links.className = "btn-row";
-    if (printHref) {
-      var a = document.createElement("a");
-      a.className = "btn";
-      a.href = printHref;
-      a.textContent = "Print a specimen first";
-      links.appendChild(a);
-    }
     if (installHref) {
       var b = document.createElement("a");
       b.className = "btn";
