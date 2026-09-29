@@ -1,11 +1,39 @@
 <!--page
 title: Paper Session
 slug: index
-description: Great ideas never came from staring at a chat window. Print a sheet, grab a pen, and start thinking for yourself.
-body_class: door
+description: Paper Session puts the judgment part of your AI work on paper. You think in pen, and the work picks up from your handwriting.
+body_class: door home
 -->
+<!--
+  The front page has one job: get a visitor from "what is this" to a session
+  in two steps, watch the film, then copy the instructions. Everything else
+  on the site is one click away in the masthead or the two rows at the end.
+
+  The film figure below is the HEAD markup moved as-is (video, poster,
+  captions, centred play button, MP4 link, and the hero.jpg and placeholder
+  fallbacks). site.js drives it; do not change its markup here.
+-->
+
+<section class="band home-lead" aria-labelledby="home-title">
+  <div class="wrap">
+    <h1 class="provocation provocation--wide door-ask" id="home-title">
+      <span>Great ideas never came from</span>
+      <span>staring at a chat window.</span>
+    </h1>
+    <p class="intent home-lead__intent">Print a sheet, grab a pen, and start thinking for yourself.</p>
+    <p class="home-lead__what">Paper Session puts the judgment part of your AI
+    work on paper, and picks the work back up from your handwriting.</p>
+  </div>
+</section>
+
+<section class="home-start" aria-labelledby="start-heading">
+  <div class="wrap">
+    <div class="home-start__rule" role="presentation"></div>
+    <h2 class="label label--strong home-start__label" id="start-heading">Start here</h2>
+    <ol class="home-steps">
+      <li class="home-step home-step--film">
+        <p class="home-step__do">Watch the film.</p>
 {% if film_present %}
-<div class="wrap">
 <figure class="hero hero--film" data-film>
   <video controls playsinline preload="none"{% if film_poster_present %} poster="{{ film_poster_url }}"{% endif %} width="1280" height="720" aria-label="The Help Is Still Coming: a 90-second animated film of one paper session, from the chat window to the pen and back.">
     <source src="{{ film_url }}" type="video/mp4">
@@ -16,111 +44,69 @@ body_class: door
     <span class="film-play__btn"><svg class="film-play__icon" viewBox="0 0 10 12" aria-hidden="true" focusable="false"><path d="M0 0v12l10-6z"/></svg>Play the film<span class="film-play__time"> &middot; 1:31</span></span>
   </button>
 </figure>
-</div>
 {% else %}
 {% if hero_present %}
-<div class="wrap">
 <figure class="hero">
   <img src="{{ hero_url }}" alt="Session Arc sheets filled in by hand on a wooden bench: a re-sequenced course plan with a circled item, a struck-through line, and margin notes." width="1179" height="786">
 </figure>
-</div>
 {% else %}
-<div class="wrap">
 <div class="hero hero--placeholder" role="img" aria-label="Placeholder: the hero photograph of a completed sheet goes here.">
   <span>Placeholder &middot; hero photograph &middot; site/static/hero.jpg</span>
 </div>
-</div>
 {% endif %}
 {% endif %}
-<section class="band air-1 door-band door-band--lead" aria-labelledby="door-ask">
-  <div class="wrap door-grid">
-    <p class="label door-rail">The idea</p>
-    <div class="door-body">
-      <h1 class="provocation provocation--wide door-ask" id="door-ask">
-        <span>The most useful piece of AI hardware</span>
-        <span>you own might be your printer.</span>
-      </h1>
-      <p class="intent door-intent">Great ideas never came from staring at a chat
-      window. Print a sheet, grab a pen, and start thinking for yourself.</p>
-      <p class="door-does">Take it somewhere your laptop isn&rsquo;t. Bring the
-      page back with your handwriting on it, and the work continues from what
-      you decided.</p>
-      {% if repo_stop_line %}
-      <p class="machine door-verbatim">
-        <span class="caption">Verbatim &middot; paper-session/SKILL.md</span>
-        <span class="door-verbatim__line">{{ repo_stop_line }}</span>
-      </p>
-      {% endif %}
-    </div>
+      </li>
+      <li class="home-step home-step--copy">
+        <p class="home-step__do">Copy the instructions. Paste them into the AI
+        chat you already use, and say what you are working on.</p>
+        <div class="copy-cta">
+          <a class="btn btn--primary copy-cta__btn" href="{{ copy_instructions_url }}" data-copy-ai>Copy instructions for your AI</a>
+          <p class="copy-cta__status" data-copy-ai-status role="status" aria-live="polite" data-done="Copied. Paste it into your AI chat and say what you are working on."></p>
+        </div>
+        <p class="home-step__next">The instructions ask your AI to gather what
+        it needs and hand you a page to print. No printer? Say so, and ask for
+        a card to copy by hand.</p>
+        <p class="home-step__read"><a href="{{ copy_instructions_url }}">Read what you are pasting</a></p>
+      </li>
+    </ol>
   </div>
 </section>
 
-<section class="band air-2 door-band door-band--problem" aria-labelledby="door-problem">
+<section class="band air-2 door-band home-loop-band" aria-labelledby="loop-heading">
   <div class="wrap"><div class="door-sep" role="presentation"></div></div>
   <div class="wrap door-grid">
-    <h2 class="label label--strong door-rail" id="door-problem">The problem</h2>
+    <h2 class="label label--strong door-rail" id="loop-heading">The loop</h2>
     <div class="door-body">
-      <p class="door-problem__lead">You opened a chat window to think something
-      through, and the thinking happened without you.</p>
-      <ol class="ruled-list door-problem__moments">
-        <li>The plan you approved but never really read.</li>
-        <li>The draft that sounded smart but wasn&rsquo;t yours.</li>
-        <li>The answer nobody in the room could defend.</li>
+      <ol class="steps steps--lines">
+        <li>The work turns into a judgment call.</li>
+        <li>Your AI prints a page built for that call.</li>
+        <li>You take it somewhere your laptop isn&rsquo;t and think in pen.</li>
+        <li>You send photos of the page to the same chat, and the work resumes from what you wrote.</li>
       </ol>
-      <p class="door-problem__plain">Chat rewards fast answers, not good
-      thinking. The judgment part, the part that was yours, quietly
-      didn&rsquo;t happen.</p>
-      <p class="door-problem__plain">This is for the part that was yours.</p>
     </div>
   </div>
 </section>
 
-<section class="band air-2 door-band door-band--index" aria-labelledby="door-index">
+<section class="band door-band door-band--index" aria-labelledby="more-heading">
   <div class="wrap"><div class="door-sep" role="presentation"></div></div>
   <div class="wrap door-grid">
-    <h2 class="label label--strong door-rail" id="door-index">Where you are</h2>
-    <!-- The five rows are the whole of this page's navigation, so they are the
-         nav landmark. There is no masthead nav here: a second router with its
-         own labels would halve the force of five rows and an end. -->
-    <nav class="door-body" aria-labelledby="door-index">
-      <ol class="ruled-list door-rows">
+    <h2 class="label label--strong door-rail" id="more-heading">Go further</h2>
+    <div class="door-body">
+      <ul class="ruled-list door-rows">
         <li>
-          <a class="door-row" href="{{ base }}no-printer/">
-            <span class="door-row__n">01</span>
-            <span class="door-row__stmt">No printer, or print doesn&rsquo;t work for me.</span>
-            <span class="door-row__dest">The card path</span>
+          <a class="door-row door-row--plain" href="{{ how_it_works_url }}">
+            <span class="door-row__stmt">Walk through one session, start to finish.</span>
+            <span class="door-row__dest">How it works</span>
           </a>
         </li>
         <li>
-          <a class="door-row" href="{{ base }}scan-back/">
-            <span class="door-row__n">02</span>
-            <span class="door-row__stmt">I already wrote on it.</span>
-            <span class="door-row__dest">Scan it back</span>
-          </a>
-        </li>
-        <li>
-          <a class="door-row" href="{{ base }}install/">
-            <span class="door-row__n">03</span>
-            <span class="door-row__stmt">I want the full loop.</span>
+          <a class="door-row door-row--plain" href="{{ install_url }}">
+            <span class="door-row__stmt">Install it, so your AI offers a page mid-task.</span>
             <span class="door-row__dest">Install</span>
           </a>
         </li>
-        <li>
-          <a class="door-row" href="{{ base }}no-printer/#np-paste">
-            <span class="door-row__n">04</span>
-            <span class="door-row__stmt">Nothing to install on my end.</span>
-            <span class="door-row__dest">Paste one file</span>
-          </a>
-        </li>
-        <li>
-          <a class="door-row" href="{{ evidence_url }}">
-            <span class="door-row__n">05</span>
-            <span class="door-row__stmt">What can&rsquo;t it do?</span>
-            <span class="door-row__dest">The limits</span>
-          </a>
-        </li>
-      </ol>
-    </nav>
+      </ul>
+    </div>
   </div>
 </section>
 

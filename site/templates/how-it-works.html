@@ -1,0 +1,126 @@
+<!--page
+title: How it works
+description: One paper session, start to finish. Your AI prints a page for the call that is yours, you work it in pen, and the next step is built on what you wrote.
+nav_label: How it works
+nav_order: 10
+-->
+<!--
+  One session, walked through with the fall-course example the README uses.
+  The four steps here are the concrete version of the loop on the front page,
+  so they must not repeat its sentences. "Printed. Go think." is read out of
+  paper-session/SKILL.md (repo_stop_line). The three example lines are the
+  old first-session page's #say-1, #say-3 and #say-5, word for word apart from
+  one dash in #say-5 turned into a full stop. The full set of session formats
+  lives in page-patterns.md and is linked, never reprinted.
+-->
+
+<section class="band air-1" aria-labelledby="hiw-title">
+  <div class="wrap">
+    <p class="label">How it works</p>
+    <h1 class="page-title" id="hiw-title">One session, start to finish.</h1>
+    <p class="intent">You think in pen.</p>
+
+    <ol class="steps steps--walk">
+      <li>
+        <p><strong>You are mid-task.</strong> You and your AI are rebuilding an
+        eight-week course, and week eight lands flat. The new order is your
+        call.</p>
+      </li>
+      <li>
+        <p><strong>Two pages come out.</strong> On the first, your AI&rsquo;s
+        proposed order sits beside empty lines for yours. The second asks one
+        question. Then it stops:</p>
+        {% if repo_stop_line %}
+        <p class="machine steps__verbatim">{{ repo_stop_line }}</p>
+        {% endif %}
+      </li>
+      <li>
+        <p><strong>You work it in pen,</strong> away from the screen. Strike,
+        reorder, circle, write in the margins. One black pen is enough.</p>
+      </li>
+      <li>
+        <p><strong>You send photos back.</strong> The course is rebuilt in your
+        order. Where your pen disagrees with the proposal, your pen wins.</p>
+      </li>
+    </ol>
+
+    <div class="hiw-figures">
+      {% if sheet_count %}
+      <figure class="sheet">
+        <img src="{{ base }}sheets/sheet-deep-react.png" alt="A worksheet with eight machine-proposed course sessions on the left and empty ruled slots on the right" width="773" height="1000">
+        <figcaption><span class="label">As printed</span></figcaption>
+      </figure>
+      {% endif %}
+      {% if example_present %}
+      <figure class="sheet">
+        <img src="{{ example_photo_url }}" alt="Two printed pages on a wooden table, worked by hand in black, red, green and blue ink. On one, the eight proposed course sessions are rewritten in a new order in the empty column beside them, one line is circled, and one proposal is struck through with a note to rework it. On the other, a hand-drawn diagram fills the space under a single printed question, one word of which is struck out and replaced." width="1142" height="1411" loading="lazy">
+        <figcaption><span class="label">As photographed</span></figcaption>
+      </figure>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="the-page">
+  <div class="wrap">
+    <h2 class="question" id="the-page">The page leaves the thinking to you.</h2>
+    <div class="prose">
+      <p>It can carry work worth reacting to, like that proposed order. Where
+      the call is yours, you get a question and empty space: no example
+      answers, no timer, no score. The pen is the point.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-2" aria-labelledby="your-words">
+  <div class="wrap">
+    <h2 class="question" id="your-words">Ask for the session you need.</h2>
+    <p class="aside">Borrow a line if all of it is true for you.</p>
+    <div class="says">
+      <p class="say">The <span class="slot">[spring launch]</span> is finished. I have
+      the plan we wrote down before we started and the log of what actually happened, both in
+      this thread. Give me an after-action review on paper.</p>
+      <p class="say">The <span class="slot">[migration plan]</span> is committed and
+      I&rsquo;m confident in it. It&rsquo;s a year from now and it has failed completely. Print me
+      the premortem.</p>
+      <p class="say">You&rsquo;ve spent this whole session explaining
+      <span class="slot">[how the auth flow works]</span> and I stayed with all of it. Close the
+      book. Give me the teach-back sheet.</p>
+    </div>
+    <p class="aside after-note"><a href="{{ repo_formats_doc_url }}">Every session format, on GitHub</a></p>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="coming-back">
+  <div class="wrap">
+    <h2 class="question" id="coming-back">Send the photos to the same chat.</h2>
+    <div class="prose">
+      <p>Check the first reply against your page: a misread word looks like a
+      real one. In a fresh chat,
+      <a href="{{ install_url }}#scan-back">paste the scan-back file first</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-3" aria-labelledby="try-it">
+  <div class="wrap">
+    <h2 class="question" id="try-it">Try it on the work in front of you.</h2>
+    <div class="copy-cta">
+      <p class="btn-row">
+        <a class="btn btn--primary copy-cta__btn" href="{{ copy_instructions_url }}" data-copy-ai>Copy instructions for your AI</a>
+        <a class="btn" href="{{ install_url }}">Install the full loop</a>
+      </p>
+      <p class="copy-cta__status" data-copy-ai-status role="status" aria-live="polite" data-done="Copied. Paste it into your AI chat and say what you are working on."></p>
+    </div>
+  </div>
+</section>
+
+<section class="band air-4" aria-label="Open territory">
+  <div class="wrap">
+    <div class="open-territory">
+      <p class="label label--strong">Open territory</p>
+      <div class="open-territory__rule" role="presentation"></div>
+      <div class="open-territory__field"></div>
+    </div>
+  </div>
+</section>

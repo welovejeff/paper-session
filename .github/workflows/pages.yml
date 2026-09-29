@@ -49,8 +49,9 @@ jobs:
         with:
           python-version: '3.12'
 
-      # The sheet gate renders /get-a-sheet/ to PDF and runs verify_layout.py
-      # on it, and that verifier needs pdfplumber. build.py itself stays
+      # The sheet gate renders any page that declares a live sheet to PDF and
+      # runs verify_layout.py on it (none do since /get-a-sheet/ was retired
+      # on 2026-09-29; the gate is dormant), and that verifier needs pdfplumber. build.py itself stays
       # stdlib-only; this is the gate's dependency, not the generator's.
       - run: pip install -r requirements.txt
 

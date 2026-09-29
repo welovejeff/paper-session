@@ -201,10 +201,6 @@ hr {
   margin: var(--s5) 0;
 }
 
-hr.rule-close {
-  border-top: var(--rule-close) solid var(--ink);
-}
-
 a {
   color: inherit;
   text-decoration-line: underline;
@@ -257,18 +253,6 @@ a:hover {
   padding-block: var(--s8) var(--s9);
 }
 
-.stack > * + * {
-  margin-block-start: var(--s3);
-}
-.stack-4 > * + * {
-  margin-block-start: var(--s4);
-}
-
-.scroller {
-  overflow-x: auto;
-  max-width: 100%;
-}
-
 .skip {
   position: absolute;
   left: -9999px;
@@ -293,9 +277,7 @@ a:hover {
 .nav__list,
 .btn,
 .footer__meta,
-.chip,
-th,
-.page-foot {
+th {
   font-family: var(--font-sans);
 }
 
@@ -467,10 +449,6 @@ pre.code {
   max-width: 100%;
 }
 
-pre.code--diagram {
-  display: none;
-}
-
 /* Tables: hairline separators, no fills — the print system bans tint panels. */
 table {
   border-collapse: collapse;
@@ -566,14 +544,6 @@ td {
   margin: 0;
 }
 
-.page-foot {
-  font-size: var(--fs-label);
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-  font-weight: 600;
-}
-
 .footer {
   padding-block: var(--s4) var(--s7);
 }
@@ -665,6 +635,10 @@ td {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
+  text-align: center;
+  /* A <button> would take line-height: normal and sit shorter than an <a>
+     beside it in the same row. */
+  line-height: inherit;
   padding: 0.85rem 1.35rem;
   border: var(--rule-close) solid var(--ink);
   color: var(--ink);
@@ -698,39 +672,8 @@ td {
   align-items: center;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s2);
-  padding: 0;
-  margin: var(--s3) 0 0;
-  list-style: none;
-}
-
-.chip {
-  font-size: var(--fs-small);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: var(--ink-2);
-  background: transparent;
-  border: var(--rule-hair) solid var(--guide);
-  padding: 0.35rem 0.75rem;
-  cursor: pointer;
-}
-
-.chip:hover {
-  border-color: var(--ink);
-  color: var(--ink);
-}
-
 /* Pressed state is a real rule, not a shadow standing in for one. The extra
    weight comes off the padding so nothing shifts when a chip is pressed. */
-.chip[aria-pressed="true"] {
-  border-color: var(--ink);
-  color: var(--ink);
-  border-bottom-width: var(--rule-close);
-  padding-bottom: calc(0.35rem - (var(--rule-close) - var(--rule-hair)));
-}
 
 .answer {
   margin-block-start: var(--s4);
@@ -741,193 +684,11 @@ td {
   margin-block-start: 0;
 }
 
-.answer__status {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink);
-  display: block;
-  margin-bottom: var(--s1);
-}
-
-.answer__line {
-  margin: 0 0 var(--s3);
-}
-
-details.ledger-full {
-  margin-block-start: var(--s4);
-}
-
-details.ledger-full > summary {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-  cursor: pointer;
-  padding-block: var(--s2);
-}
-
-details.ledger-full > summary:hover {
-  color: var(--ink);
-}
-
 /* ---- 9. Hero ------------------------------------------------------------ */
 
 .hero {
   position: relative;
   margin-block-start: var(--s3);
-}
-
-.hero__frame {
-  position: relative;
-  aspect-ratio: 3 / 2;
-  max-height: 76vh;
-  overflow: hidden;
-}
-
-.hero__frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero__scrim {
-  position: absolute;
-  inset: 0;
-  background: var(--scrim);
-}
-
-.hero__overlay {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  padding: var(--gutter);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s4);
-  align-items: flex-start;
-}
-
-.hero--photo .hero__overlay {
-  color: var(--scrim-ink);
-}
-
-.hero--photo .btn {
-  border-color: var(--scrim-ink);
-  color: var(--scrim-ink);
-}
-
-.hero--photo .btn:hover {
-  background: var(--scrim-ink);
-  color: #12100f;
-}
-
-.hero--photo .btn--primary {
-  background: var(--scrim-ink);
-  color: #12100f;
-}
-
-.hero--photo .btn--primary:hover {
-  background: transparent;
-  color: var(--scrim-ink);
-}
-
-/* Placeholder state. Dashed, because the print system uses dashes only where
-   something is genuinely provisional — here, an asset that does not exist. */
-.hero--placeholder .hero__frame {
-  /* Same 3:2 slot the photograph will occupy, but it grows rather than
-     clipping the note on a narrow screen. The dashed marking itself comes
-     from the shared .placeholder component (section 18c). */
-  aspect-ratio: auto;
-  min-height: min(60vw, 70vh);
-  overflow: visible;
-  display: grid;
-}
-
-.hero--placeholder .hero__overlay {
-  position: static;
-  padding: var(--s5) 0 0;
-}
-
-/* ---- 10. Onramps -------------------------------------------------------- */
-
-.onramps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  counter-reset: onramp;
-}
-
-.onramp {
-  counter-increment: onramp;
-  display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr);
-  gap: var(--s3) var(--s4);
-  padding-block: var(--s5);
-  border-top: var(--rule-hair) solid var(--guide);
-}
-
-.onramp:first-child {
-  border-top: var(--rule-close) solid var(--ink);
-}
-
-.onramp__num {
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  color: var(--ink-quiet);
-  padding-top: 0.35rem;
-}
-
-.onramp__num::before {
-  content: "0" counter(onramp);
-}
-
-.onramp__body {
-  /* A grid item's default min-width is auto, so a <pre> inside one refuses to
-     shrink below its content and pushes the whole page sideways on a phone.
-     The scroll then belongs to the <pre>, which is what pre.code is for. */
-  min-width: 0;
-}
-
-.onramp__body > * + * {
-  margin-block-start: var(--s3);
-}
-
-.onramp h3 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 1.0625rem;
-  line-height: 1.3;
-  margin: 0;
-}
-
-.onramp p {
-  margin: 0;
-  max-width: 58ch;
-}
-
-.onramp__done {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-  border-top: var(--rule-hair) solid var(--guide);
-  padding-top: var(--s2);
-  display: block;
-}
-
-@media (max-width: 34rem) {
-  .onramp {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .onramp__num {
-    padding-top: 0;
-  }
 }
 
 /* ---- 11. Specimen sheets ------------------------------------------------ */
@@ -953,54 +714,6 @@ details.ledger-full > summary:hover {
   margin-top: var(--s2);
 }
 
-.sheet__note {
-  display: block;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--fs-small);
-  color: var(--ink-2);
-  margin-top: var(--s1);
-}
-
-/* ---- 12. The print note ------------------------------------------------- */
-
-.print-note {
-  display: flex;
-  gap: var(--s3);
-  align-items: baseline;
-  border-top: var(--rule-close) solid var(--ink);
-  border-bottom: var(--rule-hair) solid var(--guide);
-  padding-block: var(--s3);
-  max-width: 58ch;
-}
-
-.print-note__key {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 700;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--ink);
-}
-
-.print-note__body {
-  margin: 0;
-  font-size: var(--fs-small);
-  color: var(--ink-2);
-}
-
-.print-note__body strong {
-  color: var(--ink);
-}
-
-@media (max-width: 34rem) {
-  .print-note {
-    flex-direction: column;
-    gap: var(--s1);
-  }
-}
-
 /* ---- 13. Numbers -------------------------------------------------------- */
 
 .numbers {
@@ -1015,78 +728,6 @@ details.ledger-full > summary:hover {
 .number {
   border-top: var(--rule-close) solid var(--ink);
   padding-top: var(--s3);
-}
-
-.number__figure {
-  font-family: var(--font-mono);
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.15;
-  color: var(--ink);
-  margin: 0 0 var(--s2);
-}
-
-.number__line {
-  font-size: var(--fs-small);
-  color: var(--ink-2);
-  margin: 0;
-}
-
-.thesis {
-  font-family: var(--font-serif);
-  font-size: var(--fs-lead);
-  line-height: 1.5;
-  max-width: 46ch;
-  margin: 0;
-}
-
-.prompts {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-mono);
-  font-size: var(--fs-machine);
-  color: var(--ink-2);
-}
-
-.prompts li + li {
-  margin-top: var(--s1);
-}
-
-/* ---- 14. Pen channel swatches (colour, always named) -------------------- */
-
-.pen-key {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s3) var(--s4);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-sans);
-  font-size: var(--fs-small);
-}
-
-.pen-key li {
-  display: flex;
-  align-items: baseline;
-  gap: var(--s1);
-}
-
-.pen-key b {
-  font-weight: 600;
-}
-
-.pen-key .pen-red {
-  color: var(--pen-red);
-}
-.pen-key .pen-green {
-  color: var(--pen-green);
-}
-.pen-key .pen-blue {
-  color: var(--pen-blue);
-}
-.pen-key .pen-black {
-  color: var(--pen-black);
 }
 
 /* ---- 15. Motion and print ---------------------------------------------- */
@@ -1104,9 +745,7 @@ details.ledger-full > summary:hover {
 
 @media print {
   .nav,
-  .theme-toggle,
-  .chips,
-  .hero__frame {
+  .theme-toggle {
     display: none !important;
   }
   body {
@@ -1185,33 +824,12 @@ details.ledger-full > summary:hover {
    so no template has to put a <style> element in <body>.
    ------------------------------------------------------------------------ */
 
-/* A visually-hidden label for a control whose visible text is too terse to
-   stand alone out of context ("Copy" -> "Copy the premortem line"). */
-.sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
 /* Spacing utilities, in the same ascending scale the bands use. */
 .after-note {
   margin-block-start: var(--s4);
 }
 .after-lead {
   margin-block-start: var(--s5);
-}
-.after-block {
-  margin-block-start: var(--s6);
-}
-.after-close {
-  margin-block-start: var(--s7);
 }
 
 /* A verbatim block wide enough for a table or a source paragraph. */
@@ -1230,10 +848,7 @@ details.ledger-full > summary:hover {
 
 /* Headings inside components that sit outside .prose. Bare h3 would inherit
    the body serif and read as prose rather than as a component's name. */
-.source-entry h3,
-.cluster-index h3,
-.ruled-list__item h3,
-.route h3 {
+.source-entry h3 {
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 1.0625rem;
@@ -1246,8 +861,7 @@ details.ledger-full > summary:hover {
 
 /* A <details> whose summary is infrastructure, not prose. With JavaScript off
    these stay open: the content is the fallback, the fold is the enhancement. */
-.disclosure > summary,
-details.ledger-full > summary {
+.disclosure > summary {
   font-family: var(--font-sans);
   font-size: var(--fs-label);
   font-weight: 600;
@@ -1258,8 +872,7 @@ details.ledger-full > summary {
   padding-block: var(--s2);
 }
 
-.disclosure > summary:hover,
-details.ledger-full > summary:hover {
+.disclosure > summary:hover {
   color: var(--ink);
 }
 
@@ -1296,19 +909,6 @@ details.ledger-full > summary:hover {
 
 /* An asset that does not exist yet. Dashed and red, and the word "placeholder"
    is always in the text: the colour marks it, the sentence states it. */
-.placeholders {
-  display: grid;
-  gap: var(--s4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 52rem) {
-  .placeholders--pair {
-    grid-template-columns: 1fr 1fr;
-  }
-}
 
 .placeholder {
   border: var(--rule-close) dashed var(--pen-red);
@@ -1318,15 +918,6 @@ details.ledger-full > summary:hover {
   display: flex;
   flex-direction: column;
   gap: var(--s2);
-}
-
-.placeholder__key {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 700;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--pen-red);
 }
 
 .placeholder p {
@@ -1352,36 +943,6 @@ details.ledger-full > summary:hover {
   padding: 0;
   counter-reset: ruled-item;
   max-width: 62ch;
-}
-
-.ruled-list__item {
-  counter-increment: ruled-item;
-  border-top: var(--rule-close) solid var(--ink);
-  padding-block: var(--s3) var(--s5);
-}
-
-.ruled-list__item h3::before {
-  content: "0" counter(ruled-item);
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: var(--track-caps);
-  color: var(--ink-quiet);
-  margin-bottom: var(--s1);
-}
-
-.ruled-list__item h3 {
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.ruled-list__item p {
-  margin: 0;
-  max-width: 58ch;
-}
-
-.ruled-list__item p + p {
-  margin-block-start: var(--s3);
 }
 
 /* ---- 18e. Anchored source entries --------------------------------------- */
@@ -1410,75 +971,8 @@ details.ledger-full > summary:hover {
   margin: 0 0 var(--s4);
 }
 
-.source-entry .machine,
-.sourced .machine {
+.source-entry .machine {
   max-width: 78ch;
-}
-
-.sourced > * + * {
-  margin-block-start: var(--s4);
-}
-
-.cluster-index {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-width: 78ch;
-}
-
-.cluster-index > li + li {
-  margin-top: var(--s4);
-  border-top: var(--rule-hair) solid var(--guide);
-  padding-top: var(--s4);
-}
-
-/* A front-page figure that links to its own limitations. */
-.number__link {
-  color: inherit;
-  text-decoration-color: var(--ink-faint);
-  text-underline-offset: 0.22em;
-}
-
-/* ---- 18f. Route cards --------------------------------------------------- */
-
-/* Ways in, as equal peers: no primary, no recommended badge, same rule weight
-   and same type on every one. Both install tracks matter equally, so nothing
-   here is allowed to look bigger than anything else. */
-.routes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-  gap: 0 var(--s5);
-  list-style: none;
-  margin: var(--s5) 0 0;
-  padding: 0;
-}
-
-.route {
-  border-top: var(--rule-close) solid var(--ink);
-  padding: var(--s3) 0 var(--s5);
-}
-
-.route h3 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: 1.0625rem;
-  line-height: 1.3;
-}
-
-.route p {
-  margin: 0 0 var(--s3);
-  font-size: var(--fs-small);
-  color: var(--ink-2);
-}
-
-.route__jump {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  text-decoration-color: var(--ink-faint);
-  text-underline-offset: 0.35em;
 }
 
 /* ---- 18g. Ledger verdicts ----------------------------------------------- */
@@ -1489,8 +983,7 @@ details.ledger-full > summary:hover {
    Selector note: the ledger is parsed generically, so this assumes no column
    or row count. The agent name is the first cell; a verdict is a bolded phrase
    opening any later cell. */
-.verdict,
-.ledger-table tbody td:not(:first-child) > strong:first-child {
+.verdict {
   display: inline-block;
   font-family: var(--font-sans);
   font-size: var(--fs-label);
@@ -1502,128 +995,6 @@ details.ledger-full > summary:hover {
   border: var(--rule-hair) solid var(--ink);
   padding: 0.25rem 0.5rem;
   margin-block-end: 0.35rem;
-}
-
-.verdict-key {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s1) var(--s3);
-  align-items: baseline;
-  max-width: 62ch;
-  margin: var(--s5) 0 var(--s3);
-  font-size: var(--fs-small);
-  color: var(--ink-2);
-}
-
-.verdict-key span:last-child {
-  flex: 1 1 22rem;
-}
-
-.ledger-table {
-  margin-block-start: var(--s3);
-}
-
-.ledger-table td:first-child {
-  min-width: 11rem;
-}
-
-/* The extra ledger columns the chip answer used to drop. */
-.answer__extra {
-  margin: 0 0 var(--s3);
-}
-
-.answer__extra dt {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-}
-
-.answer__extra dd {
-  margin: 0 0 var(--s2);
-}
-
-/* ---- 18h. Specimen plate and anatomy key -------------------------------- */
-
-/* One sheet per row, at a size where the smallest printed labels are still
-   legible. The shared .sheets grid is a thumbnail strip; this is for the page
-   where people actually read them. */
-.specimen-plate {
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s7);
-  max-width: 46rem;
-}
-
-.specimen-plate .sheet figcaption {
-  margin-top: var(--s3);
-  border-top: var(--rule-close) solid var(--ink);
-  padding-top: var(--s2);
-}
-
-/* The specimen's own intent lines, read out of the generator. */
-.specimen-intents {
-  margin: 0;
-  padding-inline-start: 1.6em;
-  max-width: 62ch;
-}
-
-.specimen-intents li + li {
-  margin-block-start: var(--s2);
-}
-
-.specimen-intents__title {
-  display: block;
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-}
-
-/* A key of named parts: the name on the left, what it does on the right. */
-.anatomy {
-  display: grid;
-  grid-template-columns: minmax(9rem, 15rem) minmax(0, 1fr);
-  gap: 0 var(--s4);
-  margin: var(--s4) 0 0;
-  max-width: 62ch;
-}
-
-.anatomy dt {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink);
-}
-
-.anatomy dd {
-  margin: 0;
-  font-size: var(--fs-small);
-  color: var(--ink-2);
-}
-
-.anatomy dt,
-.anatomy dd {
-  border-top: var(--rule-hair) solid var(--guide);
-  padding-block: var(--s3);
-}
-
-@media (max-width: 40rem) {
-  .anatomy {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .anatomy dd {
-    border-top: 0;
-    padding-top: 0;
-  }
-  .anatomy dt {
-    padding-bottom: var(--s1);
-  }
 }
 
 /* ---- 18i. A long verbatim file ------------------------------------------ */
@@ -1660,42 +1031,6 @@ details.ledger-full > summary:hover {
   border-bottom: var(--rule-hair) dotted var(--ink-faint);
 }
 
-.say__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--s3);
-  margin: var(--s3) 0 0;
-  padding-inline-start: calc(var(--s3) + var(--rule-close));
-}
-
-.say__copy {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 700;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink);
-  background: transparent;
-  border: var(--rule-hair) solid var(--ink);
-  padding: 0.5rem 0.9rem;
-  cursor: pointer;
-}
-
-.say__copy:hover,
-.say__copy[data-state="done"] {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.say__hint {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--fs-small);
-  color: var(--ink-quiet);
-  margin: 0;
-}
-
 /* Two tiers of note, distinguished by the words first and the rule second.
    Red is the pen protocol's review channel and never carries meaning alone. */
 .note {
@@ -1707,83 +1042,12 @@ details.ledger-full > summary:hover {
   color: var(--ink-2);
 }
 
-.note--caution {
-  border-inline-start: var(--rule-close) solid var(--pen-red);
-}
-
 .note p {
   margin: 0;
 }
 
 .note p + p {
   margin-block-start: var(--s2);
-}
-
-.note__key {
-  display: block;
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 700;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-  margin-block-end: var(--s1);
-}
-
-.note--caution .note__key {
-  color: var(--pen-red);
-}
-
-/* ---- 18k. Grouped openers ----------------------------------------------- */
-
-.openers {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.opener {
-  border-top: var(--rule-hair) solid var(--guide);
-  padding-block: var(--s4) var(--s5);
-}
-
-.opener__format {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 700;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--ink);
-  margin: 0 0 var(--s3);
-}
-
-.opener__num {
-  color: var(--ink-quiet);
-}
-
-.opener__format .opener__scope {
-  font-weight: 400;
-  color: var(--ink-quiet);
-}
-
-.label--spaced {
-  margin-block-start: var(--s5);
-}
-
-.situation {
-  margin-block-start: var(--s7);
-}
-
-.situation:first-of-type {
-  margin-block-start: var(--s5);
-}
-
-.situation__lede {
-  font-family: var(--font-serif);
-  font-size: var(--fs-body);
-  color: var(--ink-2);
-  max-width: 58ch;
-  margin: 0 0 var(--s4);
 }
 
 /* ---- 19. Flush left, always --------------------------------------------
@@ -2203,7 +1467,6 @@ details.ledger-full > summary:hover {
   body.ps-sheet-page .masthead,
   body.ps-sheet-page .footer,
   body.ps-sheet-page .skip,
-  body.ps-sheet-page .print-note,
   body.ps-sheet-page [data-print] {
     display: none !important;
   }
@@ -2211,9 +1474,6 @@ details.ledger-full > summary:hover {
   /* Anything the page says to a person looking at a screen. A sheet page
      cannot carry a visible sentence otherwise: it would print, push the sheet
      onto a second page, and fail the gate. */
-  body.ps-sheet-page .screen-only {
-    display: none !important;
-  }
 
   body.ps-sheet-page,
   body.ps-sheet-page main,
@@ -2233,7 +1493,6 @@ details.ledger-full > summary:hover {
 [data-print] {
   margin-block-start: var(--s4);
 }
-
 
 /* ---- 22. The door: the front page ---------------------------------------
    The index is one bounded screen. The masthead datum opens it, six numbered
@@ -2397,11 +1656,6 @@ body.door {
   padding-left: var(--s4);
 }
 
-/* Slack in a tall window goes into the bands before it pools at the bottom,
-   so the page fills rather than sagging. */
-body.door .door-band--lead {
-  padding-block: clamp(var(--s3), 3vh, var(--s5)) clamp(var(--s4), 4vh, var(--s6));
-}
 /* No bottom padding: the margin below carries that space, so the column rule
    runs from the top of the band to the closing rule without a break in it. */
 body.door .door-band--index {
@@ -2420,62 +1674,6 @@ body.door .door-band--index {
 }
 .door-ask > span + span {
   margin-top: 0.12em;
-}
-
-/* The premise, then what it actually does. Two steps down in scale from the
-   ask, and the second one plainer than the first: the provocation earns the
-   reader's attention, the sentence after it has to be worth the trade. */
-.door-intent {
-  margin: var(--s4) 0 0;
-  max-width: 52ch;
-}
-.door-does {
-  margin: var(--s3) 0 0;
-  max-width: 52ch;
-  color: var(--ink);
-}
-
-.door-verbatim {
-  margin: var(--s4) 0 0;
-  max-width: 34ch;
-}
-.door-verbatim__line {
-  display: block;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-/* The problem band: same door rhythm, one new voice. The lead is a serif
-   sentence in the visitor's own words; the moments are ruled like the index
-   rows but not links, because there is nowhere else for them to go. */
-body.door .door-band--problem {
-  padding-block: 0 clamp(var(--s4), 4vh, var(--s6));
-}
-.door-band--problem .door-grid {
-  padding-top: clamp(var(--s3), 3vh, var(--s5));
-}
-.door-problem__lead {
-  font-family: var(--font-serif);
-  font-size: var(--fs-lead);
-  line-height: 1.3;
-  max-width: 40ch;
-}
-.door-problem__moments {
-  margin: var(--s3) 0 0;
-  max-width: 52ch;
-}
-.door-problem__moments > li {
-  font-family: var(--font-serif);
-  font-size: var(--fs-lead);
-  line-height: 1.3;
-  padding-block: 0.5rem;
-}
-.door-problem__moments > li + li {
-  border-top: var(--rule-hair) solid var(--guide);
-}
-.door-problem__plain {
-  margin: var(--s3) 0 0;
-  max-width: 52ch;
 }
 
 /* Six rows: a mono numeral, a serif statement in the visitor's own voice, and
@@ -2504,12 +1702,6 @@ body.door .door-band--problem {
   outline-offset: -2px;
 }
 
-.door-row__n {
-  font-family: var(--font-mono);
-  font-size: var(--fs-machine);
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-quiet);
-}
 .door-row__stmt {
   font-family: var(--font-serif);
   font-size: var(--fs-lead);
@@ -2580,4 +1772,410 @@ body.door .door-band--problem {
   .door-row__dest {
     grid-column: 2;
   }
+}
+
+/* ---- 23. Site redo -------------------------------------------------------
+   Four pages: the front page, How it works, Install, Research. The masthead
+   carries the nav on every page, and one call to action runs the site: copy
+   the instructions, paste them into the AI chat you already use. Existing
+   tokens and the existing vocabulary only: outlined or filled rectangles,
+   hairlines, colour on focus and nowhere else.
+   ------------------------------------------------------------------------ */
+
+/* Masthead. The nav now shows on the front page too, and inner pages add the
+   copy button, so a wordmark, four items and a button share 320px of content
+   at a 360px viewport. Below 40rem the bar stacks: wordmark, then the button,
+   then the nav on a full-width row of its own, tracked a notch tighter and
+   spread edge to edge so the four items hold one line and line up with the
+   datum rule under them. */
+@media (max-width: 40rem) {
+  .masthead__bar {
+    align-items: center;
+    row-gap: var(--s2);
+  }
+  .masthead__bar > .nav {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 30rem) {
+  .masthead .nav__list {
+    gap: var(--s2) var(--s3);
+    letter-spacing: 0.08em;
+    justify-content: space-between;
+  }
+}
+
+/* The smallest phones (a 320px viewport leaves 280px): one more notch, so
+   the fourth item still does not drop to a line of its own. */
+@media (max-width: 22rem) {
+  .masthead .nav__list {
+    column-gap: var(--s1);
+    letter-spacing: 0.03em;
+  }
+}
+
+/* The primary call to action: copy the instructions for your AI. A real link
+   to copy-instructions.txt with JS off, a copy button with it (site.js). The
+   filled rectangle is the site's primary control, one size up, the same size
+   as the film's play button so the page's two verbs read as a pair. */
+.copy-cta {
+  margin-block-start: var(--s4);
+}
+
+.copy-cta__btn {
+  font-size: 0.9375rem;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  padding: 1.1rem 1.6rem;
+  max-width: 100%;
+}
+
+/* The sentence after a copy: what to do next. Feedback from a control, so it
+   is set in the infrastructure voice, with an ink rule rather than a coloured
+   one. It stays in the accessibility tree while empty (never display: none),
+   so the first announcement is not lost. */
+.copy-cta__status {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 52ch;
+  margin: var(--s3) 0 0;
+  padding-inline-start: var(--s3);
+  border-inline-start: var(--rule-close) solid var(--ink);
+}
+
+.copy-cta__status:empty {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+@media (max-width: 34rem) {
+  .copy-cta__btn {
+    font-size: 0.8125rem;
+    padding: 0.9rem 1.2rem;
+  }
+  /* Small enough that the one-line npx command fits a phone without
+     scrolling; the longer clone and pip lines still scroll. */
+  pre.code {
+    font-size: 0.8125rem;
+  }
+}
+
+/* The two bundle downloads, {{ repo_bundle_links_html }}: one button each,
+   so the chat-app route weighs the same as the terminal's code blocks. A
+   file name never breaks at its hyphen. */
+.bundle-links a {
+  white-space: nowrap;
+}
+
+.bundle-links code {
+  font: inherit;
+  background: none;
+  padding: 0;
+  border: 0;
+}
+
+/* The ledger, one line per row: the agent cell verbatim (Mono: quoted from
+   the repo), and its verdict boxed exactly as section 18g boxes it. Tested
+   or not, every verdict gets the same box; nothing is colour-graded. */
+.verdicts {
+  list-style: none;
+  margin: var(--s3) 0 0;
+  padding: 0;
+  max-width: var(--measure);
+  border-top: var(--rule-hair) solid var(--guide);
+}
+
+.verdicts > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s1) var(--s3);
+  padding-block: var(--s2);
+  border-bottom: var(--rule-hair) solid var(--guide);
+}
+
+.verdicts__agent {
+  flex: 1 1 16rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-machine);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.verdicts__verdict {
+  flex: 0 1 auto;
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--ink);
+  border: var(--rule-hair) solid var(--ink);
+  padding: 0.25rem 0.5rem;
+}
+
+/* Front page. The lead is one bounded block: the question, the reference
+   line, and one sentence saying what this is. The two steps follow at once,
+   so the film and the copy button are on screen together at desktop widths
+   and in reading order on a phone. */
+body.home .home-lead {
+  padding-block: clamp(var(--s4), 4vh, var(--s6)) var(--s5);
+}
+
+.home-lead__intent {
+  margin-top: var(--s4);
+}
+
+.home-lead__what {
+  margin: var(--s3) 0 0;
+  max-width: 52ch;
+}
+
+.home-start {
+  padding-block: 0 var(--s6);
+}
+
+.home-start__rule {
+  border-top: var(--rule-close) solid var(--ink);
+}
+
+.home-start__label {
+  margin: var(--s2) 0 var(--s4);
+}
+
+/* Two numbered steps. The numeral is infrastructure (tracked Sans); the
+   instruction under it is the site asking, so it is Serif. */
+.home-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: home-step;
+  display: grid;
+  gap: var(--s6);
+}
+
+.home-step {
+  counter-increment: home-step;
+  min-width: 0;
+}
+
+.home-step::before {
+  content: counter(home-step);
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-title);
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: var(--s2);
+}
+
+.home-step__do {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lead);
+  line-height: 1.35;
+  margin: 0 0 var(--s4);
+  max-width: 40ch;
+}
+
+.home-step .copy-cta {
+  margin-block-start: 0;
+}
+
+.home-step__next {
+  margin: var(--s4) 0 0;
+  max-width: 44ch;
+  color: var(--ink-2);
+}
+
+.home-step__read {
+  margin: var(--s2) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+}
+
+/* Side by side once there is room: the film on the left, the copy step to
+   its right behind a hairline, both starting on the same line. The copy
+   column is a fixed 26rem so the button's label ("Copy instructions for your
+   AI", about 22.5rem at its size) always holds one line; the film takes the
+   rest. Below 64rem that column would squeeze the label onto two lines, so
+   the steps stack instead. */
+@media (min-width: 64rem) {
+  .home-steps {
+    grid-template-columns: minmax(0, 1fr) 26rem;
+    gap: 0;
+  }
+  .home-step--copy {
+    border-left: var(--rule-hair) solid var(--guide);
+    margin-left: var(--s3);
+    padding-left: var(--s3);
+  }
+}
+
+@media (max-width: 40rem) {
+  .home-steps {
+    gap: var(--s4);
+  }
+  .home-step__do {
+    margin-bottom: var(--s3);
+  }
+  .home-start__label {
+    margin-bottom: var(--s3);
+  }
+}
+
+/* The loop, numbered: a counter in the label voice and one serif line each,
+   ruled like the rows under it. Also the walk-through on How it works, where
+   each step is a short paragraph instead of a line. */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+  max-width: 62ch;
+}
+
+.steps > li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: baseline;
+  padding-block: var(--s2);
+}
+
+.steps > li + li {
+  border-top: var(--rule-hair) solid var(--guide);
+}
+
+.steps > li::before {
+  content: "0" counter(step);
+  grid-column: 1;
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-quiet);
+}
+
+.steps > li > * {
+  grid-column: 2;
+  margin: 0;
+}
+
+.steps > li > * + * {
+  margin-block-start: var(--s3);
+}
+
+.steps--lines > li {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lead);
+  line-height: 1.35;
+}
+
+.steps--walk {
+  margin-block-start: var(--s5);
+}
+
+.steps--walk > li {
+  padding-block: var(--s3);
+}
+
+.steps--walk strong {
+  font-weight: 600;
+}
+
+.steps__verbatim {
+  max-width: 34ch;
+}
+
+/* The front page's closing rows carry no numeral: two ways further in, not
+   a sequence. */
+.door-row--plain {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+@media (max-width: 560px) {
+  .door-row--plain {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .door-row--plain .door-row__dest {
+    grid-column: 1;
+  }
+}
+
+/* How it works: the page as printed beside the page as photographed. The
+   comparison is the point, so the pair stays side by side at every width,
+   held to a width where both still read as whole pages. */
+.hiw-figures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s3);
+  max-width: 46rem;
+  margin-block-start: var(--s5);
+}
+
+@media (min-width: 40rem) {
+  .hiw-figures {
+    gap: var(--s4);
+  }
+}
+
+/* One shared ratio, the printed page's own (US Letter as rendered, 773 by
+   1000), so the two captions sit on one line. The photograph loses a sliver
+   of table at each side and none of the pages. */
+.hiw-figures .sheet img {
+  aspect-ratio: 773 / 1000;
+  object-fit: cover;
+}
+
+/* The example lines, one after another. */
+.says {
+  margin-block-start: var(--s4);
+}
+
+.says > .say + .say {
+  margin-block-start: var(--s4);
+}
+
+/* Install: the command blocks sit in running prose, but run wider than
+   the prose measure so the longest command (the pip line, 74 characters of
+   Mono) fits without scrolling at desktop widths. On a phone it scrolls
+   inside its own box, never the page. */
+.install-route + .install-route {
+  padding-block-start: 0;
+}
+
+.install-route .prose {
+  max-width: 47rem;
+}
+
+.install-route .prose > p {
+  max-width: var(--measure);
+}
+
+/* The ledger verdicts inside a verbatim block: .machine indents lists and
+   spaces list items, which this list does with its own rules. The caption's
+   2px rule already opens it, so the list drops its own top hairline. */
+.machine .verdicts {
+  padding: 0;
+}
+
+.machine .verdicts > li + li {
+  margin-block-start: 0;
+}
+
+.machine > .caption + .verdicts {
+  border-top: 0;
+}
+
+.machine > .caption + .verdicts > li:first-child {
+  padding-block-start: 0;
 }

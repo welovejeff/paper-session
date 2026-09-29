@@ -1,191 +1,112 @@
 <!--page
 title: Install
-description: Both halves, in whatever you already use, plus a plain account of which setups have actually carried a page all the way round.
+description: Install both halves of Paper Session in a chat app or a terminal, or run a session with nothing installed. The file for coming back in a fresh chat is here too.
 nav_label: Install
-nav_order: 40
+nav_order: 20
+-->
+<!--
+  Commands, bundle links, ledger verdicts and the scan-back file all arrive
+  through {{ repo_* }} keys, read out of the repo at build time. Never type a
+  command into this template. README §Install stays the one place the full
+  directions live; this page links to it for everything it leaves out.
+  Two ids here are redirect targets and the strict build checks them:
+  #no-printer (from /no-printer/) and #scan-back (from /scan-back/).
 -->
 
 <section class="band air-1" aria-labelledby="install-heading">
   <div class="wrap">
-    <p class="label">Both halves</p>
     <h1 class="page-title" id="install-heading">Install</h1>
-    <p class="intent">Here is what having this installed is actually like. You
-    are in the middle of something, the work turns into a judgment only you can
-    make, and you get a page instead of another four
-    paragraphs. You print it and take it to a kitchen table. Later you
-    photograph what you wrote, and the work resumes from your handwriting.</p>
+    <p class="intent">Two skills: paper-session prints the page, scan-back reads
+    your handwriting back. Install both, and your AI can offer a page whenever
+    the work turns into a judgment call.</p>
+    <p class="aside after-note"><a href="#no-printer">Rather not install? Run a session without it.</a></p>
+  </div>
+</section>
 
-    <div class="prose measure">
-      {% if repo_footer_line %}
-      <p>Take both halves or neither. Every sheet the forward half prints
-      closes with <span class="page-foot">{{ repo_footer_line }}</span>, and the
-      return half is the thing that honours that. Installing one and not the
-      other leaves you holding a finished page with nowhere to send it.</p>
-      {% else %}
-      <p>Take both halves or neither. The forward half prints a page that
-      promises the return half by name, so installing one and not the other
-      leaves you holding a finished page with nowhere to send it.</p>
-      {% endif %}
+<section class="band air-1 install-route" aria-labelledby="chat-heading">
+  <div class="wrap">
+    <h2 class="question" id="chat-heading">In claude.ai or the Claude apps</h2>
+    <div class="prose">
+      <p>Download both bundles, then upload each one where the app takes
+      skills. Nothing else to install.</p>
+      <p class="btn-row bundle-links">{{ repo_bundle_links_html }}</p>
     </div>
   </div>
 </section>
 
-<section class="band air-1" aria-labelledby="which-heading">
+<section class="band air-1 install-route" aria-labelledby="terminal-heading">
   <div class="wrap">
-    <h2 class="question" id="which-heading">Find the setup that sounds like yours.</h2>
-    <p class="aside measure">One of these four is true of you, and that is the
-    whole decision. The cards are only a way in. The directions themselves are
-    further down this page in a single block, in the repository&rsquo;s own
-    words, and that block is complete and current whether or not a card here
-    describes your case.</p>
-
-    <ul class="routes">
-      <li class="route">
-        <h3>You work in a browser tab or an app.</h3>
-        <p>There is somewhere to attach a file and no terminal to type into.
-        Both halves ship as packaged bundles for exactly this, so the install is
-        two downloads and an upload. The ledger below calls this path supported,
-        and means it: a phone photographing the finished pages is the return
-        trip this was built around.</p>
-        <a class="route__jump" href="#directions">The directions &darr;</a>
-      </li>
-
-      <li class="route">
-        <h3>You live in a terminal or your editor.</h3>
-        <p>You have a shell, and Node with it. One installer knows this
-        repository, finds both skills inside it, and knows where they go for
-        your particular setup, including setups nobody here has tested. If you
-        would rather look before you install, it will list what it is about to
-        give you.</p>
-        <a class="route__jump" href="#directions">The directions &darr;</a>
-      </li>
-
-      <li class="route">
-        <h3>A terminal, but no Node.</h3>
-        <p>Then you are not missing anything. The bundles are not a special
-        format, whatever unpacks an archive on your machine is enough, and the
-        destination is a folder your agent already reads.</p>
-        <a class="route__jump" href="#directions">The directions &darr;</a>
-      </li>
-
-      <li class="route">
-        <h3>Nothing to install here.</h3>
-        <p>Nothing installs, because nothing reads a skills folder. The forward
-        half travels as text you paste, and what comes back is a card you copy
-        into a notebook by hand. Never a PDF, and nothing checked, because
-        nothing is rendered. Better to know that now than halfway through.</p>
-        <a class="route__jump" href="{{ base }}no-printer/">The no-printer path &rarr;</a>
-      </li>
-    </ul>
-
-    <div class="prose measure">
-      <p>Python comes into it twice, and which of those two lands on you
-      depends on where Python runs for you rather than on which card you just
-      read. One library draws the page. The other reads the finished PDF back
-      and checks that no line of type has wandered off the paper or landed on
-      top of another line, which is a check the project does not let a sheet
-      skip. You are going to sit with that page for a while, and a collided
-      label is exactly the kind of small wrongness that makes a person put the
-      pen down.</p>
-      <p>On a chat surface neither is your problem. The Python runs on that end,
-      not yours. Everywhere else, the directions below name the
-      two packages and where to point pip, and the ledger after that tells you,
-      setup by setup, whether they apply to you.</p>
+    <h2 class="question" id="terminal-heading">In a terminal or IDE</h2>
+    <div class="prose">
+      <p>One command installs both, for Claude Code, Cursor, Codex, Copilot and
+      many other agents.</p>
+<pre class="code"><code>{{ repo_install_npx_cmd }}</code></pre>
+      <p>No Node? Clone the repo and unzip the bundles.</p>
+<pre class="code"><code>{{ repo_install_clone_cmd }}</code></pre>
+      <p>Either way, add two Python packages: one draws the page, one checks
+      its layout. Change the path if the skill landed somewhere else, such as
+      inside your project.</p>
+<pre class="code"><code>{{ repo_install_pip_cmd }}</code></pre>
+      <p class="aside"><a href="{{ repo_readme_install_url }}">Every flag and path is in the README.</a></p>
     </div>
   </div>
 </section>
 
-<section class="band air-2" id="directions" aria-labelledby="directions-heading">
+<section class="band air-2" id="where-it-stands" aria-labelledby="ledger-heading">
   <div class="wrap">
-    <p class="label">The directions</p>
-    <h2 class="question" id="directions-heading">These are the repository&rsquo;s words, not ours.</h2>
-    <p class="aside measure">Mono means one thing on this site: you are reading
-    something quoted straight out of the project. The block below is the
-    repository&rsquo;s own install section, read out of the file when this page
-    was generated. There is exactly one copy of these commands in the project
-    and this page is not it, which is why the directions cannot quietly go stale
-    while the repository keeps moving.</p>
-
+    <h2 class="question" id="ledger-heading">Where each setup stands</h2>
     <div class="machine measure">
-      <span class="caption">Verbatim &middot; README &sect;Install</span>
-      {{ repo_install_html }}
+      <span class="caption">Verbatim &middot; README ledger</span>
+      {{ repo_ledger_verdicts_html }}
+    </div>
+    <p class="aside after-note"><a href="{{ repo_ledger_anchor_url }}">The full table, on GitHub</a></p>
+  </div>
+</section>
+
+<section class="band air-2" id="no-printer" aria-labelledby="no-printer-heading">
+  <div class="wrap">
+    <h2 class="question" id="no-printer-heading">Without installing, or without a printer</h2>
+    <div class="prose">
+      <p>You can skip the install. Copy the instructions into your AI chat
+      instead.</p>
+    </div>
+    <div class="copy-cta">
+      <a class="btn btn--primary copy-cta__btn" href="{{ copy_instructions_url }}" data-copy-ai>Copy instructions for your AI</a>
+      <p class="copy-cta__status" data-copy-ai-status role="status" aria-live="polite" data-done="Copied. Paste it into your AI chat and say what you are working on."></p>
+    </div>
+    <div class="prose after-lead">
+      <p>Can&rsquo;t print, or can&rsquo;t read a printed page? Say so, and ask
+      for <a href="{{ repo_dictation_doc_url }}">a card</a> to copy into a
+      notebook, type, or give to a scribe.</p>
     </div>
   </div>
 </section>
 
-<section class="band air-3" aria-labelledby="ledger-heading">
+<section class="band air-3" id="scan-back" aria-labelledby="scan-back-heading">
   <div class="wrap">
-    <p class="label">Where it actually stands</p>
-    {% if repo_ledger_heading %}
-    <h2 class="question" id="ledger-heading">{{ repo_ledger_heading }}</h2>
-    {% else %}
-    <h2 class="question" id="ledger-heading">Agent by agent, what has actually been run.</h2>
-    {% endif %}
-
-    <div class="prose measure">
-      <p>A table like this is usually a grid of ticks. This one has rows saying
-      the loop is untested, set in the same type and boxed the same way as the
-      rows that worked, because the alternative is that you find out on your own
-      afternoon with your own printer. Every verdict reports what someone has
-      actually done on that agent, never what ought to work. Where nobody has
-      carried a page all the way round yet, the row says so in those words.</p>
-      <p>An untested row is a finding rather than an apology. It marks a place
-      where one person running one real session would tell us something nobody
-      currently knows, and it takes exactly that to close: one person, one
-      report.</p>
+    <h2 class="question" id="scan-back-heading">Coming back in a fresh chat</h2>
+    <div class="prose">
+      <p>Skip this if scan-back is installed. Otherwise paste this file first,
+      then send your photos. It works from your pages alone and asks one
+      question to pick up the thread.</p>
     </div>
-
-    <p class="verdict-key">
-      <span class="verdict">Verdict</span>
-      <span>Each row&rsquo;s status is boxed like this, in the ledger&rsquo;s own
-      words. The box is the whole encoding. Nothing here is colour-coded and
-      nothing is amber, because a traffic light would turn an honest finding into
-      a warning, and colour alone carries no meaning anywhere on this site.</span>
+    <p class="btn-row after-note">
+      <button type="button" class="btn" data-copy-file-button hidden>Copy the whole file</button>
+      <a class="btn" href="{{ repo_scanback_raw_url }}">Raw file on GitHub</a>
     </p>
-
-    <div class="ledger-table">
-      {{ repo_ledger_table_html }}
-    </div>
-
-    {% if repo_install_note_html %}
-    <div class="machine measure">
-      <span class="caption">Verbatim &middot; README &sect;Install</span>
-      {{ repo_install_note_html }}
-    </div>
-    {% endif %}
-
-    <div class="prose measure">
-      <p>The ledger covers what has been run. What the method itself can and
-      cannot claim, including the parts of the evidence that argue against this
-      design, is <a href="{{ evidence_url }}">on the limits page</a>.</p>
+    <p class="status" data-copy-file-status role="status" aria-live="polite"></p>
+    <div class="machine machine--wide after-note">
+      <span class="caption">Verbatim &middot; scan-back/SKILL.md</span>
+      <details class="disclosure" data-copy-file-source open>
+        <summary>The whole file &middot; {{ repo_scanback_words_approx }} words</summary>
+        <pre class="code filebox" data-copy-file tabindex="0">{{ repo_scanback_raw }}</pre>
+      </details>
     </div>
   </div>
 </section>
 
-<section class="band air-4" aria-labelledby="next-heading">
+<section class="band air-4" aria-label="Open territory">
   <div class="wrap">
-    <p class="label">Once it is in</p>
-    <h2 class="question" id="next-heading">You will mostly forget it is there, until the work turns into a judgment and a page is what you reach for.</h2>
-
-    <div class="prose measure">
-      <p>If you would rather start it yourself the first time rather than wait
-      to be offered, there are
-      <a href="{{ base }}first-session/">twelve sentences you can copy</a>, one
-      per situation, each saying what it prints and where it is the wrong
-      choice.</p>
-      <p>And you do not have to install a thing to find out whether you want it.
-      A specimen the skill generated, and put through its own layout verifier,
-      prints from your browser right now, with no account and nothing to agree
-      to.</p>
-    </div>
-
-    {% include "_print-note.html" %}
-
-    <p class="btn-row">
-      <a class="btn btn--primary" href="{{ base }}first-session/">Your first session</a>
-      <a class="btn" href="{{ base }}scan-back/">I already have paper</a>
-    </p>
-
     <div class="open-territory">
       <p class="label label--strong">Open territory</p>
       <div class="open-territory__rule" role="presentation"></div>

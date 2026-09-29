@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% if is_home %}Paper Session{% else %}{{ title|e }} — Paper Session{% endif %}</title>
+<title>{% if is_home %}Paper Session{% else %}{{ title|e }} · Paper Session{% endif %}</title>
 <meta name="description" content="{{ description|e }}">
 <meta name="color-scheme" content="light dark">
+<link rel="canonical" href="{{ page_url }}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="{% if is_home %}Paper Session{% else %}{{ title|e }} — Paper Session{% endif %}">
+<meta property="og:site_name" content="Paper Session">
+<meta property="og:title" content="{% if is_home %}Paper Session{% else %}{{ title|e }} · Paper Session{% endif %}">
 <meta property="og:description" content="{{ description|e }}">
-<link rel="icon" href="{{ base }}favicon.svg" type="image/svg+xml">
+<meta property="og:url" content="{{ page_url }}">
+{% if og_image_url %}<meta property="og:image" content="{{ og_image_url }}">
+{% endif %}<link rel="icon" href="{{ base }}favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;600;700&amp;family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&amp;display=swap">
@@ -33,10 +37,10 @@
   <div class="wrap">
     <div class="masthead__bar">
       <a class="wordmark" href="{{ home_url }}">Paper Session</a>
-      {% if is_home %}{% else %}<nav class="nav" aria-label="Sections">
+      <nav class="nav" aria-label="Sections">
         {{ nav }}
-      </nav>{% endif %}
-      {% if copy_instructions_present %}<button type="button" class="copy-ai" data-copy-ai hidden>Copy instructions for your AI</button>{% endif %}
+      </nav>
+      {% if is_home %}{% else %}<button type="button" class="copy-ai" data-copy-ai data-href="{{ copy_instructions_url }}" hidden>Copy instructions for your AI</button>{% endif %}
     </div>
   </div>
   <div class="wrap"><div class="datum" role="presentation"></div></div>
@@ -51,7 +55,6 @@
     <div class="footer__rule" role="presentation"></div>
     <div class="footer__grid">
       <p class="footer__meta">
-        {% if repo_footer_line %}<span class="page-foot">{{ repo_footer_line }}</span><br>{% endif %}
         <a href="{{ repo_url }}">Source on GitHub</a> ·
         <a href="{{ repo_url }}/blob/main/LICENSE">MIT</a> ·
         Typefaces IBM Plex, SIL&nbsp;OFL&nbsp;1.1
@@ -62,6 +65,6 @@
 </footer>
 
 <script src="{{ base }}site.js" defer></script>
-{% if copy_instructions_present %}<script type="text/plain" id="copy-instructions-text">{{ copy_instructions }}</script>{% endif %}
+<script type="text/plain" id="copy-instructions-text">{{ copy_instructions }}</script>
 </body>
 </html>

@@ -7,13 +7,14 @@ the website is not allowed to add a third.
 
 The rule this script exists to enforce
 --------------------------------------
-Nothing on the site is hand-copied from the repo. Install directions, the
-compatibility ledger, the whole text of scan-back/SKILL.md, the evidence
-limitations and the three numbers are READ FROM THE SOURCE FILE at build time
-and converted to HTML here. CLAUDE.md binds install directions to README
-§Install and nowhere else; this file is what makes that mechanical instead of a
-promise. If you are about to type repo prose into a template, add an extractor
-here instead.
+Nothing on the site is hand-copied from the repo. The install commands, the
+bundle links, the ledger's verdicts and the whole text of scan-back/SKILL.md
+(behind its copy button) are READ FROM THE SOURCE FILE at build time and
+converted to HTML here. CLAUDE.md binds install directions to README §Install
+and nowhere else; this file is what makes that mechanical instead of a
+promise. If you are about to type a repo command into a template, add an
+extractor here instead. Whole repo documents are linked on GitHub, not
+embedded.
 
 Usage
 -----
@@ -29,7 +30,6 @@ from __future__ import annotations
 
 import argparse
 import html
-import json
 import re
 import shutil
 import subprocess
@@ -56,23 +56,42 @@ REPO_URL = "https://github.com/welovejeff/paper-session"
 BLOB_URL = REPO_URL + "/blob/main/"
 RAW_URL = "https://raw.githubusercontent.com/welovejeff/paper-session/main/"
 
-# The page that carries the limitations, and the anchors #number-1..3 the three
-# front-page figures link into. Named once, because build.py generates those
-# links and a template must never guess at the slug.
-EVIDENCE_SLUG = "evidence"
+# Where the site is served. Only absolute URLs use it (canonical links, og:url,
+# og:image, the redirect pages' canonical); every link a visitor follows stays
+# relative through {{ base }}, so a preview served under a subpath still works.
+SITE_URL = "https://paper-session.com/"
 
-# Repo files copied into dist/ as real downloads, source -> dist-relative path.
-ASSET_FILES = {
-    "docs/specimen.pdf": "specimen.pdf",
+# The page that carries the honest limits. Named once, because build.py
+# generates links into it and a template must never guess at the slug.
+RESEARCH_SLUG = "research"
+
+# Retired slugs, and where each one now lands (relative to the site root; a
+# fragment is allowed, "" is the front page). Every old link keeps working: the
+# build writes dist/<old>/index.html as a meta-refresh page, the strict link
+# checker follows its <a>, and a fragment target must exist as an id on the
+# page it names. A retired slug may never come back as a live page; the build
+# refuses that rather than letting a redirect shadow a real page.
+REDIRECTS = {
+    "get-a-sheet": "",
+    "first-session": "how-it-works/",
+    "scan-back": "install/#scan-back",
+    "no-printer": "install/#no-printer",
+    "evidence": RESEARCH_SLUG + "/",
 }
+
+# Repo files copied into dist/, source -> dist-relative path. None today: the
+# specimen PDF is not published, because the site offers no generic printable
+# sheet (see site/README.md, "Retired pages redirect").
+ASSET_FILES: dict[str, str] = {}
+# The one specimen render a page shows: How it works, "As printed". Copy only
+# what a page uses; an unlinked sheet render at a site URL is a generic sheet
+# by another name.
 ASSET_GLOBS = {
-    "docs/sheet-*.png": "sheets/",
+    "docs/sheet-deep-react.png": "sheets/",
 }
 # Repo paths that must resolve to a site asset rather than to GitHub when they
 # appear as a link or image in extracted markdown.
-ASSET_LINK_MAP = {
-    "docs/specimen.pdf": "specimen.pdf",
-}
+ASSET_LINK_MAP: dict[str, str] = {}
 
 # Hero photograph: the maintainer drops one of these into site/static/.
 HERO_CANDIDATES = ("hero.jpg", "hero.jpeg", "hero.png", "hero.webp")
@@ -84,9 +103,12 @@ FILM_FILE = "film.mp4"
 FILM_POSTER_CANDIDATES = ("film-poster.jpg", "film-poster.jpeg", "film-poster.png", "film-poster.webp")
 FILM_CAPTIONS_FILE = "film-captions.vtt"
 
-# The worked example on the return-trip page: a photograph of a real completed
-# page. Its partner is docs/worked-example.md, the unedited reply that
-# photograph produced. Both are pending assets; see site/README.md.
+# The text the primary call to action copies, and the file it opens with
+# JavaScript off. The visitor pastes it into the AI chat they already use.
+COPY_INSTRUCTIONS_FILE = "copy-instructions.txt"
+
+# The worked example on How it works ("As photographed"): a photograph of a
+# real completed page, shown beside the specimen render of the same sheet.
 EXAMPLE_CANDIDATES = (
     "return-example.jpg",
     "return-example.jpeg",
@@ -97,42 +119,37 @@ EXAMPLE_CANDIDATES = (
 # Pages the site plans to have. A page exists as soon as a template with the
 # matching slug lands in site/templates/; until then build.py emits a marked
 # stub so no link on the site dangles. Page authors: drop in your template and
-# your stub disappears. Nav order is the ascending-commitment order of the
-# landing page's onramps.
+# your stub disappears. The site is four pages: the front page (no nav entry;
+# the wordmark is its link) and these three, in this nav order.
 PLANNED_PAGES = [
     {
-        "slug": "no-printer",
-        "title": "No printer",
-        "nav_label": "No printer",
-        "nav_order": "20",
-        "description": "The dictated path: a card you copy into whatever "
-        "notebook you already own.",
-    },
-    {
-        "slug": "scan-back",
-        "title": "Scan back",
-        "nav_label": "Scan back",
-        "nav_order": "30",
-        "description": "The return half of the loop, printed here in full so "
-        "you can paste it into the AI you already have.",
+        "slug": "how-it-works",
+        "title": "How it works",
+        "nav_label": "How it works",
+        "nav_order": "10",
+        "description": "One session from start to finish: a page is printed, "
+        "you think on paper, and the work picks up from your handwriting.",
     },
     {
         "slug": "install",
         "title": "Install",
         "nav_label": "Install",
-        "nav_order": "40",
-        "description": "Both skills, both tracks, and an honest account of "
-        "where the loop stands agent by agent.",
+        "nav_order": "20",
+        "description": "Both halves of the loop in the AI you already use, "
+        "so it can print a page and read your handwriting back.",
     },
     {
-        "slug": "evidence",
-        "title": "Evidence",
-        "nav_label": "Evidence",
-        "nav_order": "50",
-        "description": "What the research says, where it stops, and what it "
-        "does not support.",
+        "slug": RESEARCH_SLUG,
+        "title": "Research",
+        "nav_label": "Research",
+        "nav_order": "30",
+        "description": "What has been tested, what has not, and what we do "
+        "not know yet.",
     },
 ]
+
+# The masthead's last item, after the planned pages: the repository itself.
+NAV_EXTERNAL = [("GitHub", REPO_URL)]
 
 
 class BuildError(Exception):
@@ -171,14 +188,13 @@ def read_repo(relpath: str, required: bool = True) -> str | None:
 
 
 # --------------------------------------------------------------------------
-# Markdown -> HTML (the subset the repo actually uses)
+# Inline markdown -> HTML
 # --------------------------------------------------------------------------
 #
-# Supported: ATX headings, fenced code, GFM pipe tables, unordered and ordered
-# lists (one level of nesting), blockquotes, thematic breaks, paragraphs, and
-# inline bold / italic / strikethrough / code / links / images.
-# Not supported (and not used by the files we read): setext headings, HTML
-# blocks, reference links, footnotes, task lists, definition lists.
+# Pages link to whole repo documents instead of embedding them, so there is no
+# block-level converter: repo text reaches a page as an escaped string or, for
+# a line of links, through inline_md (bold / italic / strikethrough / code /
+# links / images).
 
 BASE_TOKEN = "%%BASE%%"  # replaced per page with that page's relative prefix
 
@@ -197,12 +213,6 @@ def is_truthy(value: object) -> bool:
 
 def esc(text: str) -> str:
     return html.escape(text, quote=True)
-
-
-def slugify(text: str) -> str:
-    text = re.sub(r"[`*_~]", "", text).strip().lower()
-    text = re.sub(r"[^a-z0-9]+", "-", text)
-    return text.strip("-") or "section"
 
 
 def resolve_link(url: str) -> str:
@@ -282,186 +292,6 @@ def _split_row(line: str) -> list[str]:
     return [cell.strip() for cell in line.split("|")]
 
 
-def md_to_html(md: str, heading_offset: int = 0) -> str:
-    """Convert a markdown block to HTML.
-
-    heading_offset shifts every heading level down, so a README `##` embedded
-    under a page's own `<h1>` renders as `<h3>` and the outline stays sane.
-    """
-    lines = md.replace("\r\n", "\n").split("\n")
-    out: list[str] = []
-    i = 0
-    n = len(lines)
-
-    def flush_paragraph(buf: list[str]) -> None:
-        if buf:
-            out.append(f'<p>{inline_md(" ".join(buf).strip())}</p>')
-            buf.clear()
-
-    para: list[str] = []
-
-    while i < n:
-        line = lines[i]
-        stripped = line.strip()
-
-        # fenced code
-        fence = re.match(r"^\s*(`{3,}|~{3,})\s*([\w+-]*)\s*$", line)
-        if fence:
-            flush_paragraph(para)
-            marker, lang = fence.group(1)[0] * 3, fence.group(2)
-            body: list[str] = []
-            i += 1
-            while i < n and not re.match(rf"^\s*{marker}+\s*$", lines[i]):
-                body.append(lines[i])
-                i += 1
-            i += 1
-            code = esc("\n".join(body))
-            cls = f' class="lang-{esc(lang)}"' if lang else ""
-            if lang == "mermaid":
-                # A flowchart in a fence is a diagram, not code the reader runs.
-                out.append(
-                    '<pre class="code code--diagram" aria-hidden="true">'
-                    f"<code>{code}</code></pre>"
-                )
-            else:
-                out.append(f'<pre class="code"><code{cls}>{code}</code></pre>')
-            continue
-
-        # blank
-        if not stripped:
-            flush_paragraph(para)
-            i += 1
-            continue
-
-        # heading
-        heading = re.match(r"^(#{1,6})\s+(.*?)\s*#*$", line)
-        if heading:
-            flush_paragraph(para)
-            level = min(6, len(heading.group(1)) + heading_offset)
-            text = heading.group(2)
-            out.append(
-                f'<h{level} id="{slugify(text)}">{inline_md(text)}</h{level}>'
-            )
-            i += 1
-            continue
-
-        # thematic break
-        if re.match(r"^\s*(\*\s*){3,}$|^\s*(-\s*){3,}$|^\s*(_\s*){3,}$", line):
-            flush_paragraph(para)
-            out.append('<hr class="rule-close">')
-            i += 1
-            continue
-
-        # table
-        if "|" in stripped and i + 1 < n and _TABLE_DELIM.match(lines[i + 1]):
-            flush_paragraph(para)
-            headers = _split_row(stripped)
-            i += 2
-            rows: list[list[str]] = []
-            while i < n and "|" in lines[i] and lines[i].strip():
-                rows.append(_split_row(lines[i]))
-                i += 1
-            head = "".join(f"<th scope=\"col\">{inline_md(c)}</th>" for c in headers)
-            body_html = []
-            for row in rows:
-                cells = "".join(f"<td>{inline_md(c)}</td>" for c in row)
-                body_html.append(f"<tr>{cells}</tr>")
-            out.append(
-                '<div class="scroller"><table><thead><tr>'
-                + head
-                + "</tr></thead><tbody>"
-                + "".join(body_html)
-                + "</tbody></table></div>"
-            )
-            continue
-
-        # blockquote
-        if stripped.startswith(">"):
-            flush_paragraph(para)
-            quote: list[str] = []
-            while i < n and lines[i].strip().startswith(">"):
-                quote.append(re.sub(r"^\s*>\s?", "", lines[i]))
-                i += 1
-            out.append(f"<blockquote>{md_to_html(chr(10).join(quote), heading_offset)}</blockquote>")
-            continue
-
-        # list
-        item = re.match(r"^(\s*)([-*+]|\d+[.)])\s+(.*)$", line)
-        if item:
-            flush_paragraph(para)
-            block, i = _consume_list(lines, i)
-            out.append(block)
-            continue
-
-        para.append(stripped)
-        i += 1
-
-    flush_paragraph(para)
-    return "\n".join(out)
-
-
-def _consume_list(lines: list[str], start: int) -> tuple[str, int]:
-    """Parse a list (with one level of nesting) starting at `start`."""
-    first = re.match(r"^(\s*)([-*+]|\d+[.)])\s+(.*)$", lines[start])
-    assert first is not None
-    base_indent = len(first.group(1))
-    ordered = bool(re.match(r"\d", first.group(2)))
-    tag = "ol" if ordered else "ul"
-
-    items: list[str] = []
-    current: list[str] = []
-    nested: list[str] = []
-    i = start
-    n = len(lines)
-
-    def close_item() -> None:
-        if current or nested:
-            body = inline_md(" ".join(current).strip())
-            if nested:
-                sub, _ = _consume_list(nested, 0)
-                body += sub
-            items.append(f"<li>{body}</li>")
-            current.clear()
-            nested.clear()
-
-    while i < n:
-        line = lines[i]
-        if not line.strip():
-            # a blank line ends the list unless the next line continues it
-            if i + 1 < n and re.match(r"^(\s*)([-*+]|\d+[.)])\s+", lines[i + 1]):
-                nxt = re.match(r"^(\s*)", lines[i + 1])
-                assert nxt is not None
-                if len(nxt.group(1)) >= base_indent:
-                    i += 1
-                    continue
-            break
-        match = re.match(r"^(\s*)([-*+]|\d+[.)])\s+(.*)$", line)
-        if match:
-            indent = len(match.group(1))
-            if indent > base_indent:
-                nested.append(line[base_indent + 2 :])
-                i += 1
-                continue
-            if indent < base_indent:
-                break
-            close_item()
-            current.append(match.group(3))
-            i += 1
-            continue
-        indent = len(line) - len(line.lstrip())
-        if indent > base_indent and (current or nested):
-            if nested:
-                nested.append(line[base_indent + 2 :])
-            else:
-                current.append(line.strip())
-            i += 1
-            continue
-        break
-
-    close_item()
-    return f"<{tag}>" + "".join(items) + f"</{tag}>", i
-
-
 # --------------------------------------------------------------------------
 # Section extraction
 # --------------------------------------------------------------------------
@@ -522,40 +352,6 @@ def extract_section(md: str, wanted: str, source: str, required: bool = True) ->
     return "\n".join(lines[start + 1 : end]).strip("\n")
 
 
-def extract_paragraph(
-    md: str, lead: str, source: str, required: bool = False
-) -> str | None:
-    """Return the one paragraph whose opening words are `lead`.
-
-    Several load-bearing sentences in the repo are bold-led paragraphs inside a
-    larger section rather than sections of their own ("The return half travels
-    further than the forward half", "Notice what is not there"). A page that
-    wants to quote one of them must be able to reach it without a template
-    reconstructing it. Matching ignores markdown emphasis and case, so bolding
-    or unbolding the lead does not break the build.
-    """
-    target = normalize_heading(lead)
-    block: list[str] = []
-    for line in md.replace("\r\n", "\n").split("\n") + [""]:
-        if line.strip():
-            block.append(line)
-            continue
-        if block:
-            opening = normalize_heading(re.sub(r"^[>\-*+\d.)\s]+", "", block[0]))
-            if opening.startswith(target):
-                return "\n".join(block)
-            block = []
-    if required:
-        raise BuildError(
-            f"could not find the paragraph beginning “{lead}” in {source}.\n"
-            f"  The site quotes it from the source file rather than restating "
-            f"it. Either the sentence was reworded (update the extractor in "
-            f"site/build.py) or the file is mid-edit."
-        )
-    warn(f"paragraph “{lead}” not found in {source}; skipping")
-    return None
-
-
 def find_first_table(md: str) -> tuple[int, int] | None:
     """Return (start, end) line indices of the first GFM table in `md`."""
     lines = md.split("\n")
@@ -604,6 +400,76 @@ def plain_text(md: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def fenced_blocks(md: str) -> list[str]:
+    """The body of every fenced code block in `md`, in order, fences removed."""
+    blocks: list[str] = []
+    lines = md.replace("\r\n", "\n").split("\n")
+    i = 0
+    while i < len(lines):
+        fence = re.match(r"^\s*(`{3,}|~{3,})\s*([\w+-]*)\s*$", lines[i])
+        if not fence:
+            i += 1
+            continue
+        marker = re.escape(fence.group(1)[0])
+        body: list[str] = []
+        i += 1
+        while i < len(lines) and not re.match(rf"^\s*{marker}{{3,}}\s*$", lines[i]):
+            body.append(lines[i])
+            i += 1
+        blocks.append("\n".join(body).strip("\n"))
+        i += 1
+    return blocks
+
+
+def install_command(blocks: list[str], needle: str, key: str) -> str:
+    """The escaped text of the first README §Install fenced block holding `needle`."""
+    for block in blocks:
+        if needle in block:
+            return esc(block)
+    raise BuildError(
+        f"README §Install has no fenced code block containing “{needle}”, so "
+        f"{key} has nothing to show and the site will not type the command itself."
+    )
+
+
+def github_anchor(heading: str) -> str:
+    """The id GitHub gives a markdown heading: lowercased, punctuation dropped,
+    spaces to hyphens. Emphasis and code markers go first; underscores stay,
+    because GitHub keeps them."""
+    text = re.sub(r"`([^`]*)`", r"\1", heading)
+    text = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", text)
+    text = re.sub(r"[*~]+", "", text).strip().lower()
+    text = re.sub(r"[^\w\- ]", "", text)
+    return text.replace(" ", "-")
+
+
+def repo_doc_url(relpath: str, key: str, heading: str | None = None) -> str:
+    """A GitHub link to a repo document, and to one of its headings if named.
+
+    Pages link to whole documents rather than embedding them. The link is built
+    here, not typed into a template, so a moved file or a renamed heading stops
+    the build instead of shipping a link into a 404 or a dead anchor. The
+    anchor is computed from the heading as it is actually written, so an
+    appended parenthetical follows through on its own.
+    """
+    text = read_repo(relpath, required=False) if (ROOT / relpath).exists() else None
+    if text is None:
+        raise BuildError(
+            f"{relpath} is missing, so {key} would link to a page GitHub cannot show."
+        )
+    if heading is None:
+        return BLOB_URL + relpath
+    target = normalize_heading(heading)
+    for _, _, found in iter_headings(text):
+        norm = normalize_heading(found)
+        if norm == target or norm.startswith(target):
+            return BLOB_URL + relpath + "#" + github_anchor(found)
+    raise BuildError(
+        f"{relpath} has no heading starting “{heading}”, so {key} would link "
+        f"to an anchor that does not exist."
+    )
+
+
 # --------------------------------------------------------------------------
 # Repo content -> template context
 # --------------------------------------------------------------------------
@@ -613,710 +479,192 @@ def build_repo_context() -> dict[str, str]:
     """Every piece of repo content the site is allowed to show.
 
     Add an entry here when a page needs repo content. Do not type repo prose
-    into a template.
+    into a template, and do not embed a whole document: link it with
+    repo_doc_url() instead.
     """
     ctx: dict[str, str] = {}
 
     readme = read_repo("README.md")
     assert readme is not None
 
-    # --- §Install, split into intro / ledger / closing note ----------------
+    # --- README §Install: commands, bundles, ledger verdicts ----------------
     install = extract_section(readme, "Install", "README.md", required=True)
     assert install is not None
     span = find_first_table(install)
     if span is None:
         raise BuildError(
             "README §Install has no compatibility table.\n"
-            "  The landing page renders the ledger from it and the install "
-            "page prints it in full; neither may invent one."
+            "  The Install page shows each row's verdict from it and links the "
+            "full table; it may not invent one."
         )
+    # The ledger's own subheading, directly above the table: the anchor the
+    # Install page links to for the full table on GitHub.
     ilines = install.split("\n")
-    tstart, tend = span
-    # The ledger's own subheading, if it has one, belongs with the ledger.
-    hstart = tstart
-    for k in range(tstart - 1, -1, -1):
+    ledger_heading = ""
+    for k in range(span[0] - 1, -1, -1):
         if re.match(r"^#{2,6}\s+", ilines[k]):
-            hstart = k
+            ledger_heading = re.sub(r"^#{2,6}\s+", "", ilines[k]).strip()
             break
         if ilines[k].strip():
             break
-    ledger_heading = ""
-    if re.match(r"^#{2,6}\s+", ilines[hstart]):
-        ledger_heading = re.sub(r"^#{2,6}\s+", "", ilines[hstart]).strip()
-
-    intro_md = "\n".join(ilines[:hstart]).strip("\n")
-    ledger_md = "\n".join(ilines[tstart:tend]).strip("\n")
-    note_md = "\n".join(ilines[tend:]).strip("\n")
-
-    ctx["repo_install_html"] = md_to_html(intro_md, heading_offset=1)
-    ctx["repo_install_note_html"] = md_to_html(note_md, heading_offset=1)
-    ctx["repo_ledger_heading"] = esc(plain_text(ledger_heading))
-    ctx["repo_ledger_table_html"] = md_to_html(ledger_md)
-
-    headers, rows = parse_table(ledger_md)
-    ledger_rows = []
-    previous_loop = ""
-    previous_extra: list[dict[str, str]] = []
-    for row in rows:
-        cells = (row + ["", "", ""])[:3]
-        agent_md, install_md, loop_md = cells
-        loop_text = plain_text(loop_md)
-        inherits = loop_text.lower().startswith("same as above")
-        if inherits and previous_loop:
-            source_md = previous_loop
-        else:
-            source_md = loop_md
-            previous_loop = loop_md
-        loop_html = md_to_html(source_md).strip()
-        loop_text = plain_text(source_md)
-        status_match = re.search(r"\*\*(.+?)\*\*", source_md)
-        # Every column past the third. The ledger has grown a column once
-        # already ("Also install", the per-agent dependency answer); truncating
-        # to three silently dropped it from the chip answer on the landing
-        # page, which then told people how to install without saying what else
-        # they had to install. Nothing is dropped now.
-        extra: list[dict[str, str]] = []
-        for index in range(3, max(len(row), len(headers))):
-            cell_md = row[index] if index < len(row) else ""
-            header_md = headers[index] if index < len(headers) else ""
-            cell_text = plain_text(cell_md)
-            if cell_text.lower().startswith("same as above") and previous_extra:
-                inherited = next(
-                    (
-                        e
-                        for e in previous_extra
-                        if e["header"] == plain_text(header_md)
-                    ),
-                    None,
-                )
-                if inherited:
-                    extra.append(dict(inherited))
-                    continue
-            extra.append(
-                {
-                    "header": plain_text(header_md),
-                    "value": cell_text,
-                    "value_html": inline_md(cell_md),
-                }
-            )
-        if not inherits or not previous_extra:
-            previous_extra = extra
-        ledger_rows.append(
-            {
-                "agent": plain_text(agent_md),
-                "agent_html": inline_md(agent_md),
-                "install": plain_text(install_md),
-                "install_html": inline_md(install_md),
-                "loop": loop_text,
-                "loop_html": loop_html,
-                "status": plain_text(status_match.group(1)) if status_match else "",
-                "chips": ledger_chips(agent_md),
-                "extra": extra,
-            }
-        )
-    if not ledger_rows:
+    headers, rows = parse_table(install)
+    if not rows:
         raise BuildError("README §Install ledger parsed to zero rows.")
-    # Counted, never asserted in prose: "exactly one row is verified" is the
-    # kind of sentence that goes quietly false the day a second row lands.
-    ctx["repo_ledger_verified_count"] = str(
-        sum(
-            1
-            for row in ledger_rows
-            if row["status"].lower().startswith("verified end to end")
-        )
-    )
-    ctx["repo_ledger_row_count"] = str(len(ledger_rows))
+    ctx.update(render_install_keys(install, ledger_heading, headers, rows))
 
-    ctx["repo_ledger_json"] = json.dumps(
-        {"headers": [plain_text(h) for h in headers], "rows": ledger_rows},
-        indent=None,
-        sort_keys=True,
-    ).replace("</", "<\\/")
-    ctx["repo_ledger_chips_html"] = render_chips(ledger_rows)
-
-    # The sentence the return-trip page is built around, currently reachable
-    # only inside the whole §Install blob.
-    return_half = extract_paragraph(
-        install, "The return half travels further than the forward half", "README.md"
-    )
-    ctx["repo_return_half_html"] = md_to_html(return_half) if return_half else ""
-
-    # The paste channel's load-bearing sentence, and the honesty that follows
-    # it. The no-printer page quotes both rather than paraphrasing them.
-    paste = extract_paragraph(
-        install, "If your AI can't install skills at all", "README.md"
-    )
-    ctx["repo_paste_route_html"] = md_to_html(paste) if paste else ""
-    # The load-bearing sentence itself, and the honesty that follows it. The
-    # sentence is offered as a copy button, so it is also needed as plain text.
-    quote = re.search(r"^\s*>\s*(.+)$", install, re.M)
-    ctx["repo_paste_sentence"] = esc(plain_text(quote.group(1))) if quote else ""
-    ctx["repo_paste_sentence_html"] = (
-        md_to_html("> " + quote.group(1)) if quote else ""
-    )
-    honesty = extract_paragraph(
-        install, "The sentence is load-bearing", "README.md"
-    )
-    ctx["repo_paste_honesty_html"] = md_to_html(honesty) if honesty else ""
-
-    # The path for someone who cannot read the printed page. It lives below the
-    # ledger because no ledger row states it, and the no-printer page is where
-    # it has to be visible rather than discovered.
-    accessible = extract_paragraph(
-        install, "Reading the printed page is a requirement", "README.md"
-    )
-    ctx["repo_accessible_path_html"] = md_to_html(accessible) if accessible else ""
-
-    # --- specimen sheets ----------------------------------------------------
-    ctx["repo_sheets_html"] = render_sheets(readme)
-    ctx.update(render_specimen(read_repo("docs/specimen.py", required=False)))
-
-    # --- the worked example: a real reply to a real photograph --------------
-    # Expected to be absent until the maintainer shoots one, so its absence is
-    # a pending asset rather than a warning; the page carries a visible
-    # placeholder naming this exact path.
-    example_reply = (
-        read_repo("docs/worked-example.md", required=False)
-        if (ROOT / "docs/worked-example.md").exists()
-        else None
-    )
-    if example_reply:
-        _, example_body = strip_front_matter(example_reply)
-        ctx["repo_example_reply_html"] = md_to_html(example_body, heading_offset=2)
-    else:
-        ctx["repo_example_reply_html"] = ""
-
-    # --- §What comes out of the printer, and §Anatomy of a sheet ------------
-    printer = extract_section(
-        readme, "What comes out of the printer", "README.md", required=False
-    )
-    absences = (
-        extract_paragraph(printer, "Notice what is", "README.md") if printer else None
-    )
-    ctx["repo_absences_html"] = md_to_html(absences) if absences else ""
-
-    anatomy = extract_section(readme, "Anatomy of a sheet", "README.md", required=False)
-    ctx["repo_anatomy_html"] = md_to_html(anatomy, heading_offset=2) if anatomy else ""
-    if anatomy:
-        floors = extract_paragraph(anatomy, "Hard floors", "README.md")
-        voices = extract_paragraph(anatomy, "Three voices, never blended", "README.md")
-        ctx["repo_hard_floors_html"] = md_to_html(floors) if floors else ""
-        ctx["repo_three_voices_html"] = md_to_html(voices) if voices else ""
-    else:
-        ctx["repo_hard_floors_html"] = ""
-        ctx["repo_three_voices_html"] = ""
-
-    patterns = extract_section(readme, "The pattern library", "README.md", required=False)
-    ctx["repo_patterns_html"] = (
-        md_to_html(patterns, heading_offset=2) if patterns else ""
-    )
-
-    # --- the prompts a person types ----------------------------------------
-    using = extract_section(readme, "Using it", "README.md", required=False)
-    prompts = ""
-    if using:
-        fence = re.search(r"```[\w+-]*\n(.*?)```", using, re.S)
-        if fence:
-            prompts = fence.group(1).strip("\n")
-    if prompts:
-        lines = [esc(line) for line in prompts.split("\n") if line.strip()]
-        ctx["repo_prompts_html"] = (
-            '<ul class="prompts">'
-            + "".join(f"<li>{line}</li>" for line in lines)
-            + "</ul>"
-        )
-    else:
-        warn("no example prompts found in README §Using it")
-        ctx["repo_prompts_html"] = ""
-
-    # --- the pen protocol tables -------------------------------------------
-    pen = extract_section(readme, "The pen protocol", "README.md", required=False)
-    if pen:
-        span = find_first_table(pen)
-        if span:
-            plines = pen.split("\n")
-            ctx["repo_ink_table_html"] = md_to_html("\n".join(plines[span[0] : span[1]]))
-            rest = "\n".join(plines[span[1] :])
-            span2 = find_first_table(rest)
-            rlines = rest.split("\n")
-            ctx["repo_mark_table_html"] = (
-                md_to_html("\n".join(rlines[span2[0] : span2[1]])) if span2 else ""
-            )
-        ctx["repo_pen_protocol_html"] = md_to_html(pen, heading_offset=1)
-    else:
-        ctx["repo_ink_table_html"] = ""
-        ctx["repo_mark_table_html"] = ""
-        ctx["repo_pen_protocol_html"] = ""
-
-    # --- the one rule -------------------------------------------------------
-    one_rule = extract_section(
-        readme, "The one rule everything else serves", "README.md", required=False
-    )
-    if one_rule:
-        quote = re.search(r"^\s*>\s*(.+)$", one_rule, re.M)
-        ctx["repo_one_rule"] = esc(plain_text(quote.group(1))) if quote else ""
-        bullets = "\n".join(
-            line for line in one_rule.split("\n") if line.strip().startswith("- ")
-        )
-        ctx["repo_one_rule_html"] = md_to_html(bullets) if bullets else ""
-    else:
-        ctx["repo_one_rule"] = ""
-        ctx["repo_one_rule_html"] = ""
-
-    # --- scan-back, in full -------------------------------------------------
+    # --- scan-back/SKILL.md, behind the Install page's copy button ----------
+    # The body only, front matter dropped: the part a chat needs pasted.
     scanback = read_repo("scan-back/SKILL.md")
     assert scanback is not None
-    meta, body = strip_front_matter(scanback)
+    _, body = strip_front_matter(scanback)
     if not body.strip():
         raise BuildError("scan-back/SKILL.md is empty after front matter.")
-    ctx["repo_scanback_name"] = esc(meta.get("name", "scan-back"))
-    ctx["repo_scanback_description"] = esc(meta.get("description", ""))
-    ctx["repo_scanback_html"] = md_to_html(body, heading_offset=1)
     ctx["repo_scanback_raw"] = esc(body)
-    ctx["repo_scanback_bytes"] = str(len(scanback.encode("utf-8")))
     words = len(body.split())
-    ctx["repo_scanback_words"] = str(words)
     ctx["repo_scanback_words_approx"] = f"{round(words / 100) * 100:,}"
     ctx["repo_scanback_raw_url"] = RAW_URL + "scan-back/SKILL.md"
-    # The complete file, front matter included. `repo_scanback_raw` is the body
-    # only — the right thing to hand a chat — but a page offering "the whole
-    # file" should not have to reassemble the YAML, which would silently drop a
-    # key the moment someone adds one.
-    ctx["repo_scanback_full_raw"] = esc(scanback)
-    unprinted = extract_paragraph(body, "Unprinted pages", "scan-back/SKILL.md")
-    ctx["repo_scanback_unprinted_html"] = md_to_html(unprinted) if unprinted else ""
 
-    # --- the dictated path: prompt-craft §10 and its notebook translation ---
-    promptcraft = read_repo("paper-session/references/prompt-craft.md", required=False)
-    dictation = (
-        extract_section(
-            promptcraft,
-            "10. Dictating instead of printing",
-            "paper-session/references/prompt-craft.md",
-            required=False,
-        )
-        if promptcraft
-        else None
-    )
-    ctx["repo_dictation_html"] = md_to_html(dictation) if dictation else ""
-    if dictation:
-        card = extract_paragraph(
-            dictation,
-            "The card is a single fenced message",
-            "paper-session/references/prompt-craft.md",
-        )
-        budget = extract_paragraph(
-            dictation,
-            "If a design cannot be dictated inside the budget",
-            "paper-session/references/prompt-craft.md",
-        )
-        ctx["repo_card_format_html"] = md_to_html(card) if card else ""
-        ctx["repo_card_budget_html"] = md_to_html(budget) if budget else ""
-    else:
-        ctx["repo_card_format_html"] = ""
-        ctx["repo_card_budget_html"] = ""
-
-    patternlib = read_repo("paper-session/references/page-patterns.md", required=False)
-    notebook = (
-        extract_section(
-            patternlib,
-            "Notebook translation",
-            "paper-session/references/page-patterns.md",
-            required=False,
-        )
-        if patternlib
-        else None
-    )
-    ctx["repo_notebook_translation_html"] = md_to_html(notebook) if notebook else ""
-    formats = (
-        extract_section(
-            patternlib,
-            "Named session formats",
-            "paper-session/references/page-patterns.md",
-            required=False,
-        )
-        if patternlib
-        else None
-    )
-    ctx["repo_formats_html"] = md_to_html(formats) if formats else ""
-    ctx.update(render_formats(formats))
-
-    # --- paper-session SKILL.md metadata ------------------------------------
+    # --- the skill's stop line ----------------------------------------------
     forward = read_repo("paper-session/SKILL.md", required=False)
-    if forward:
-        fmeta, fbody = strip_front_matter(forward)
-        ctx["repo_paper_session_description"] = esc(fmeta.get("description", ""))
-        ctx["repo_paper_session_bytes"] = str(len(forward.encode("utf-8")))
-        stop = re.search(r'"(Printed\.\s*Go think\.)"', fbody)
-        ctx["repo_stop_line"] = esc(stop.group(1)) if stop else ""
-    else:
-        ctx["repo_paper_session_description"] = ""
-        ctx["repo_paper_session_bytes"] = ""
-        ctx["repo_stop_line"] = ""
-
-    # --- the three numbers and the thesis -----------------------------------
-    evidence = read_repo("paper-session/references/evidence.md")
-    assert evidence is not None
-    numbers_md = extract_section(
-        evidence, "Three numbers", "paper-session/references/evidence.md"
+    stop = (
+        re.search(r'"(Printed\.\s*Go think\.)"', strip_front_matter(forward)[1])
+        if forward
+        else None
     )
-    assert numbers_md is not None
-    numbers = []
-    for line in numbers_md.split("\n"):
-        match = re.match(r"^\s*[-*]\s+\*\*(.+?)\*\*\s*(.*)$", line)
-        if match:
-            label = match.group(1).strip().rstrip(".")
-            rest = match.group(2).strip()
-            first_sentence = re.split(r"(?<=[.!?])\s+", rest)[0] if rest else ""
-            numbers.append({"label": label, "line": first_sentence})
-    if len(numbers) < 3:
-        raise BuildError(
-            "could not parse three numbers out of evidence.md "
-            "§Three numbers for the talk (found "
-            f"{len(numbers)}). The landing page will not invent them."
-        )
-    ctx["repo_numbers_json"] = json.dumps(numbers, sort_keys=True)
-    ctx["repo_numbers_html"] = render_numbers(numbers[:3])
-    # The same three figures, each one a link to the entry on the evidence page
-    # that states its conditions. A figure quoted with no route to its
-    # limitations is the one thing this site is not allowed to do.
-    ctx["repo_numbers_linked_html"] = render_numbers(
-        numbers[:3], link_base=BASE_TOKEN + EVIDENCE_SLUG + "/"
+    ctx["repo_stop_line"] = esc(stop.group(1)) if stop else ""
+
+    # --- links to whole repo documents ---------------------------------------
+    # The site links documents instead of embedding them. Each link is checked
+    # against the file (and the heading, when it names one) at build time.
+    ctx["repo_readme_install_url"] = repo_doc_url(
+        "README.md", "repo_readme_install_url", "Install"
     )
-
-    thesis = re.findall(r"\*\*(.+?)\*\*", numbers_md)
-    if thesis:
-        fragment = thesis[-1].strip()
-        ctx["repo_thesis"] = inline_md(fragment[:1].upper() + fragment[1:])
-    else:
-        ctx["repo_thesis"] = ""
-    if not thesis:
-        warn("no thesis sentence found in evidence.md §Three numbers")
-
-    limitations = extract_section(
-        evidence,
-        "What the research does NOT support",
+    ctx["repo_evidence_doc_url"] = repo_doc_url(
+        "paper-session/references/evidence.md", "repo_evidence_doc_url"
+    )
+    ctx["repo_evidence_limits_url"] = repo_doc_url(
         "paper-session/references/evidence.md",
+        "repo_evidence_limits_url",
+        "What the research does NOT support",
     )
-    assert limitations is not None
-    ctx["repo_limitations_html"] = md_to_html(limitations, heading_offset=1)
-    ctx["repo_limitations_count"] = str(
-        len(re.findall(r"^\s*\d+\.\s+", limitations, re.M))
+    ctx["repo_formats_doc_url"] = repo_doc_url(
+        "paper-session/references/page-patterns.md",
+        "repo_formats_doc_url",
+        "Named session formats",
     )
-
-    # --- the rest of the evidence brief, section by section -----------------
-    # The limitations page renders every one of these verbatim. All optional:
-    # evidence.md is one of the files other agents edit, and a warning plus a
-    # link is a better failure than a broken deploy.
-    EVIDENCE = "paper-session/references/evidence.md"
-    for key, heading in (
-        ("repo_evidence_walking_html", "Bonus cluster: the physical case (walking)"),
-        ("repo_evidence_cluster_4_html", "Cluster 4: The cost of staying on screen"),
-        ("repo_evidence_cluster_5_html", "Cluster 5: What makes this urgent now"),
-        ("repo_evidence_tension_html", "The tension you should address head-on"),
-        (
-            "repo_evidence_unprinted_html",
-            "The unprinted page (what none of this tests)",
-        ),
-        (
-            "repo_evidence_unread_html",
-            "The unread page (what none of this tests, and what it costs)",
-        ),
-        ("repo_field_reports_html", "Part Three: Field reports"),
-    ):
-        section = extract_section(evidence, heading, EVIDENCE, required=False)
-        ctx[key] = md_to_html(section, heading_offset=2) if section else ""
-
-    # The brief's opening paragraph: everything above the first heading that
-    # isn't the title or a rule.
-    intro_lines: list[str] = []
-    for line in evidence.split("\n"):
-        if re.match(r"^#{1,6}\s+", line):
-            if intro_lines:
-                break
-            continue
-        if re.match(r"^\s*-{3,}\s*$", line):
-            continue
-        intro_lines.append(line)
-    intro = "\n".join(intro_lines).strip()
-    ctx["repo_evidence_intro_html"] = md_to_html(intro) if intro else ""
-    if not intro:
-        warn(f"no opening paragraph found above the first cluster in {EVIDENCE}")
-
-    ctx.update(render_cluster_index(evidence))
-
-    # --- the sheet's own footer line ----------------------------------------
-    design = read_repo("paper-session/references/design.md", required=False)
-    footer_line = ""
-    if design:
-        match = re.search(r'"(SCAN IT BACK TO CONTINUE\.)"', design)
-        footer_line = match.group(1) if match else ""
-    if not footer_line:
-        warn("could not read the printed footer line out of design.md")
-    ctx["repo_footer_line"] = esc(footer_line)
+    ctx["repo_dictation_doc_url"] = repo_doc_url(
+        "paper-session/references/prompt-craft.md",
+        "repo_dictation_doc_url",
+        "10. Dictating instead of printing",
+    )
 
     return ctx
 
 
-def ledger_chips(agent_md: str) -> list[str]:
-    """Derive short chip labels from a ledger row's agent cell.
+def render_install_keys(
+    install: str,
+    ledger_heading: str,
+    headers: list[str],
+    rows: list[list[str]],
+) -> dict[str, str]:
+    """README §Install, cut down to what the Install and Research pages show.
 
-    Mechanical, so a README edit carries straight through: split on the middot,
-    drop parentheticals, trim to something that fits on a chip.
+    Every value is the README's own text or href, or a count of its rows.
+    Nothing is paraphrased, and a missing source is a failed build rather than
+    an empty slot.
     """
-    text = plain_text(agent_md)
-    text = re.sub(r"\([^)]*\)", "", text)
-    parts = [p.strip(" ,") for p in re.split(r"[·•]", text) if p.strip(" ,")]
-    chips = []
-    for part in parts:
-        label = part.strip()
-        if len(label) > 20:
-            cut = label[:20].rsplit(" ", 1)[0]
-            label = (cut or label[:20]) + "…"
-        if label:
-            chips.append(label)
-    return chips or [text[:20]]
+    out: dict[str, str] = {}
 
-
-def render_chips(rows: list[dict]) -> str:
-    """Chip buttons. Hidden until JS unhides them; the table is the fallback."""
-    out = []
-    for index, row in enumerate(rows):
-        for chip in row["chips"]:
-            out.append(
-                '<button type="button" class="chip" data-row="'
-                f'{index}">{esc(chip)}</button>'
-            )
-    return "".join(out)
-
-
-def render_numbers(numbers: list[dict], link_base: str = "") -> str:
-    parts = []
-    for index, number in enumerate(numbers, start=1):
-        figure = inline_md(number["label"])
-        if link_base:
-            figure = (
-                f'<a class="number__link" href="{link_base}#number-{index}">'
-                f"{figure}</a>"
-            )
-        parts.append(
-            '<li class="number">'
-            f'<p class="number__figure">{figure}</p>'
-            f'<p class="number__line">{inline_md(number["line"])}</p>'
-            "</li>"
-        )
-    return "".join(parts)
-
-
-def _literal(node: "ast.AST") -> str:
-    """Best-effort text of a string literal or f-string in specimen.py."""
-    import ast
-
-    if isinstance(node, ast.Constant) and isinstance(node.value, str):
-        return node.value
-    # An f-string's computed parts (the printed weekday) cannot be resolved
-    # without running the generator, and half a title is worse than none:
-    # report it as absent and let the caller omit it.
-    return ""
-
-
-def render_specimen(source: str | None) -> dict[str, str]:
-    """The three specimen pages' own titles and intent lines.
-
-    Parsed out of the generator with `ast`, not by hand: `docs/specimen.py` is
-    regenerated whenever the design system changes, and a page describing what
-    the three sheets contain must not be the one thing on this site that a
-    regeneration silently falsifies.
-    """
-    import ast
-
-    blank = {"repo_specimen_json": "[]", "repo_specimen_html": ""}
-    if not source:
-        return blank
-    try:
-        tree = ast.parse(source)
-    except SyntaxError as exc:  # pragma: no cover - generator mid-edit
-        warn(f"docs/specimen.py does not parse ({exc}); specimen intents omitted")
-        return blank
-    pages = []
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Call):
-            continue
-        func = node.func
-        if not (isinstance(func, ast.Name) and func.id == "header"):
-            continue
-        args = [a for a in node.args][1:]  # drop the canvas
-        if len(args) < 2:
-            continue
-        title, intent = _literal(args[0]), _literal(args[1])
-        if intent:
-            pages.append({"title": title, "intent": intent})
-    if not pages:
-        warn("no header() calls found in docs/specimen.py; specimen intents omitted")
-        return blank
-    items = "".join(
-        "<li>"
-        + (
-            f'<span class="specimen-intents__title">{esc(page["title"])}</span>'
-            if page["title"]
-            else ""
-        )
-        + esc(page["intent"])
-        + "</li>"
-        for page in pages
+    # The three commands, each the whole fenced block that holds it.
+    blocks = fenced_blocks(install)
+    out["repo_install_npx_cmd"] = install_command(
+        blocks, "npx skills add", "repo_install_npx_cmd"
     )
-    return {
-        "repo_specimen_json": json.dumps(pages, sort_keys=True).replace("</", "<\\/"),
-        "repo_specimen_html": f'<ol class="specimen-intents">{items}</ol>',
-    }
+    out["repo_install_clone_cmd"] = install_command(
+        blocks, "git clone", "repo_install_clone_cmd"
+    )
+    out["repo_install_pip_cmd"] = install_command(
+        blocks, "pip install", "repo_install_pip_cmd"
+    )
 
-
-COUNTERWEIGHT_LEADS = (
-    "the honest counterweight",
-    "the honest counterweights",
-    "boundary condition to disclose",
-    "contraindications",
-)
-
-
-def render_cluster_index(evidence: str) -> dict[str, str]:
-    """One entry per cluster in evidence.md, carrying its own counterweight.
-
-    The point of the index is not navigation. It is that every cluster which
-    argues against itself does so on the site too, in the brief's own words —
-    so the audit section cannot read as a claim that the brief is unanimous.
-    """
-    lines = evidence.split("\n")
-    part = "Part One"
-    entries: list[str] = []
-    count = 0
-    headings = list(iter_headings(evidence))
-    for position, (idx, level, text) in enumerate(headings):
-        if level == 1:
-            match = re.match(r"^(Part\s+\w+)", text.strip())
-            if match:
-                part = match.group(1)
-            continue
-        if not re.match(r"^(bonus\s+)?cluster\b", text.strip(), re.I):
-            continue
-        end = len(lines)
-        for later_idx, later_level, _ in headings[position + 1 :]:
-            if later_level <= level:
-                end = later_idx
-                break
-        body = "\n".join(lines[idx + 1 : end])
-        quotes = []
-        for block in re.split(r"\n\s*\n", body):
-            block = block.strip()
-            if not block:
-                continue
-            opening = normalize_heading(block.split("\n")[0])
-            if any(opening.startswith(lead) for lead in COUNTERWEIGHT_LEADS):
-                quotes.append(md_to_html(block))
-        count += 1
-        entry = [
-            "<li>",
-            f'<p class="label">{esc(part)}</p>',
-            f"<h3>{inline_md(text)}</h3>",
-        ]
-        if quotes:
-            entry.append(
-                '<div class="machine">'
-                '<span class="caption">The honest counterweight</span>'
-                + "".join(quotes)
-                + "</div>"
-            )
-        entry.append("</li>")
-        entries.append("".join(entry))
-    if not entries:
-        warn("no clusters parsed out of evidence.md; the cluster index is omitted")
-        return {"repo_evidence_clusters_html": "", "repo_evidence_cluster_count": ""}
-    return {
-        "repo_evidence_clusters_html": "".join(entries),
-        "repo_evidence_cluster_count": str(count),
-    }
-
-
-def render_formats(section: str | None) -> dict[str, str]:
-    """Split §Named session formats into one key per format.
-
-    Each format is a paragraph led by a bold name (`**Premortem.** …`). A page
-    that wants to state a format's gate quotes `repo_format_<slug>_html`
-    instead of paraphrasing the entry, which is the one thing on a page of
-    session openers that can silently drift.
-    """
-    out: dict[str, str] = {
-        "repo_formats_json": "[]",
-        "repo_formats_count": "",
-        "repo_formats_intro_html": "",
-    }
-    if not section:
-        return out
-    lines = section.split("\n")
-    lead = re.compile(r"^\*\*([A-Z][^*]{2,60}?)\.\*\*\s")
-    starts = [i for i, line in enumerate(lines) if lead.match(line)]
-    if not starts:
-        warn("no named session formats parsed out of page-patterns.md")
-        return out
-    out["repo_formats_intro_html"] = md_to_html("\n".join(lines[: starts[0]]).strip())
-    entries = []
-    for index, start in enumerate(starts):
-        end = starts[index + 1] if index + 1 < len(starts) else len(lines)
-        block = "\n".join(lines[start:end]).strip()
-        match = lead.match(lines[start])
-        assert match is not None
-        name = match.group(1).strip()
-        slug = slugify(name)
-        key = "repo_format_" + slug.replace("-", "_") + "_html"
-        html_block = md_to_html(block)
-        out[key] = html_block
-        entries.append({"name": name, "slug": slug, "key": key, "html": html_block})
-    out["repo_formats_json"] = json.dumps(entries, sort_keys=True).replace("</", "<\\/")
-    out["repo_formats_count"] = str(len(entries))
-    return out
-
-
-def render_sheets(readme: str) -> str:
-    """The three specimen images, with README's own alt text and captions."""
-    span = None
-    lines = readme.split("\n")
-    for i in range(len(lines) - 1):
-        if "docs/sheet-" in lines[i] and "|" in lines[i]:
-            for j in range(i, max(-1, i - 4), -1):
-                if "|" in lines[j] and _TABLE_DELIM.match(lines[j + 1] if j + 1 < len(lines) else ""):
-                    span = j
-                    break
-            break
-    if span is None:
-        warn("no specimen table found in README; sheet gallery omitted")
-        return ""
-    headers = _split_row(lines[span])
-    body_rows = []
-    k = span + 2
-    while k < len(lines) and "|" in lines[k] and lines[k].strip():
-        body_rows.append(_split_row(lines[k]))
-        k += 1
-    if not body_rows:
-        return ""
-    images = body_rows[0]
-    notes = body_rows[1] if len(body_rows) > 1 else [""] * len(images)
-    figures = []
-    for index, cell in enumerate(images):
-        match = re.search(r"!\[([^\]]*)\]\(([^)\s]+)\)", cell)
-        if not match:
-            continue
-        alt, src = match.group(1), resolve_image(match.group(2))
-        caption = plain_text(headers[index]) if index < len(headers) else ""
-        note = notes[index] if index < len(notes) else ""
-        figures.append(
-            '<figure class="sheet">'
-            f'<img src="{src}" alt="{esc(alt)}" width="773" height="1000" '
-            'loading="lazy" decoding="async">'
-            f'<figcaption><span class="label">{esc(caption)}</span>'
-            f'<span class="sheet__note">{inline_md(note)}</span></figcaption>'
-            "</figure>"
+    # The two bundles, from the paragraph that links them, with its hrefs.
+    bundle_link = re.compile(r"\[([^\]]+)\]\(([^)\s]+\.skill)\)")
+    paragraph = next(
+        (
+            block
+            for block in re.split(r"\n\s*\n", install)
+            if len(bundle_link.findall(block)) >= 2
+        ),
+        None,
+    )
+    links = bundle_link.findall(paragraph) if paragraph else []
+    hrefs = [href for _, href in links]
+    if not (
+        any(h.endswith("/paper-session.skill") for h in hrefs)
+        and any(h.endswith("/scan-back.skill") for h in hrefs)
+    ):
+        raise BuildError(
+            "README §Install has no paragraph linking both paper-session.skill "
+            "and scan-back.skill, so repo_bundle_links_html has nothing to offer."
         )
-    return "".join(figures)
+    # Each one a button, so the chat-app track reads as a first-class route
+    # beside the terminal track's code blocks (CLAUDE.md: neither is favoured).
+    out["repo_bundle_links_html"] = " ".join(
+        inline_md(f"[{label}]({href})").replace("<a ", '<a class="btn" ', 1)
+        for label, href in links
+    )
+
+    # One verdict per ledger row: the agent cell as plain text, and the bold
+    # phrase that opens "The loop today", verbatim. A row with no bold phrase
+    # there ("Same as above") carries the row above's verdict.
+    wanted = "the loop today"
+    column = next(
+        (i for i, h in enumerate(headers) if plain_text(h).lower() == wanted), None
+    )
+    if column is None:
+        raise BuildError(
+            "the README ledger has no “The loop today” column, so "
+            "repo_ledger_verdicts_html has no verdicts to show."
+        )
+    items: list[str] = []
+    verdicts: list[str] = []
+    previous = ""
+    for row in rows:
+        agent = plain_text(row[0]) if row else ""
+        cell = row[column] if column < len(row) else ""
+        bold = re.match(r"^\s*\*\*(.+?)\*\*", cell)
+        if bold:
+            previous = plain_text(bold.group(1))
+        elif not previous:
+            raise BuildError(
+                "the first README ledger row opens “The loop today” with no "
+                "bold verdict, so there is nothing for later rows to inherit."
+            )
+        verdicts.append(previous)
+        items.append(
+            f'<li><span class="verdicts__agent">{esc(agent)}</span> '
+            f'<span class="verdicts__verdict">{esc(previous)}</span></li>'
+        )
+    out["repo_ledger_verdicts_html"] = (
+        '<ul class="verdicts">' + "".join(items) + "</ul>"
+    )
+    # Counted from the same verdicts the Install page lists, never asserted in
+    # prose: "exactly one row is verified" is the kind of sentence that goes
+    # quietly false the day a second row lands.
+    out["repo_ledger_verified_count"] = str(
+        sum(1 for v in verdicts if v.lower().startswith("verified end to end"))
+    )
+    out["repo_ledger_row_count"] = str(len(rows))
+
+    if not ledger_heading:
+        raise BuildError(
+            "the README ledger has no heading of its own, so "
+            "repo_ledger_anchor_url has no anchor to link to."
+        )
+    out["repo_ledger_anchor_url"] = (
+        BLOB_URL + "README.md#" + github_anchor(ledger_heading)
+    )
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -1441,7 +789,12 @@ def parse_page(path: Path) -> dict[str, str]:
                 f"templates/{path.name} front matter is missing `{required}:`"
             )
     meta.setdefault("slug", path.stem)
-    meta["body"] = raw[match.end() :].lstrip("\n")
+    # Template comments are notes for maintainers. They stay in the template
+    # and never ship: a public page source is no place for dev notes or the
+    # retired slugs they mention.
+    meta["body"] = re.sub(
+        r"[ \t]*<!--.*?-->[ \t]*\n?", "", raw[match.end() :], flags=re.S
+    ).lstrip("\n")
     meta["template_name"] = path.name
     return meta
 
@@ -1497,6 +850,11 @@ def collect_pages() -> list[dict[str, str]]:
 
 
 def render_nav(pages: list[dict[str, str]], current: str, base: str) -> str:
+    """The masthead list: every page with a nav_label, then the repository.
+
+    Shown on every page, the front page included. The front page has no
+    nav_label; the wordmark is its link.
+    """
     items = []
     for page in pages:
         label = page.get("nav_label")
@@ -1505,7 +863,89 @@ def render_nav(pages: list[dict[str, str]], current: str, base: str) -> str:
         target = base + ("" if page["slug"] == "index" else f"{page['slug']}/")
         current_attr = ' aria-current="page"' if page["slug"] == current else ""
         items.append(f'<li><a href="{target}"{current_attr}>{esc(label)}</a></li>')
+    for label, href in NAV_EXTERNAL:
+        items.append(
+            f'<li><a class="nav__ext" href="{esc(href)}">{esc(label)}</a></li>'
+        )
     return "<ul class=\"nav__list\">" + "".join(items) + "</ul>"
+
+
+def redirect_page(old: str, target: str, title: str) -> str:
+    """A standalone page at /<old>/ that sends the visitor to `target`.
+
+    Meta refresh plus a real link: GitHub Pages cannot answer with a 301, the
+    link works where refresh is disabled, and the strict link checker follows
+    the link like any other. The canonical drops the fragment, which search
+    engines ignore in a canonical anyway.
+    """
+    relative = "../" * (old.count("/") + 1) + target
+    canonical = SITE_URL + target.partition("#")[0]
+    return (
+        "<!doctype html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        '<meta name="color-scheme" content="light dark">\n'
+        '<meta name="robots" content="noindex">\n'
+        "<title>Moved · Paper Session</title>\n"
+        f'<link rel="canonical" href="{esc(canonical)}">\n'
+        f'<meta http-equiv="refresh" content="0; url={esc(relative)}">\n'
+        "</head>\n"
+        "<body>\n"
+        f'<p>This page has moved to <a href="{esc(relative)}">{esc(title)}</a>.</p>\n'
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+def check_redirect_slugs(pages: list[dict[str, str]]) -> None:
+    """A retired slug may never also be a live page."""
+    live = {page["slug"]: page for page in pages}
+    for old in REDIRECTS:
+        if old in live:
+            raise BuildError(
+                f"/{old}/ is both a live page ({live[old]['template_name']}) and "
+                f"a retired slug in REDIRECTS; remove one of them."
+            )
+
+
+def write_redirects(dist: Path, pages: list[dict[str, str]], strict: bool) -> int:
+    """Emit one redirect page per retired slug, and check where each one lands.
+
+    A target must be a live page, and a fragment target must exist as an id on
+    it, because a redirect into the top of the wrong section is a quiet dead
+    end. (A retired slug that is also a live page never gets this far:
+    check_redirect_slugs refuses it before any page is written.)
+    """
+    live = {page["slug"]: page for page in pages}
+    for old, target in REDIRECTS.items():
+        path, _, fragment = target.partition("#")
+        slug = path.strip("/") or "index"
+        page = live.get(slug)
+        if page is None:
+            raise BuildError(
+                f"the redirect from /{old}/ points at /{path}, which is not a "
+                f"live page."
+            )
+        title = "the front page" if slug == "index" else page["title"]
+        dest = dist / old / "index.html"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(redirect_page(old, target, title), encoding="utf-8")
+        print(f"  wrote {old}/index.html  (redirect -> /{target})")
+
+        if fragment:
+            built = dist / output_path_for(slug)
+            if f'id="{fragment}"' not in built.read_text(encoding="utf-8"):
+                message = (
+                    f"the redirect from /{old}/ lands on /{target}, but "
+                    f"{page['template_name']} has no element with "
+                    f'id="{fragment}".'
+                )
+                if strict:
+                    raise BuildError(message)
+                warn(message)
+    return len(REDIRECTS)
 
 
 # --------------------------------------------------------------------------
@@ -1555,17 +995,16 @@ def copy_assets(dist: Path, allow_missing: bool) -> dict[str, str]:
             + ", ".join(missing)
             + "\n  Regenerate them with:  python3 docs/specimen.py\n"
             "  (Another agent may be rebuilding them right now.)\n"
-            "  To build the site anyway, with the downloads marked "
-            "unavailable, pass --allow-missing-assets."
+            "  To build the site anyway, with How it works leaving the "
+            "render out, pass --allow-missing-assets."
         )
         if not allow_missing:
             raise BuildError(message)
         warn(message)
 
-    # Derived from what actually landed in dist/, not from the name of the
-    # source that was supposed to produce it: a page must never offer a
-    # download that is not there.
-    ctx["specimen_available"] = "1" if (dist / "specimen.pdf").exists() else ""
+    # Counted from what actually landed in dist/, not from the pattern that
+    # was supposed to produce it: a page must never show an image that is not
+    # there.
     ctx["sheet_count"] = str(sheet_count)
 
     hero = next((name for name in HERO_CANDIDATES if (STATIC / name).exists()), "")
@@ -1584,12 +1023,21 @@ def copy_assets(dist: Path, allow_missing: bool) -> dict[str, str]:
 
     # The one-click "copy instructions for your AI" payload: the same file
     # ships as a static download and is embedded in every page for the
-    # clipboard button, so there is exactly one copy of the text.
-    copy_src = STATIC / "copy-instructions.txt"
-    ctx["copy_instructions_present"] = "1" if copy_src.exists() else ""
-    ctx["copy_instructions"] = (
-        copy_src.read_text(encoding="utf-8") if copy_src.exists() else ""
-    )
+    # clipboard button, so there is exactly one copy of the text. It is the
+    # site's primary call to action, so its absence fails the build.
+    copy_src = STATIC / COPY_INSTRUCTIONS_FILE
+    if not copy_src.exists():
+        raise BuildError(
+            f"site/static/{COPY_INSTRUCTIONS_FILE} is missing, and it is the "
+            f"text the site's primary call to action copies."
+        )
+    copy_text = copy_src.read_text(encoding="utf-8")
+    if re.search(r"</script", copy_text, re.I):
+        raise BuildError(
+            f"site/static/{COPY_INSTRUCTIONS_FILE} contains “</script”, which "
+            f"would end the <script type=\"text/plain\"> that carries it."
+        )
+    ctx["copy_instructions"] = copy_text
 
     example = next(
         (name for name in EXAMPLE_CANDIDATES if (STATIC / name).exists()), ""
@@ -1884,6 +1332,7 @@ def build(dist: Path, allow_missing: bool, strict: bool) -> None:
     base_template = base_template_path.read_text(encoding="utf-8")
 
     pages = collect_pages()
+    check_redirect_slugs(pages)
     written = 0
     for page in pages:
         output = page.get("output") or output_path_for(page["slug"])
@@ -1895,18 +1344,28 @@ def build(dist: Path, allow_missing: bool, strict: bool) -> None:
         ctx.update({k: v for k, v in page.items() if k not in ("body",)})
         ctx["base"] = base
         ctx["home_url"] = base or "./"
-        ctx["page_slug"] = page["slug"]
         ctx["is_home"] = "1" if page["slug"] == "index" else ""
         ctx["nav"] = render_nav(pages, page["slug"], base)
         ctx["repo_url"] = REPO_URL
-        ctx["raw_url"] = RAW_URL
-        ctx["specimen_url"] = base + "specimen.pdf"
         ctx["hero_url"] = base + (asset_ctx["hero_file"] or "")
         ctx["film_url"] = base + (asset_ctx["film_file"] or "")
         ctx["film_poster_url"] = base + (asset_ctx["film_poster_file"] or "")
         ctx["film_captions_url"] = base + (asset_ctx["film_captions_file"] or "")
         ctx["example_photo_url"] = base + (asset_ctx["example_file"] or "")
-        ctx["evidence_url"] = base + EVIDENCE_SLUG + "/"
+        # The four live pages and the primary call to action's text file,
+        # base-relative like every other internal link.
+        ctx["how_it_works_url"] = base + "how-it-works/"
+        ctx["install_url"] = base + "install/"
+        ctx["research_url"] = base + RESEARCH_SLUG + "/"
+        ctx["copy_instructions_url"] = base + COPY_INSTRUCTIONS_FILE
+        # Absolute, for the <head> only: canonical, og:url, og:image.
+        ctx["site_url"] = SITE_URL
+        ctx["page_url"] = SITE_URL + (
+            "" if page["slug"] == "index" else f"{page['slug']}/"
+        )
+        ctx["og_image_url"] = (
+            SITE_URL + asset_ctx["hero_file"] if asset_ctx["hero_present"] else ""
+        )
         ctx["body_class"] = page.get("body_class", "")
 
         # Repo fragments carry a base token so one conversion serves every depth.
@@ -1925,6 +1384,7 @@ def build(dist: Path, allow_missing: bool, strict: bool) -> None:
         flag = "  (stub)" if page.get("stub") else ""
         print(f"  wrote {output}{flag}")
 
+    write_redirects(dist, pages, strict)
     check_links(dist, strict)
     verify_sheets(dist, pages, strict)
     print(f"  {written} pages -> {dist}")
@@ -1938,8 +1398,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--allow-missing-assets",
         action="store_true",
-        help="warn instead of failing when docs/specimen.pdf or the sheet PNGs "
-        "are absent (another agent may be regenerating them)",
+        help="warn instead of failing when the sheet render How it works shows "
+        "(docs/sheet-deep-react.png) is absent (another agent may be "
+        "regenerating it)",
     )
     parser.add_argument(
         "--strict", action="store_true", help="treat dangling internal links as errors"

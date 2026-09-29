@@ -1,7 +1,8 @@
 # site/
 
-The promotional website for `paper-session` and `scan-back`. Fully static,
-built by one Python script with no dependencies, published to GitHub Pages.
+The public website for `paper-session` and `scan-back`, served at
+paper-session.com. Fully static, built by one Python script with no
+dependencies, published to GitHub Pages.
 
 ```bash
 python3 site/build.py                 # build to site/dist/
@@ -9,32 +10,83 @@ python3 site/build.py --serve 8000    # build, then serve it at localhost:8000
 ```
 
 `dist/` is a build artifact. It is wiped and rewritten on every run, and it is
-git-ignored (`site/.gitignore`) — never edit anything inside it.
+git-ignored (`site/.gitignore`). Never edit anything inside it.
 
 ---
 
-## The one architectural rule
+## What the site is for
 
-**Nothing on this site is hand-copied from the repo.**
+A visitor should be able to get in and see what to do. Most will do two
+things: watch the film, then copy the instructions into the AI chat they
+already use. Everything on the site serves that path. Documentation lives in
+the repo and the site links to it.
 
-`CLAUDE.md` binds install directions to README §Install *and nowhere else*, and
-this build script is what makes that rule mechanical rather than a promise.
-Every piece of repository content on the site — the install directions, the
-compatibility ledger, the whole text of `scan-back/SKILL.md`, the evidence
-limitations, the three numbers, even the printed footer line — is read out of
-its source file at build time and converted to HTML in `build.py`.
+### Four pages
 
-If you are about to type repo prose into a template, stop and add an extractor
-to `build_repo_context()` instead. Site copy that is genuinely the website's
-own voice (headings, connective tissue, button labels) you write yourself; the
-repo's words stay the repo's.
+| URL | Template | Job |
+|---|---|---|
+| `/` | `index.html` | What it is. The film, then the copy button, then the loop in four lines. |
+| `/how-it-works/` | `how-it-works.html` | One session walked through, the page as printed and as photographed, three example lines, coming back. |
+| `/install/` | `install.html` | Chat app, terminal, the ledger verdicts, the no-install path (`#no-printer`), and the scan-back file (`#scan-back`). |
+| `/research/` | `research.html` | The honest limits in three statements, and the labelled slot where field notes will go. |
+
+Word budgets for site-authored copy: Home ~400, How it works ~300, Install
+~250, Research ~300, under 2,000 in total. If a section cannot be said in
+three sentences, it belongs in the repo.
+
+### Retired pages redirect
+
+`REDIRECTS` in `build.py` writes a small moved page (noindex, canonical,
+0-second meta refresh, and a real link) for each retired slug:
+
+| Old | New |
+|---|---|
+| `/get-a-sheet/` | `/` |
+| `/first-session/` | `/how-it-works/` |
+| `/scan-back/` | `/install/#scan-back` |
+| `/no-printer/` | `/install/#no-printer` |
+| `/evidence/` | `/research/` |
+
+The build refuses a retired slug that comes back as a live page, a target that
+is not a live page, and (under `--strict`) a `#fragment` target whose id is
+missing. So `install.html` must keep `id="scan-back"` and `id="no-printer"`.
+
+`/get-a-sheet/` was removed on 2026-09-29. It printed a generic sheet that
+knew nothing about the visitor's work, so it proposed nothing: a bad version of
+a paper session, sitting at the top of the funnel. A real session is built
+from the visitor's own work, so every route now leads there. Do not bring back
+a generic printable sheet or a "print the specimen" call to action. The sheet
+CSS and the print gate (`sheet: true` in front matter) are still in
+`build.py` and `static/style.css`; no page declares it, so the gate does not
+run.
+
+---
+
+## The single-source rule
+
+**Commands, bundle links, ledger verdicts and the scan-back text come from the
+repo at build time. Whole documents are linked, never embedded.**
+
+`CLAUDE.md` binds install directions to README §Install and nowhere else.
+`build.py` makes that mechanical: the three install commands, the two `.skill`
+links, the ledger verdicts and the full text of
+`scan-back/SKILL.md` (behind its copy button) are read out of their source
+files and handed to templates as keys. Never type a repo command into a
+template.
+
+Everything else from the repo is a link to GitHub. Build those links in
+`build.py` with `repo_doc_url()`, which fails the build when the file is gone
+or the named heading no longer exists, instead of typing a URL into a
+template.
+
+Site copy in the website's own voice (headings, connective sentences, button
+labels) you write yourself.
 
 Corollaries:
 
 - No backend, no API keys, no hosted renderer, no analytics that needs a cookie
   banner. If the site dies, nothing in the loop dies with it.
-- Standard library only. The repo's dependencies are reportlab and pdfplumber;
-  the website is not allowed to add a third. No Node, no jinja2, no bundler.
+- Standard library only. No Node, no jinja2, no bundler.
 
 ---
 
@@ -42,11 +94,11 @@ Corollaries:
 
 | | |
 |---|---|
-| Idempotent | Same inputs, byte-identical `dist/`. No timestamps are emitted. |
-| Fails loudly | A missing README §Install, an empty ledger, an unparseable three-numbers block, or an unknown template key stops the build with one clear sentence. It never emits an empty page in place of missing content. |
-| Survives mid-edit files | Section lookup is forgiving about heading level, case, and appended parentheticals; a genuinely renamed section fails rather than silently blanking. |
-| Warns, doesn't crash, on absent specimens | `--allow-missing-assets` downgrades missing `docs/specimen.pdf` / `docs/sheet-*.png` to warnings and sets `specimen_available` / `sheet_count` empty so templates can say so honestly. |
-| Checks its own links | Every internal `href`/`src` is resolved against `dist/` after the build. Dangling links warn; `--strict` makes them fail. |
+| Idempotent | Same inputs, byte-identical `dist/`. No timestamps. CI builds twice and diffs. |
+| Fails loudly | A missing README §Install, a missing command block, a ledger without "The loop today", a repo link whose heading is gone, a missing `copy-instructions.txt`, or an unknown template key stops the build with one clear sentence. |
+| Survives mid-edit files | Section lookup forgives heading level, case and appended parentheticals; a genuinely renamed section fails rather than silently blanking. |
+| Warns on an absent render | `--allow-missing-assets` downgrades a missing `docs/sheet-deep-react.png` to a warning and sets `sheet_count` to `0`, which `{% if %}` treats as false. |
+| Checks its own links | Every internal `href`/`src`/`poster` is resolved against `dist/`. Dangling links warn; `--strict` fails. |
 
 Flags: `--out DIR`, `--allow-missing-assets`, `--strict`, `--serve PORT`.
 
@@ -56,227 +108,150 @@ Flags: `--out DIR`, `--allow-missing-assets`, `--strict`, `--serve PORT`.
 
 ### 1. A page is one template file
 
-`site/templates/<slug>.html`. Files whose name starts with `_` are partials, not
-pages. A template contains **only the page body** — the shell (`<html>`, head,
-masthead, nav, footer) comes from `_base.html`.
-
-Every page template starts with a front-matter comment:
+`site/templates/<slug>.html`. Files whose name starts with `_` are partials.
+A template contains only the page body; the shell (head, masthead, nav,
+footer) comes from `_base.html`. Every page starts with front matter:
 
 ```html
 <!--page
-title: No printer
-description: The dictated path: a card you copy into whatever notebook you already own.
-nav_label: No printer
-nav_order: 20
+title: How it works
+description: One paper session, start to finish.
+nav_label: How it works
+nav_order: 10
 -->
-<section class="band air-1">
-  <div class="wrap measure">…</div>
-</section>
 ```
 
 | Key | Required | Meaning |
 |---|---|---|
-| `title` | yes | Browser title and `og:title`. The home page shows `Paper Session`; every other page shows `<title> — Paper Session`. |
+| `title` | yes | `<title>` and `og:title`. Home shows `Paper Session`; other pages show `<title> · Paper Session`. |
 | `description` | yes | `<meta name="description">` and `og:description`. One sentence. |
-| `nav_label` | no | Include the page in the site nav. Omit and the page exists but is unlisted. |
-| `nav_order` | no | Integer, ascending. Defaults to 999. |
+| `nav_label` | no | Include the page in the masthead nav. Home has none; the wordmark is its link. |
+| `nav_order` | no | Integer, ascending: How it works 10, Install 20, Research 30. |
 | `slug` | no | Defaults to the filename stem. |
-| `output` | no | Defaults to `<slug>/index.html` (and `index.html` for slug `index`). |
-| `body_class` | no | Extra class on `<body>`. |
+| `body_class` | no | Extra class on `<body>` (Home uses `door home`). |
 
-Any other key you add is available in the template as `{{ yourkey }}`.
+Output is a directory index, so the URL is `/<slug>/`. Always prefix internal
+links with `{{ base }}` or use a `*_url` key; nothing is hard-coded to a
+domain, so the site also works under a subpath or from the filesystem.
 
-Output is a directory index, so the page's URL is `/<slug>/`. Nothing is
-hard-coded to a domain: **always prefix internal links with `{{ base }}`**, which
-is the relative path back to the site root (`""` on the home page, `"../"` one
-level down). `{{ home_url }}` is the same thing but never empty — use it for a
-link to the front page.
+HTML comments in a template are notes for maintainers. `parse_page()` strips
+them from the body, so they never reach `dist/`; write them freely, and put
+nothing in one that a visitor needs.
 
 ### 2. Template syntax
 
-A deliberately tiny substitution templater. Four constructs, that is all:
-
 | Construct | Behaviour |
 |---|---|
-| `{{ key }}` | Insert the value **raw**. Every repo fragment is already HTML. |
+| `{{ key }}` | Insert the value raw. Repo fragments are already HTML-escaped. |
 | `{{ key\|e }}` | Insert HTML-escaped. Use inside attributes. |
 | `{% if key %}…{% else %}…{% endif %}` | Truthy = non-empty and not `0`/`false`. Nests. |
-| `{% include "_partial.html" %}` | Inline another template from `templates/`. |
+| `{% include "_partial.html" %}` | Inline another template. |
 
-There are no loops and no expressions, on purpose. If a page needs repetition,
-generate the HTML in `build.py` and expose it as one key — that is how the nav,
-the chips, the specimen gallery and the three numbers are built.
+No loops and no expressions, on purpose. Repetition is generated in `build.py`
+and exposed as one key. An unknown `{{ key }}` fails the build.
 
-**An unknown `{{ key }}` fails the build** and prints the key name. That is the
-feature: you cannot ship a page with a silently empty region.
-
-### 3. Context keys available in every template
+### 3. Context keys the pages use
 
 Page and site:
 
-`base` · `home_url` · `page_slug` · `is_home` · `nav` · `title` · `description` ·
-`body_class` · `repo_url` · `raw_url` · `specimen_url` · `hero_url` ·
-`hero_present` · `hero_file` · `film_present` · `film_url` · `film_poster_present` ·
-`film_poster_url` · `film_captions_present` · `film_captions_url` · `specimen_available` ·
-`sheet_count` · `copy_instructions` · `copy_instructions_present`
-(plus every key from your own front matter). `_base.html` additionally gets
-`content`.
+| Key | Meaning |
+|---|---|
+| `base` · `home_url` | Relative path to the site root (`""` / `./` on Home, `../` one level down). |
+| `how_it_works_url` · `install_url` · `research_url` | Base-relative page links. Add `#scan-back`, `#no-printer` or `#where-it-stands` to `install_url` for those sections. |
+| `copy_instructions_url` | The text file the primary call to action copies; also its href with JS off. |
+| `copy_instructions` | The file's text, put on every page by `_base.html` as `#copy-instructions-text`. |
+| `nav` · `is_home` · `title` · `description` · `body_class` | Shell. |
+| `site_url` · `page_url` · `og_image_url` | Absolute URLs, for head tags only. |
+| `repo_url` | `https://github.com/welovejeff/paper-session`. |
+| `film_present` · `film_url` · `film_poster_present` · `film_poster_url` · `film_captions_present` · `film_captions_url` | The Home film, from `site/static/film.mp4`, `film-poster.jpg`, `film-captions.vtt`. |
+| `hero_present` · `hero_url` | `site/static/hero.jpg`: the film's fallback and the social image. |
+| `example_present` · `example_photo_url` | `site/static/return-example.jpg`, the worked page on How it works. |
+| `sheet_count` | `1` when `docs/sheet-deep-react.png` was copied to `sheets/`, else `0`. |
 
-Repo content, all pre-rendered HTML unless noted:
+Repo content:
 
 | Key | Source | Notes |
 |---|---|---|
-| `repo_install_html` | README §Install, above the ledger | the install directions themselves |
-| `repo_install_note_html` | README §Install, below the ledger table | the "directions live here only" note |
-| `repo_ledger_heading` | README §Install | plain text, escaped |
-| `repo_ledger_table_html` | README §Install | the full four-row table, in a `.scroller` |
-| `repo_ledger_json` | README §Install | JSON: `{headers, rows[{agent, agent_html, install, install_html, loop, loop_html, status, chips}]}`; a row reading "Same as above" inherits the row above it |
-| `repo_ledger_chips_html` | derived | `<button class="chip" data-row="N">` set |
-| `repo_sheets_html` | README specimen table | three `<figure class="sheet">`, README's own alt text and captions |
-| `repo_prompts_html` | README §Using it | the three example prompts, `<ul class="prompts">` |
-| `repo_one_rule` / `repo_one_rule_html` | README §The one rule… | the question; the two bullets |
-| `repo_pen_protocol_html` | README §The pen protocol | whole section |
-| `repo_ink_table_html` / `repo_mark_table_html` | README §The pen protocol | the two tables separately |
-| `repo_scanback_html` | `scan-back/SKILL.md` | the whole file, front matter stripped, headings shifted one level |
-| `repo_scanback_name` / `repo_scanback_description` | its front matter | escaped text |
-| `repo_scanback_raw` | `scan-back/SKILL.md` | escaped markdown, for a copy-paste `<pre>` |
-| `repo_scanback_bytes` / `repo_scanback_words` / `repo_scanback_words_approx` | measured | `words_approx` is rounded to the nearest hundred |
-| `repo_scanback_raw_url` | derived | raw.githubusercontent URL |
-| `repo_paper_session_description` / `repo_paper_session_bytes` | `paper-session/SKILL.md` | |
+| `repo_install_npx_cmd` · `repo_install_clone_cmd` · `repo_install_pip_cmd` | README §Install fenced blocks | Escaped. Put directly inside `<pre class="code"><code>` with no whitespace. |
+| `repo_bundle_links_html` | README §Install | The two `.skill` links with the README's hrefs. Wrap in `<p class="bundle-links">`. |
+| `repo_ledger_verdicts_html` | README ledger | `<ul class="verdicts">`: each agent cell and the bold verdict opening "The loop today", verbatim. |
+| `repo_ledger_verified_count` · `repo_ledger_row_count` | README ledger | Counted from the same verdicts `repo_ledger_verdicts_html` lists, never asserted in prose. |
+| `repo_ledger_anchor_url` · `repo_readme_install_url` | README | GitHub links to the ledger heading and §Install. |
+| `repo_scanback_raw` · `repo_scanback_raw_url` · `repo_scanback_words_approx` | `scan-back/SKILL.md` | The body behind the copy button, the raw file, its word count to the nearest hundred. |
 | `repo_stop_line` | `paper-session/SKILL.md` | `Printed. Go think.` |
-| `repo_numbers_html` / `repo_numbers_json` | `evidence.md` §Three numbers | the three figures and one line each |
-| `repo_thesis` | `evidence.md` §Three numbers | the thesis sentence, sentence-cased |
-| `repo_limitations_html` | `evidence.md` §What the research does NOT support | the numbered list |
-| `repo_limitations_count` | derived | how many items that list has |
-| `repo_footer_line` | `design.md` §5 | `SCAN IT BACK TO CONTINUE.` |
-| `repo_return_half_html` | README §Install | the "the return half travels further" paragraph, alone |
-| `repo_paste_route_html` | README §Install | the "if your AI can't install skills at all" paragraph |
-| `repo_paste_sentence` / `repo_paste_sentence_html` | README §Install | the load-bearing sentence a paste-channel user types; plain (escaped) and as a blockquote |
-| `repo_paste_honesty_html` | README §Install | "the sentence is load-bearing…", including what the paste channel does not get |
-| `repo_accessible_path_html` | README §Install | the dictated path for someone who cannot read the printed page |
-| `repo_absences_html` | README §What comes out of the printer | "Notice what is **not** there…" |
-| `repo_anatomy_html` | README §Anatomy of a sheet | the ASCII sheet diagram, three voices, hard floors |
-| `repo_hard_floors_html` / `repo_three_voices_html` | same section | those two paragraphs alone |
-| `repo_patterns_html` | README §The pattern library | whole section |
-| `repo_specimen_html` / `repo_specimen_json` | `docs/specimen.py` | the three specimen pages' own intent lines, parsed with `ast` from the `header()` calls (a title built from an f-string reports as absent rather than as half a title) |
-| `repo_scanback_full_raw` | `scan-back/SKILL.md` | escaped markdown **including** front matter (`repo_scanback_raw` is body-only) |
-| `repo_scanback_unprinted_html` | `scan-back/SKILL.md` §Step 1 | the "Unprinted pages" paragraph |
-| `repo_dictation_html` | `prompt-craft.md` §10 | the whole dictated-card rule |
-| `repo_card_format_html` / `repo_card_budget_html` | `prompt-craft.md` §10 | the two-part card format; the "too print-shaped" budget rule |
-| `repo_notebook_translation_html` | `page-patterns.md` §Notebook translation | which patterns survive being copied out |
-| `repo_formats_html` / `repo_formats_intro_html` / `repo_formats_count` / `repo_formats_json` | `page-patterns.md` §Named session formats | the whole section; its intro; how many; structured |
-| `repo_format_<slug>_html` | same | one key per named format — `repo_format_premortem_html`, `repo_format_after_action_review_html`, `repo_format_teach_back_sheet_html`, … Quote a format's gate instead of paraphrasing it |
-| `repo_evidence_intro_html` | `evidence.md`, above Cluster 1 | the brief's opening paragraph |
-| `repo_evidence_walking_html` · `repo_evidence_cluster_4_html` · `repo_evidence_cluster_5_html` | `evidence.md` | the sections behind the three front-page figures |
-| `repo_evidence_tension_html` | `evidence.md` §The tension you should address head-on | where the brief argues against its own design |
-| `repo_evidence_unprinted_html` / `repo_evidence_unread_html` | `evidence.md` | the two paths with no research under them |
-| `repo_field_reports_html` | `evidence.md` §Part Three | the empty tier |
-| `repo_evidence_clusters_html` / `repo_evidence_cluster_count` | derived | one `<li>` per cluster: its Part, its heading, and any counterweight paragraph quoted verbatim |
-| `repo_numbers_linked_html` | derived | the three figures, each linking to `<base>evidence/#number-N`. Use this wherever the figures appear away from the evidence page |
-| `repo_ledger_verified_count` / `repo_ledger_row_count` | derived | counted, never asserted in prose — "exactly one row is verified" is the kind of sentence that goes quietly false |
-| `repo_example_reply_html` | `docs/worked-example.md` | the unedited reply in the return-trip worked example; empty until the file exists |
-| `repo_one_rule` … | | |
+| `repo_evidence_doc_url` · `repo_evidence_limits_url` | `evidence.md` | The brief, and its "What the research does NOT support" section. |
+| `repo_formats_doc_url` | `page-patterns.md` | §Named session formats. |
+| `repo_dictation_doc_url` | `prompt-craft.md` | §10, the dictated card. |
 
-`repo_ledger_json` rows now also carry `extra: [{header, value, value_html}]` —
-**every ledger column past the third**, so a column added to the README table
-(as `Also install` was) reaches the chip answer instead of vanishing. A row whose
-cell reads "Same as above" inherits that column from the row above, the same way
-the loop status does.
+That is every key `build.py` provides. The keys the retired pages used (the
+embedded README sections, the ledger table and chips, the evidence clusters,
+the three numbers, the session formats, the card protocol, the pen-protocol
+tables, the specimen gallery) were removed from `build.py` on 2026-09-29,
+along with the block-level markdown converter that rendered them. They are in
+git history. Do not bring them back: they embedded whole repo documents, and
+the site links to those instead.
 
-Two more keys come from the asset scan rather than the repo: `example_present`
-and `example_photo_url` (the worked-example photograph, `site/static/return-example.jpg`),
-alongside `hero_present` / `hero_url`. The hero film is scanned the same way:
-`site/static/film.mp4` sets `film_present` / `film_url` and, when present, takes the
-landing page's hero slot ahead of the photograph; `film-poster.jpg` and
-`film-captions.vtt` beside it set `film_poster_*` and `film_captions_*`. The
-link check follows `poster=` as well as `href=` and `src=`. And `evidence_url` is the URL of the
-limitations page, so no template has to hard-code the slug that `build.py`
-generates the `#number-N` anchors against.
+Only `docs/sheet-deep-react.png` is copied into `dist/` (as
+`sheets/sheet-deep-react.png`), because How it works shows it.
+`docs/specimen.pdf` and the other renders are not published: an unlinked
+printable sheet at a site URL is the generic sheet by another name (see
+"Retired pages redirect"). They stopped shipping on 2026-09-29, so an old link
+to `/specimen.pdf` now returns 404.
 
-Keys marked optional in `build.py` come back as empty strings when their source
-section is missing (the build warns). Guard them with `{% if %}` if your page
-would look broken without them.
+### 4. Adding repo content
 
-### 4. Asking for repo content that isn't in the list
-
-Add it to `build_repo_context()` in `build.py`:
-
-```python
-section = extract_section(readme, "The pattern library", "README.md",
-                          required=False)
-ctx["repo_patterns_html"] = md_to_html(section, heading_offset=1) if section else ""
-```
-
-Helpers available: `read_repo(path, required=)`, `extract_section(md, heading,
-source, required=)`, `find_first_table`, `parse_table`, `strip_front_matter`,
-`md_to_html(md, heading_offset=)`, `inline_md`, `plain_text`, `esc`.
-
-Choose `required=True` only for content whose absence should stop the build —
-content a page is fundamentally about. Everything decorative gets
-`required=False` plus an `{% if %}` in the template, because other agents edit
-these files and a warning is better than a broken deploy.
-
-The markdown converter handles the subset the repo actually uses: ATX headings,
-fenced code, GFM pipe tables, ordered/unordered lists with one level of nesting,
-blockquotes, thematic breaks, bold, italic, strikethrough, inline code, links
-and images. Repo-relative links are rewritten to GitHub blob URLs; `docs/`
-specimen assets are rewritten to the site's own copies. Tables come out inside
-`<div class="scroller">` so the body never scrolls sideways.
+Add an extractor to `build_repo_context()` in `build.py`, or a
+`repo_doc_url()` call for a link. Helpers: `read_repo`, `extract_section`,
+`find_first_table`, `parse_table`, `fenced_blocks`, `strip_front_matter`,
+`inline_md`, `plain_text`, `esc`. There is no block-level markdown converter
+on purpose: a page that needs a whole section links to it. Use `required=True` only for content a page
+cannot do without; everything else gets `required=False` plus an `{% if %}`.
 
 ### 5. Partials
 
-`{% include "_print-note.html" %}` — **the production note the site owes every
-visitor**: *print at actual size, scaling off*. Browser print dialogs default to
-fit-to-page, which shrinks a 54pt-margin sheet by three to six percent and walks
-the smallest labels below their measured legibility floor. Include it anywhere
-a person is about to print something: the specimen download, the install page,
-any page that hands over a PDF. This unglamorous sentence probably protects more
-completed loops than any copywriting on the site.
+None. `_print-note.html` was removed with the pages that handed over a
+printable sheet; no page on the site prints anything now.
 
 ### 6. Planned pages and stubs
 
-`PLANNED_PAGES` in `build.py` lists the pages the site expects to have. Any
-planned slug with no template gets an obviously-marked stub page so that no link
-on the site points into a hole. **Write `templates/<slug>.html` and the stub
-disappears** — you do not need to touch `PLANNED_PAGES` unless you are adding a
-page nobody has planned, in which case add it there so others can link to you
-before you land.
+`PLANNED_PAGES` in `build.py` lists `how-it-works`, `install` and `research`.
+A planned slug with no template gets a marked stub so no link dangles; write
+the template and the stub disappears. `collect_pages()` fails the build if two
+templates claim one slug.
 
-Currently planned: `no-printer` (20), `scan-back` (30), `install` (40),
-`evidence` (50). The order is the landing page's
-ascending-commitment order; keep nav and onramps in step.
+---
 
-**All four are written, so the build currently emits no stubs.** Two of them
-live under a filename that is not their slug, which is fine and deliberate —
-the front matter's `slug:` is what decides the URL:
+## The primary call to action
 
-| Template | Slug and URL |
-|---|---|
-| `templates/return-trip.html` | `scan-back` → `/scan-back/` |
-| `templates/limitations.html` | `evidence` → `/evidence/` |
+One call to action runs the site: **Copy instructions for your AI**. It copies
+`site/static/copy-instructions.txt`, which the visitor pastes into the AI chat
+they already use before saying what they are working on. Agents that can run
+the skill fetch it and hand over a layout-checked PDF; plain chats build a printable
+document in a canvas or artifact, or dictate a card. The photos come back to
+the same chat.
 
-`/get-a-sheet/` was removed on 2026-09-29. It printed a sheet that knew
-nothing about the visitor, so it proposed nothing: the weakest version of a
-paper session, sitting at the top of the site's funnel. The real sheet is built
-from your own work, so every route now leads there instead (install the pair,
-or paste one file). The print gate (a page whose front matter says
-`sheet: true` is printed with chromium and checked by `verify_layout.py`) and
-the sheet's CSS are still in `build.py` and `static/style.css`. No page
-declares `sheet: true` now, so the gate does not run.
+The markup, used on Home, How it works, Install `#no-printer` and Research:
 
-`collect_pages()` fails the build if two templates claim one slug, which is the
-intended behaviour: do not add `templates/scan-back.html` or
-`templates/evidence.html` alongside the two that already claim those slugs.
-`/evidence/` in particular is load-bearing — `build.py` generates the landing
-page's three figure links against `EVIDENCE_SLUG` and they land on `#number-1`,
-`#number-2` and `#number-3` on that page.
+```html
+<div class="copy-cta">
+  <a class="btn btn--primary copy-cta__btn" href="{{ copy_instructions_url }}" data-copy-ai>Copy instructions for your AI</a>
+  <p class="copy-cta__status" data-copy-ai-status role="status" aria-live="polite"
+     data-done="Copied. Paste it into your AI chat and say what you are working on."></p>
+</div>
+```
+
+With JS off it is a link to the text file. With JS on, `site.js` copies
+instead of navigating and writes the `data-done` sentence into the status
+line. Inner pages also carry a quiet masthead copy button (`_base.html`); Home
+does not, because its own button is on screen. Keep one filled
+`.btn--primary` per page; everything else is an outlined `.btn` or a link.
 
 ---
 
 ## The design system
 
-Read `paper-session/references/design.md` before you style anything. **The sheet
-is the brand**; the site does not get a second identity. Everything in
+Read `paper-session/references/design.md` before you style anything. **The
+sheet is the brand**; the site does not get a second identity. Everything in
 `static/style.css` traces back to that file, including the rule weights:
 
 ```
@@ -288,9 +263,6 @@ print gray value 0.NN    ->  --g-NN
 
 ### Tokens
 
-Neutrals — ink is a cool graphite, paper carries a faint warm bias; deliberately
-neither pure mid-grey nor cream:
-
 ```
 --g-00 #191c1e   --g-12 #24282a   --g-20 #33383a   --g-30 #4a5052
 --g-40 #5c6264   --g-45 #656b6d   --g-50 #7b8183   --g-55 #a0a5a3   --g-60 #c3c6c2
@@ -299,255 +271,135 @@ neither pure mid-grey nor cream:
 
 Semantic aliases: `--ink` (g-00), `--ink-2` (g-30, secondary prose),
 `--ink-quiet` (g-45, labels; 4.75:1 on `--paper`, the small-text floor),
-`--ink-faint` (g-50, 3.5:1 — **nothing meaningful goes lighter**: decoration,
-underlines and rules only, the screen equivalent of the print system's 50%
-floor), `--guide` (g-60, hairlines only, never type).
-
-Pen channels: `--pen-red` `--pen-green` `--pen-blue` `--pen-black`.
-
-Type: `--font-serif` / `--font-sans` / `--font-mono` (IBM Plex, from Google
-Fonts, each with a real fallback stack). Sizes `--fs-provocation`, `--fs-title`,
-`--fs-lead`, `--fs-body`, `--fs-machine`, `--fs-small`, `--fs-label`.
-
-Space: `--s1` … `--s9`; layout `--page-max`, `--gutter`, `--measure` (65ch).
+`--ink-faint` (g-50, 3.5:1; decoration, underlines and rules only),
+`--guide` (g-60, hairlines only, never type). Pen channels: `--pen-red`
+`--pen-green` `--pen-blue` `--pen-black`. Type: `--font-serif` / `--font-sans`
+/ `--font-mono` (IBM Plex). Sizes `--fs-provocation`, `--fs-title`,
+`--fs-lead`, `--fs-body`, `--fs-machine`, `--fs-small`, `--fs-label`. Space
+`--s1` … `--s9`; layout `--page-max`, `--gutter`, `--measure` (65ch).
 
 ### The three voices, never blended
 
-- **Serif asks.** Running prose, provocations (`.provocation`), the site's own
-  questions (`.question`), intent lines (`.intent`), asides (`.aside`).
-- **Mono is the machine.** On this site Mono means exactly one thing: *these
-  words are quoted verbatim out of the repository*. Wrap them in `.machine` with
-  a `<span class="caption">` naming the source — that caption plus its 2px
-  underline is the sheet's own `I PROPOSE` molecule. Never set marketing copy in
-  Mono, and never set repo text in anything else.
+- **Serif asks.** Running prose, provocations, the site's questions
+  (`.question`), intent lines (`.intent`), asides (`.aside`).
+- **Mono is the machine.** On this site Mono means one thing: these words are
+  quoted verbatim from the repository. Wrap them in `.machine`, with a
+  `<span class="caption">` naming the source where a visitor needs it (the
+  Install ledger and the scan-back file). A single quoted line that the
+  sentence before already introduces, like "Printed. Go think." on How it
+  works, goes without one: a file path is jargon on a pitch page.
 - **Tracked Sans caps is infrastructure.** Nav, `.label`, buttons, footers,
-  table headers. Furniture, not a voice.
-- Nothing on the site imitates handwriting. Ever.
+  step numerals.
+- Nothing on the site imitates handwriting.
 
-### Structure
+### Structure and components
 
-- `.datum` — the 3px rule that opens the site, as it opens every sheet.
-- `.open-territory` — the 2px closing rule, a label, and real emptiness
-  (`.open-territory__field`, 34vh of nothing). Close long pages with it.
-- **Decompression downward.** Pages run tightest at the top and open out. Bands
-  take ascending air: `.air-1` → `.air-2` → `.air-3` → `.air-4` down the page.
-  A page that does this is quoting the artifact rather than illustrating it.
-- Layout wrappers: `.wrap` (max width + gutter), `.measure` (65ch), `.band`,
-  `.stack` / `.stack-4`, `.scroller` for anything wide.
-- Components: `.btn` / `.btn--primary`, `.chip`, `.onramps` / `.onramp`,
-  `.sheets` / `.sheet`, `.numbers` / `.number`, `.print-note`, `.prose`,
-  `.pen-key`, `pre.code`.
-- Promoted components (§18 of `static/style.css`), all of them originally
-  page-scoped and now shared:
-  `.disclosure` (a `<details>` whose summary is infrastructure) ·
-  `.status` (a live-region feedback line; the sentence carries the state and
-  the coloured rule beside it is redundant) ·
-  `.placeholder` / `.placeholder__key` / `.placeholders` (a pending asset —
-  dashed, red, and the word "placeholder" always in the text) ·
-  `.ruled-list` / `.ruled-list__item` (counter-numbered ruled prose) ·
-  `.source-entry` (an anchored claim with its source quoted under it;
-  `:target` thickens the rule rather than tinting it) · `.cluster-index` ·
-  `.routes` / `.route` (equal peers, no primary, no badge) ·
-  `.verdict` + the `.ledger-table` status box · `.specimen-plate` ·
-  `.specimen-intents` · `.anatomy` (a named-parts key) · `.filebox` (a long
-  verbatim file, wrapped and bounded) · `.say` / `.say__copy` / `.say__hint`
-  (a copyable sentence, set in the asking voice because the words are the
-  visitor's) · `.note` / `.note--caution` · `.openers` / `.opener` /
-  `.situation` · `.sr` (visually hidden) · `.after-lead` / `.after-block` /
-  `.after-close` / `.after-note` / `.machine--wide`.
-- **No template contains a `<style>` or `<script>` element.** A page body
-  cannot reach `<head>`, so a page-scoped `<style>` is non-conforming HTML
-  even though browsers honour it, and a second page wanting the same component
-  would reinvent it. Anything you would have put inline belongs in
-  `static/style.css` (add to §18) or `static/site.js`.
-- Flush left. No centred layouts, no rounded corners, no fills or tint panels
-  beyond the barely-there `--surface` behind code, no drop shadows.
+- `.datum` opens every page; `.open-territory` (a 2px rule, a label, 34vh of
+  nothing) closes the inner pages.
+- **Decompression downward.** Bands take ascending air, `.air-1` to `.air-4`.
+- Layout: `.wrap`, `.measure`, `.band`, `.prose`.
+- Home (section 22 and 23 of `style.css`): `.door-grid` / `.door-rail` /
+  `.door-body` / `.door-sep` / `.door-margin`, `.door-rows` / `.door-row`
+  (`.door-row--plain` has no numeral), `.home-lead`, `.home-steps` (the film
+  and the copy step side by side from 64rem, stacked below).
+- Shared: `.btn` / `.btn--primary`, `.copy-cta`, `.steps` (`--lines` on Home,
+  `--walk` on How it works), `.hiw-figures` with `.sheet`, `.say` / `.says`,
+  `.verdicts`, `.bundle-links`, `.status`, `.disclosure`, `.filebox`,
+  `.source-entry` (the field-note entry on Research).
+- No template contains a `<style>` or `<script>` element. New styles go in
+  `static/style.css` section 23.
+- `style.css` carries no rules for retired markup. The rules for the retired
+  pages (onramps, route cards, the print note, pen swatches, the specimen
+  plate, the old door rows and more) were removed on 2026-09-29, checked
+  pixel for pixel on all four pages in both themes. They are in git history.
+  The sheet's print CSS (section 21, `.ps-sheet*` and `.s-*`) stays on
+  purpose.
+- Flush left. No centred layouts, no rounded corners, no fills beyond
+  `--surface` behind code, no shadows.
 
 ### Colour law
 
-Grayscale carries the page; the restraint *is* the brand. Colour appears only
-where it encodes pen intent — red review, green go, blue do, black notes — and
-**never as the sole carrier of meaning** (WCAG 1.4.1; roughly 1 in 12 men have
-red-green CVD). The primary button's blue underline is decoration on top of a
-label that already says what it does; the hero placeholder is red *and* says
-"placeholder" in words. Keep that discipline.
+Grayscale carries the page. Colour appears only where it encodes pen intent,
+and never as the sole carrier of meaning (WCAG 1.4.1). Focus outlines are the
+one piece of colour on furniture.
 
 ### Themes
 
-Three states, all supported. The complete light palette lives on bare `:root`;
-`@media (prefers-color-scheme: dark)` guarded as `:root:not([data-theme="light"])`
-redefines only the tokens; `:root[data-theme="dark"]` redefines them again so the
-footer toggle wins in both directions. **Never declare a colour only inside a
-media block**, and give any new full-bleed surface an explicit token background.
+The complete light palette lives on bare `:root`; `@media
+(prefers-color-scheme: dark)` guarded as `:root:not([data-theme="light"])`
+redefines only the tokens; `:root[data-theme="dark"]` redefines them again so
+the footer toggle wins both ways. Never declare a colour only inside a media
+block.
 
 ### Accessibility floor
 
-This project cites accessibility research in its own evidence base; a site that
-fails the basics would be embarrassing.
-
-- Visible focus: a 2px `--focus` outline with offset. Do not remove it.
-- `prefers-reduced-motion: reduce` is honoured globally. Do not add motion that
-  ignores it.
-- Running text near 65 characters (`.measure`).
-- Wide content lives in `.scroller`; the body never scrolls sideways.
-- One `<h1>` per page, headings in order, real landmarks (`main`, `nav`,
-  `footer`), a skip link, alt text on every image.
-- **Everything must work with JavaScript off.** `static/site.js` is progressive
-  enhancement only. It un-hides the "what are you using?" chips and collapses
-  the ledger table that is otherwise open; it shows the theme toggle; and it
-  reveals the copy buttons — the per-sentence ones (`[data-copy]`, paired with
-  a `#copy-status` live region on the page) and the whole-file one on the
-  return-trip page (`[data-copy-file]`). Every one of those buttons ships
-  `hidden` and is revealed only where writing to the clipboard can work, so a
-  browser that cannot copy never shows a control that would do nothing. With JS
-  off you get the full honest ledger table, the system theme, the whole of
-  `scan-back/SKILL.md` sitting open and selectable, and every sentence as plain
-  selectable text. That is a perfectly good page.
-- Contrast floors are enforced by token, in both themes: `--ink-quiet` (4.75:1
-  light / 5.87:1 dark) is the floor for anything that renders as type,
-  including ordinal counters. `--ink-faint` is decoration and underlines only,
-  and `--guide` never sets a type colour.
+- Visible 2px `--focus` outline. `prefers-reduced-motion` honoured.
+- One `<h1>` per page, headings in order, real landmarks, a skip link, alt
+  text on every image. No page scrolls sideways at 320px.
+- **Everything works with JavaScript off.** `static/site.js` only reveals and
+  wires controls: the copy call to action (a link to the text file without
+  JS), the masthead copy button (hidden without JS), the scan-back copy button
+  (hidden without JS, and the file sits open on the page), the theme toggle,
+  and the film's centred play button (without JS the video's native controls
+  play it).
 
 ---
 
 ## Content rules the project enforces on itself
 
-These are not style preferences; they are the project's own invariants applied
-to its marketing. A page that breaks one is wrong even if it converts.
+These are the project's invariants applied to its marketing. A page that
+breaks one is wrong even if it converts.
 
 1. **Never say a session is quick, easy, or fast.** No time estimates as a
-   selling point, no "try it in 90 seconds". `prompt-craft.md` §9 and both
-   anti-pattern lists ban it, and effort-read-as-ineffectiveness is the
-   documented reason people abandon the method. A paper session will feel less
-   productive than the same hour on screen, including on the days it is most
-   productive. Do not promise ease and do not apologise for effort.
-2. **No AI-generated imagery anywhere.** The skill bans it on sheets; on a
-   marketing page it is worse. Photographs of real artifacts, the specimen
-   renders, or nothing.
-3. **No testimonials** — there are none — and **no completion statistics**;
-   Part Three of `evidence.md` is empty. Completion rate is the metric that
-   matters and nobody has data yet.
+   selling point. A paper session will feel less productive than the same
+   hour on screen, including on the days it is most productive.
+2. **No AI-generated imagery.** Photographs of real artifacts, the specimen
+   renders, the film, or nothing.
+3. **No testimonials, no percentages, no completion statistics, no "trusted
+   by".** Part Three of `evidence.md` is empty. When field notes arrive they
+   go on Research word for word, with date and context, never smoothed.
 4. **No waitlist, no newsletter capture, no star-the-repo CTA above the fold.**
-   No metric of success that counts installs or stars.
-5. **Honest status stays honest.** "Installs cleanly, loop untested" is the most
-   credible sentence the project has. Never upgrade a claim, and let the ledger
-   speak for itself rather than paraphrasing it upward.
-6. **The pen half is the product.** The single primary call to action is *get a
-   sheet*. A front door reading "AI reads your handwriting" would be selling
-   commodity OCR and inverting the thesis; the return trip is the prominent
-   second door, for people who already have paper.
+5. **Honest status stays honest.** "Installs cleanly, loop untested" is the
+   most credible sentence the project has. Let the ledger speak in its own
+   words.
+6. **The single primary call to action is "Copy instructions for your AI".**
+   The visitor pastes it into the chat they already use and says what they
+   are working on, so the first page they print is built from their own work.
+   Install is the second path, for people who want the full loop. The generic
+   printable sheet was removed on 2026-09-29 because it was a bad version of a
+   session.
+7. **Voice.** Plain, short sentences, bottom line first, no hype. The AI
+   prints and reads back; the person thinks and decides. No em or en dashes in
+   anything a visitor reads (copy, titles, alt text, labels, JS strings);
+   verbatim repo text is exempt.
+8. **Describe a sheet as the repo defines it.** It may carry AI work worth
+   reacting to (a proposed order, gathered options). It never pre-fills the
+   judgment or creative zones, never carries a timer or suggested duration,
+   never a scoring rubric.
 
 ---
 
-## Pending assets
+## Assets
 
-Two photographs and one transcript do not exist yet. Every one of them has a
-visible, dashed, red placeholder that names its own path on the page, so the
-site never quietly renders a hole. Nothing here may be filled with an
-illustration or a generated image.
+| File | Where it shows |
+|---|---|
+| `site/static/film.mp4` (+ `film-poster.jpg`, `film-captions.vtt`) | Home, step 1. Narrated, so it plays with sound, from a poster frame and a centred play button. Without the MP4, Home shows `hero.jpg`, and without that a dashed red placeholder. |
+| `site/static/hero.jpg` | Film fallback and `og:image`. |
+| `site/static/return-example.jpg` | How it works, "As photographed", beside `docs/sheet-deep-react.png` ("As printed"). |
+| `site/static/copy-instructions.txt` | The text the primary call to action copies. Required: the build fails without it. |
 
-| What | Where it goes | What appears until then |
-|---|---|---|
-| The hero photograph | `site/static/hero.jpg` (`.jpeg` / `.png` / `.webp` also work; first found wins) | the placeholder panel on the landing page |
-| The worked-example photograph | `site/static/return-example.jpg` (same alternatives, `return-example.*`) | the left placeholder on `/scan-back/` |
-| The worked-example reply | `docs/worked-example.md`, in the repo | the right placeholder on `/scan-back/` |
-
-Drop each file in and rebuild; the placeholder disappears on its own and no
-template changes. The two worked-example slots are paired: the photograph alone
-swaps the left panel and leaves the right one asking for the reply.
-
-**Shot list for the worked-example photograph:** a phone shot of a completed
-page — handheld, slightly angled, on whatever surface it was filled in on. Two
-or three inks, at least one strike, one circled item, a margin note running up
-the side. Not a flatbed scan, not a flat-lay, no screen in the frame. **And the
-reply must be pasted unedited**, including anything the assistant read wrong: a
-worked example that has been tidied up is an advertisement, not evidence. Update
-the `alt` text in `templates/return-trip.html` to describe the real photograph
-once it exists.
+Drop a replacement in and rebuild; nothing else changes. Update the matching
+`alt` text in the template when a photograph changes.
 
 ---
 
-## The hero photograph
+## Deploying
 
-The landing page opens on a full-bleed photograph of a real sheet. **It does not
-exist yet** — the maintainer is shooting it. Until then `build.py` renders a
-dashed, red, unmistakable placeholder occupying the same 3:2 slot the
-photograph will fill (it grows rather than clipping the note on a narrow
-screen).
-
-**To make it live: save the file as `site/static/hero.jpg` and rebuild.** That
-is the whole procedure. (`hero.jpeg`, `hero.png` and `hero.webp` also work; the
-first one found wins.) Nothing else changes, and the placeholder disappears on
-its own.
-
-Shot list:
-
-- **The subject is a completed sheet**, not a blank one. A blank sheet looks
-  unfinished on purpose; the finished design is the page with handwriting on it.
-- **Two or three inks visible.** A black hand, at least one red strike or
-  circle, ideally one blue instruction. The pen must be the highest-contrast
-  thing in the frame — that is the whole design principle, photographed.
-- **Real marks.** Crossings-out, a margin note running up the side, a slot left
-  empty. Not a neatly completed form.
-- **Photograph it badly, on purpose.** A table, a kitchen counter, a patio.
-  Available light, slight angle, a mug or a pen in frame is fine. Studio
-  lighting, a flat-lay grid, or a laptop in shot would all be lying about where
-  this happens.
-- **No screens in the frame.**
-- **Landscape, 3:2**, at least 2400px wide, exported around 200–400 KB (the site
-  ships no image pipeline). Leave the lower-left third relatively quiet: the
-  headline and buttons sit over it on a dark scrim.
-- Update the `alt` text in `templates/index.html` to describe the actual
-  photograph once it exists.
-
----
-
-## Deploying to GitHub Pages
-
-The build has no dependencies, so the workflow is short. The maintainer needs to
-add this as `.github/workflows/site.yml` (nothing under `site/` can create it),
-and set Settings → Pages → Source to **GitHub Actions**:
-
-```yaml
-name: site
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: true
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: python3 site/build.py --strict
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site/dist
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-```
-
-`dist/.nojekyll` is written by the build, so Pages serves the directory as-is.
-Because every internal link is relative, the site works unchanged at
-`welovejeff.github.io/paper-session/`, at a custom domain, or opened from the
-filesystem.
+`.github/workflows/pages.yml` builds with `--strict` on every push to main
+that touches the site or its repo sources, builds a second time and diffs the
+two, then publishes `site/dist/` to GitHub Pages. `dist/.nojekyll` is written
+by the build. Every internal link is relative, so the site works at a custom
+domain, under `welovejeff.github.io/paper-session/`, or from the filesystem.
 
 ---
 
@@ -555,8 +407,9 @@ filesystem.
 
 | Message | What to do |
 |---|---|
-| `could not find the §Install section in README.md` | The heading was renamed, or the README is mid-edit. Update the extractor; do not restate the section in a template. |
-| `README §Install has no compatibility table` | Same. The ledger is rendered, never invented. |
-| `specimen assets are missing from the repo` | Run `python3 docs/specimen.py`, or build with `--allow-missing-assets` while someone else regenerates them. |
+| `could not find the §Install section in README.md` | The heading was renamed or the README is mid-edit. Update the extractor; never restate the section in a template. |
+| `... has no heading starting ...` | A `repo_doc_url()` target heading was renamed. Update the heading named in `build.py`. |
+| `specimen assets are missing from the repo` | Run `python3 docs/specimen.py`, or build with `--allow-missing-assets`. |
 | `<template> uses unknown template keys: …` | Typo, or you need a new extractor in `build_repo_context()`. |
-| `internal links point at nothing` | Either the target page is not planned yet (add it to `PLANNED_PAGES`) or the link is missing its `{{ base }}` prefix. |
+| `internal links point at nothing` | The target page is not planned, or the link is missing its `{{ base }}` prefix. |
+| a redirect error | A retired slug has a template again, or `install.html` lost `id="scan-back"` / `id="no-printer"`. |

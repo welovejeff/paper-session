@@ -1,11 +1,11 @@
-/* paper-session site — progressive enhancement only.
+/* paper-session site: progressive enhancement only.
  *
  * Nothing here is required for the page to work. With JavaScript off:
- *   - the compatibility ledger shows in full as an open <details> table
- *   - the chips never appear
+ *   - "Copy instructions for your AI" is a plain link that opens
+ *     copy-instructions.txt, and the masthead copy button stays hidden
  *   - the theme follows prefers-color-scheme
- *   - every copy button stays hidden and its text stays plain and selectable
- *   - the whole of scan-back/SKILL.md sits open on the page
+ *   - the scan-back copy button stays hidden, and the whole file sits open
+ *     on the page (its <details> ships open) beside a link to the raw file
  *   - the landing-page film plays from the browser's own controls
  * Everything below only ever removes noise for people who have JS on.
  */
@@ -36,59 +36,7 @@
     }
   }
 
-  /* ---- Copyable sentences (the first-session openers) ------------------- */
-
-  var sayButtons = document.querySelectorAll("[data-copy]");
-  if (sayButtons.length && CAN_COPY) {
-    var sayStatus = document.getElementById("copy-status");
-    var sayTimer = null;
-
-    var announce = function (message) {
-      if (sayStatus) sayStatus.textContent = message;
-    };
-
-    var wireSay = function (button) {
-      var source = document.getElementById(button.getAttribute("data-copy"));
-      if (!source) return;
-      var original = button.firstChild.nodeValue;
-
-      button.hidden = false;
-      button.setAttribute("data-state", "idle");
-
-      button.addEventListener("click", function () {
-        var text = source.textContent.replace(/\s+/g, " ").trim();
-        if (sayTimer) window.clearTimeout(sayTimer);
-        navigator.clipboard.writeText(text).then(
-          function () {
-            button.setAttribute("data-state", "done");
-            button.firstChild.nodeValue = "Copied";
-            announce("Copied to the clipboard.");
-            sayTimer = window.setTimeout(function () {
-              button.setAttribute("data-state", "idle");
-              button.firstChild.nodeValue = original;
-              announce("");
-            }, 4000);
-          },
-          function () {
-            selectContents(source);
-            button.firstChild.nodeValue = "Selected";
-            announce(
-              "The clipboard is not available. The sentence is selected — " +
-                "press Ctrl or Command and C."
-            );
-            sayTimer = window.setTimeout(function () {
-              button.setAttribute("data-state", "idle");
-              button.firstChild.nodeValue = original;
-            }, 6000);
-          }
-        );
-      });
-    };
-
-    for (var s = 0; s < sayButtons.length; s++) wireSay(sayButtons[s]);
-  }
-
-  /* ---- Copy a whole file (the return-trip page) ------------------------- */
+  /* ---- Copy a whole file (Install #scan-back) --------------------------- */
 
   var fileBox = document.querySelector("[data-copy-file]");
   var fileBtn = document.querySelector("[data-copy-file-button]");
@@ -109,6 +57,9 @@
     };
 
     var fileSucceeded = function () {
+      if (!fileBtn.style.minWidth) {
+        fileBtn.style.minWidth = Math.ceil(fileBtn.getBoundingClientRect().width) + "px";
+      }
       fileBtn.textContent = "Copied";
       say(
         "Copied. Paste it as one message into the chat your photographs are " +
@@ -139,9 +90,9 @@
       say(
         selected
           ? "This browser will not let the page reach your clipboard. The " +
-              "file is open below and already selected — copy it yourself."
+              "file is open below and already selected. Copy it yourself."
           : "This browser will not let the page reach your clipboard. The " +
-              "file is open below — select all of it and copy it yourself.",
+              "file is open below. Select all of it and copy it yourself.",
         "warn"
       );
     };
@@ -162,28 +113,47 @@
     });
   }
 
-  /* ---- Copy instructions for your AI (the header button) ----------------- */
+  /* ---- Copy instructions for your AI ----------------------------------
 
-  var aiBtn = document.querySelector("[data-copy-ai]");
+     Every [data-copy-ai] element on the page is wired here. The text copied
+     is always #copy-instructions-text, which _base.html puts on every page
+     from site/static/copy-instructions.txt.
+
+     The page contract (the primary call to action, a real link):
+
+       <div class="copy-cta">
+         <a class="btn btn--primary copy-cta__btn"
+            href="{{ copy_instructions_url }}" data-copy-ai>Copy instructions for your AI</a>
+         <p class="copy-cta__status" data-copy-ai-status role="status"
+            aria-live="polite"
+            data-done="Copied. Paste it into your AI chat and say what you are working on."></p>
+       </div>
+
+     JS off: the link opens the text file, and the visitor copies it there.
+     JS on: a click copies the text instead of navigating, the control reads
+     "Copied" for four seconds, and the data-done sentence is written into
+     the [data-copy-ai-status] inside the same .copy-cta. The sentence stays
+     after the label reverts, because it says what to do next. If the page
+     cannot reach the clipboard, the link navigates exactly as it would have
+     without JS.
+
+     The masthead variant is a <button data-copy-ai data-href="..." hidden>:
+     a button does nothing without JS, so it ships hidden and is revealed
+     here. When copying fails it opens data-href, the same text file.
+
+     A control whose label sits in a child element can mark that child
+     [data-copy-ai-label]; only the child's text is swapped then. */
+
   var aiSource = document.getElementById("copy-instructions-text");
-  if (aiBtn && aiSource) {
-    aiBtn.hidden = false;
-    var aiIdle = aiBtn.textContent;
-    var aiTimer = null;
+  var aiControls = document.querySelectorAll("[data-copy-ai]");
+  if (aiSource && aiControls.length) {
+    var aiText = aiSource.textContent;
 
-    var aiDone = function () {
-      aiBtn.textContent = "Copied";
-      aiBtn.setAttribute("data-state", "done");
-      if (aiTimer) window.clearTimeout(aiTimer);
-      aiTimer = window.setTimeout(function () {
-        aiBtn.textContent = aiIdle;
-        aiBtn.setAttribute("data-state", "idle");
-      }, 4000);
-    };
-
-    var aiFallback = function () {
+    /* The older path, for browsers without the async clipboard API or where
+       it refuses. Returns whether the text actually reached the clipboard. */
+    var aiLegacyCopy = function () {
       var ta = document.createElement("textarea");
-      ta.value = aiSource.textContent;
+      ta.value = aiText;
       ta.setAttribute("readonly", "");
       ta.style.position = "absolute";
       ta.style.left = "-9999px";
@@ -196,20 +166,80 @@
         ok = false;
       }
       document.body.removeChild(ta);
-      if (ok) aiDone();
+      return ok;
     };
 
-    aiBtn.addEventListener("click", function () {
-      if (CAN_COPY) {
-        try {
-          navigator.clipboard.writeText(aiSource.textContent).then(aiDone, aiFallback);
-        } catch (e) {
-          aiFallback();
+    var wireAi = function (el) {
+      var labelEl = el.querySelector("[data-copy-ai-label]") || el;
+      var idle = labelEl.textContent;
+      var timer = null;
+      var wrapper = typeof el.closest === "function" ? el.closest(".copy-cta") : null;
+      var status = wrapper ? wrapper.querySelector("[data-copy-ai-status]") : null;
+      var fallback = el.getAttribute("href") || el.getAttribute("data-href") || "";
+
+      el.hidden = false;
+      el.setAttribute("data-state", "idle");
+
+      var done = function () {
+        /* Hold the control at its idle width, so the shorter "Copied" does
+           not make it jump. Measured on first use, when it is on screen. */
+        if (!el.style.minWidth) {
+          el.style.minWidth = Math.ceil(el.getBoundingClientRect().width) + "px";
         }
-      } else {
-        aiFallback();
-      }
-    });
+        labelEl.textContent = "Copied";
+        el.setAttribute("data-state", "done");
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(function () {
+          labelEl.textContent = idle;
+          el.setAttribute("data-state", "idle");
+        }, 4000);
+        if (status) {
+          var message = status.getAttribute("data-done") || "Copied.";
+          /* Emptied first, so a second copy is announced again. */
+          status.textContent = "";
+          window.setTimeout(function () {
+            status.textContent = message;
+          }, 50);
+        }
+      };
+
+      var navigate = function () {
+        if (fallback) window.location.href = fallback;
+      };
+
+      el.addEventListener("click", function (event) {
+        if (CAN_COPY) {
+          event.preventDefault();
+          var pending = null;
+          try {
+            pending = navigator.clipboard.writeText(aiText);
+          } catch (e) {
+            pending = null;
+          }
+          if (pending && typeof pending.then === "function") {
+            pending.then(done, function () {
+              if (aiLegacyCopy()) done();
+              else navigate();
+            });
+          } else if (aiLegacyCopy()) {
+            done();
+          } else {
+            navigate();
+          }
+          return;
+        }
+        if (aiLegacyCopy()) {
+          event.preventDefault();
+          done();
+          return;
+        }
+        /* Copying failed. A link carries on to the text file by itself; a
+           button has nowhere to go unless it is sent there. */
+        if (el.tagName !== "A") navigate();
+      });
+    };
+
+    for (var a = 0; a < aiControls.length; a++) wireAi(aiControls[a]);
   }
 
   /* ---- Theme toggle ---------------------------------------------------- */
@@ -248,104 +278,6 @@
       } catch (e) {}
       label();
     });
-  }
-
-  /* ---- "What are you using?" ------------------------------------------- */
-
-  var root = document.querySelector("[data-ledger]");
-  var dataEl = document.getElementById("ledger-data");
-  if (!root || !dataEl) return;
-
-  var data;
-  try {
-    data = JSON.parse(dataEl.textContent);
-  } catch (e) {
-    return; /* leave the full table exactly as it is */
-  }
-  if (!data || !data.rows || !data.rows.length) return;
-
-  var chips = root.querySelector("[data-chips]");
-  var answer = root.querySelector("[data-answer]");
-  var full = root.querySelector("[data-ledger-full]");
-  if (!chips || !answer) return;
-
-  var buttons = chips.querySelectorAll(".chip");
-  if (!buttons.length) return;
-
-  chips.hidden = false;
-  if (full) full.open = false;
-
-  var installHref = root.getAttribute("data-link-install") || "";
-
-  function textNode(tag, className, text) {
-    var el = document.createElement(tag);
-    if (className) el.className = className;
-    el.textContent = text;
-    return el;
-  }
-
-  function show(index, button) {
-    var row = data.rows[index];
-    if (!row) return;
-
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].setAttribute("aria-pressed", buttons[i] === button ? "true" : "false");
-    }
-
-    answer.textContent = "";
-
-    if (row.status) {
-      answer.appendChild(textNode("span", "answer__status", row.status));
-    }
-
-    /* One honest sentence, assembled out of the ledger row itself. */
-    var line = textNode("p", "answer__line", "");
-    var agent = document.createElement("strong");
-    agent.textContent = row.agent;
-    line.appendChild(agent);
-    line.appendChild(document.createTextNode(" — " + row.loop + "."));
-    answer.appendChild(line);
-
-    var how = textNode("p", "answer__line", "How you install it: " + row.install + ".");
-    answer.appendChild(how);
-
-    /* Every ledger column past the third, whatever it turns out to be. The
-       table grew an "Also install" column once already; an answer that
-       silently omits it tells someone how to install without saying what
-       else they have to install. */
-    if (row.extra && row.extra.length) {
-      var extras = document.createElement("dl");
-      extras.className = "answer__extra";
-      var wrote = false;
-      for (var e = 0; e < row.extra.length; e++) {
-        var cell = row.extra[e];
-        if (!cell || !cell.value) continue;
-        extras.appendChild(textNode("dt", null, cell.header || "Also"));
-        extras.appendChild(textNode("dd", null, cell.value));
-        wrote = true;
-      }
-      if (wrote) answer.appendChild(extras);
-    }
-
-    var links = document.createElement("p");
-    links.className = "btn-row";
-    if (installHref) {
-      var b = document.createElement("a");
-      b.className = "btn";
-      b.href = installHref;
-      b.textContent = "Install directions";
-      links.appendChild(b);
-    }
-    answer.appendChild(links);
-  }
-
-  for (var i = 0; i < buttons.length; i++) {
-    (function (button) {
-      button.setAttribute("aria-pressed", "false");
-      button.addEventListener("click", function () {
-        show(parseInt(button.getAttribute("data-row"), 10), button);
-      });
-    })(buttons[i]);
   }
 })();
 
