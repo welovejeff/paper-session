@@ -2270,6 +2270,95 @@ body.door {
   background: #fff;
 }
 
+/* The hero film takes the photograph's slot at its own 16:9. preload="none"
+   keeps the 10 MB file off the wire until someone presses play. */
+.hero video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--surface);
+}
+
+/* The centred play control (revealed by site.js; with JS off the native
+   controls do the job). It is the site's primary button, larger: a filled
+   rectangle in the analog vocabulary, never a disc. The poster is light paper
+   in both themes, so the button keeps light-theme ink rather than following
+   the theme tokens; colour still appears only on focus. The whole frame is
+   the hit area, so a tap anywhere on the poster plays. */
+.hero--film {
+  position: relative;
+}
+
+.film-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.film-play[hidden] {
+  display: none;
+}
+
+.film-play__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1.1rem 1.6rem;
+  border: var(--rule-close) solid #191c1e;
+  background: #191c1e;
+  color: #f8f7f4;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.film-play__icon {
+  width: 0.7em;
+  height: 0.85em;
+  fill: currentColor;
+}
+
+.film-play:hover .film-play__btn {
+  background: #f8f7f4;
+  color: #191c1e;
+}
+
+.film-play:focus-visible {
+  outline: none;
+}
+
+.film-play:focus-visible .film-play__btn {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (max-width: 34rem) {
+  .film-play__btn {
+    font-size: 0.8125rem;
+    padding: 0.9rem 1.2rem;
+  }
+
+  .film-play__time {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-play__btn {
+    transition: none;
+  }
+}
+
 .hero--placeholder {
   aspect-ratio: 3 / 2;
   display: grid;

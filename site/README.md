@@ -116,8 +116,9 @@ Page and site:
 
 `base` · `home_url` · `page_slug` · `is_home` · `nav` · `title` · `description` ·
 `body_class` · `repo_url` · `raw_url` · `specimen_url` · `hero_url` ·
-`hero_present` · `hero_file` · `specimen_available` · `sheet_count` ·
-`copy_instructions` · `copy_instructions_present`
+`hero_present` · `hero_file` · `film_present` · `film_url` · `film_poster_present` ·
+`film_poster_url` · `film_captions_present` · `film_captions_url` · `specimen_available` ·
+`sheet_count` · `copy_instructions` · `copy_instructions_present`
 (plus every key from your own front matter). `_base.html` additionally gets
 `content`.
 
@@ -184,7 +185,11 @@ the loop status does.
 
 Two more keys come from the asset scan rather than the repo: `example_present`
 and `example_photo_url` (the worked-example photograph, `site/static/return-example.jpg`),
-alongside `hero_present` / `hero_url`. And `evidence_url` is the URL of the
+alongside `hero_present` / `hero_url`. The hero film is scanned the same way:
+`site/static/film.mp4` sets `film_present` / `film_url` and, when present, takes the
+landing page's hero slot ahead of the photograph; `film-poster.jpg` and
+`film-captions.vtt` beside it set `film_poster_*` and `film_captions_*`. The
+link check follows `poster=` as well as `href=` and `src=`. And `evidence_url` is the URL of the
 limitations page, so no template has to hard-code the slug that `build.py`
 generates the `#number-N` anchors against.
 
