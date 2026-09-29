@@ -7,6 +7,7 @@
  *   - every copy button stays hidden and its text stays plain and selectable
  *   - the print button stays hidden and Ctrl+P prints the sheet
  *   - the whole of scan-back/SKILL.md sits open on the page
+ *   - the landing-page film plays from the browser's own controls
  * Everything below only ever removes noise for people who have JS on.
  */
 (function () {
@@ -375,4 +376,44 @@
       });
     })(buttons[i]);
   }
+})();
+
+/* ---- Hero film: one centred play control over the poster ---------------
+   The <video> ships with native controls, so with JS off it plays as-is.
+   Here those controls are held back until the film starts, the centred
+   button is the only thing on the poster, and both come back at the end. */
+(function () {
+  "use strict";
+  var figure = document.querySelector("[data-film]");
+  if (!figure) return;
+  var video = figure.querySelector("video");
+  var play = figure.querySelector("[data-film-play]");
+  if (!video || !play || typeof video.play !== "function") return;
+
+  function showPoster() {
+    video.controls = false;
+    play.hidden = false;
+  }
+
+  function start() {
+    play.hidden = true;
+    video.controls = true;
+    var playing = video.play();
+    if (playing && typeof playing.catch === "function") {
+      /* Playback refused: the native controls are showing, one press plays. */
+      playing.catch(function () {});
+    }
+    video.focus();
+  }
+
+  showPoster();
+  play.addEventListener("click", start);
+  video.addEventListener("ended", function () {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(function () {});
+    }
+    video.load(); /* back to the poster frame */
+    showPoster();
+    play.focus({ preventScroll: true });
+  });
 })();

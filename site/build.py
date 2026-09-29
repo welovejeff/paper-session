@@ -77,6 +77,13 @@ ASSET_LINK_MAP = {
 # Hero photograph: the maintainer drops one of these into site/static/.
 HERO_CANDIDATES = ("hero.jpg", "hero.jpeg", "hero.png", "hero.webp")
 
+# Hero film: when site/static/film.mp4 is present it takes the hero slot, with
+# an optional poster frame and WebVTT captions beside it. Without the MP4 the
+# landing page falls back to the hero photograph.
+FILM_FILE = "film.mp4"
+FILM_POSTER_CANDIDATES = ("film-poster.jpg", "film-poster.jpeg", "film-poster.png", "film-poster.webp")
+FILM_CAPTIONS_FILE = "film-captions.vtt"
+
 # The worked example on the return-trip page: a photograph of a real completed
 # page. Its partner is docs/worked-example.md, the unedited reply that
 # photograph produced. Both are pending assets; see site/README.md.
@@ -1573,6 +1580,16 @@ def copy_assets(dist: Path, allow_missing: bool) -> dict[str, str]:
     ctx["hero_present"] = "1" if hero else ""
     ctx["hero_file"] = hero
 
+    film = FILM_FILE if (STATIC / FILM_FILE).exists() else ""
+    poster = next((name for name in FILM_POSTER_CANDIDATES if (STATIC / name).exists()), "")
+    captions = FILM_CAPTIONS_FILE if (STATIC / FILM_CAPTIONS_FILE).exists() else ""
+    ctx["film_present"] = "1" if film else ""
+    ctx["film_file"] = film
+    ctx["film_poster_present"] = "1" if poster else ""
+    ctx["film_poster_file"] = poster
+    ctx["film_captions_present"] = "1" if captions else ""
+    ctx["film_captions_file"] = captions
+
     # The one-click "copy instructions for your AI" payload: the same file
     # ships as a static download and is embedded in every page for the
     # clipboard button, so there is exactly one copy of the text.
@@ -1829,7 +1846,7 @@ def verify_sheets(dist: Path, pages: list[dict[str, str]], strict: bool) -> None
 # Link checking
 # --------------------------------------------------------------------------
 
-LINK_RE = re.compile(r'(?:href|src)="([^"]+)"')
+LINK_RE = re.compile(r'(?:href|src|poster)="([^"]+)"')
 
 
 def check_links(dist: Path, strict: bool) -> None:
@@ -1893,6 +1910,9 @@ def build(dist: Path, allow_missing: bool, strict: bool) -> None:
         ctx["raw_url"] = RAW_URL
         ctx["specimen_url"] = base + "specimen.pdf"
         ctx["hero_url"] = base + (asset_ctx["hero_file"] or "")
+        ctx["film_url"] = base + (asset_ctx["film_file"] or "")
+        ctx["film_poster_url"] = base + (asset_ctx["film_poster_file"] or "")
+        ctx["film_captions_url"] = base + (asset_ctx["film_captions_file"] or "")
         ctx["example_photo_url"] = base + (asset_ctx["example_file"] or "")
         ctx["evidence_url"] = base + EVIDENCE_SLUG + "/"
         ctx["body_class"] = page.get("body_class", "")
