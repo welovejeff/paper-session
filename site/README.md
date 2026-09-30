@@ -28,7 +28,7 @@ the repo and the site links to it.
 | `/` | `index.html` | What it is. The film, then the copy button, then the loop in four lines. |
 | `/how-it-works/` | `how-it-works.html` | One session walked through, the page as printed and as photographed, three example lines, coming back. |
 | `/install/` | `install.html` | Chat app, terminal, the ledger verdicts, the no-install path (`#no-printer`), and the scan-back file (`#scan-back`). |
-| `/research/` | `research.html` | The honest limits in three statements, and the labelled slot where field notes will go. |
+| `/research/` | `research.html` | The honest limits in three statements. |
 
 Word budgets for site-authored copy: Home ~400, How it works ~300, Install
 ~250, Research ~300, under 2,000 in total. If a section cannot be said in
@@ -356,8 +356,11 @@ breaks one is wrong even if it converts.
 2. **No AI-generated imagery.** Photographs of real artifacts, the specimen
    renders, the film, or nothing.
 3. **No testimonials, no percentages, no completion statistics, no "trusted
-   by".** Part Three of `evidence.md` is empty. When field notes arrive they
-   go on Research word for word, with date and context, never smoothed.
+   by".** Part Three of `evidence.md` is empty. Nothing from a classroom or
+   other study goes on the site until it has cleared the proper review
+   (for anything from a course, the institution's IRB) and the people quoted have
+   opted in. Then it goes on Research word for word, with date and context,
+   never smoothed.
 4. **No waitlist, no newsletter capture, no star-the-repo CTA above the fold.**
 5. **Honest status stays honest.** "Installs cleanly, loop untested" is the
    most credible sentence the project has. Let the ledger speak in its own
