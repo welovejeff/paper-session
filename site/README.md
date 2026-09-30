@@ -294,8 +294,8 @@ Semantic aliases: `--ink` (g-00), `--ink-2` (g-30, secondary prose),
 
 ### Structure and components
 
-- `.datum` opens every page; `.open-territory` (a 2px rule, a label, 34vh of
-  nothing) closes the inner pages.
+- `.datum` opens every page. `.open-territory` (a 2px rule, a label, 34vh of
+  nothing) is sheet language; the site pages no longer end with it.
 - **Decompression downward.** Bands take ascending air, `.air-1` to `.air-4`.
 - Layout: `.wrap`, `.measure`, `.band`, `.prose`.
 - Home (section 22 and 23 of `style.css`): `.door-grid` / `.door-rail` /
